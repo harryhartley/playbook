@@ -15,18 +15,73 @@ datasource db {
     relationMode = "prisma"
 }
 
+enum Type {
+    Bait
+    Control
+    CorpseJuggle
+    Defense
+    Drill
+    Interception
+    Neutral
+    Offense
+    Okizeme
+    Serve
+}
+
+enum Speed {
+    All
+    High
+    Low
+    Mid
+}
+
+enum Environment {
+    Match
+    Training
+}
+
+enum Character {
+    All
+    Candyman
+    Dice
+    Doombox
+    Dust
+    Grid
+    Jet
+    Latch
+    Nitro
+    Raptor
+    Switch
+    Sonata
+    Toxic
+}
+
+enum Stage {
+    All
+    Desert
+    District
+    Factory
+    Field
+    Outskirts
+    Pool
+    Room
+    Sewers
+    Streets
+    Subway
+}
+
 model Play {
-    id          String   @id @default(cuid())
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    id          String      @id @default(cuid())
+    createdAt   DateTime    @default(now())
+    updatedAt   DateTime    @updatedAt
     name        String
     youtubeId   String
     description String
-    type        String
-    speed       String
-    environment String
-    character   String
-    stage       String
+    type        Type
+    speed       Speed
+    environment Environment
+    character   Character
+    stage       Stage
     difficulty  Int
 }
 
