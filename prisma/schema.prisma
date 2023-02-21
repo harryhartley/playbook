@@ -74,6 +74,7 @@ model Play {
     id          String      @id @default(cuid())
     createdAt   DateTime    @default(now())
     updatedAt   DateTime    @updatedAt
+    userId      String
     name        String
     youtubeId   String
     description String
@@ -83,6 +84,9 @@ model Play {
     character   Character
     stage       Stage
     difficulty  Int
+    user        User        @relation(fields: [userId], references: [id])
+
+    @@index([userId])
 }
 
 // Necessary for Next auth
@@ -130,6 +134,7 @@ model User {
     role          Role      @default(USER)
     accounts      Account[]
     sessions      Session[]
+    plays         Play[]
 }
 
 model VerificationToken {

@@ -1,72 +1,54 @@
-export enum PlayType {
-  Bait = 'bait',
-  Control = 'control',
-  Corpse = 'corpse',
-  Defense = 'defense',
-  Drill = 'drill',
-  Interception = 'interception',
-  Neutral = 'neutral',
-  Offense = 'offense',
-  Serve = 'serve',
-  Wakeup = 'wakeup'
+export enum Type {
+  'Bait' = 'Bait',
+  'Control' = 'Control',
+  'Corpse' = 'Corpse',
+  'Defense' = 'Defense',
+  'Drill' = 'Drill',
+  'Interception' = 'Interception',
+  'Neutral' = 'Neutral',
+  'Offense' = 'Offense',
+  'Okizeme' = 'Okizeme',
+  'Serve' = 'Serve'
 }
+
 export enum Speed {
-  All = 'all',
-  Low = 'low',
-  Mid = 'mid',
-  High = 'high'
+  'All' = 'All',
+  'High' = 'High',
+  'Low' = 'Low',
+  'Mid' = 'Mid'
 }
+
 export enum Environment {
-  Match = 'match',
-  Training = 'training'
+  'Match' = 'Match',
+  'Training' = 'Training'
 }
 
 export enum Character {
-  All = 'all',
-  Random = 'random',
-  None = 'None',
-  Raptor = 'raptor',
-  Switch = 'switch',
-  Candyman = 'candyman',
-  Sonata = 'sonata',
-  Latch = 'latch',
-  Dice = 'dice',
-  Jet = 'jet',
-  Doombox = 'doombox',
-  Grid = 'grid',
-  Toxic = 'toxic',
-  Nitro = 'nitro',
-  Dust = 'dust'
-}
-
-export enum CharacterPretty {
-  All = 'All',
-  Random = 'Random',
-  None = 'None',
-  Raptor = 'Raptor',
-  Switch = 'Switch',
-  Candyman = 'Candyman',
-  Sonata = 'Sonata',
-  Latch = 'Latch',
-  Dice = 'Dice',
-  Jet = 'Jet',
-  Doombox = 'Doombox',
-  Grid = 'Grid',
-  Toxic = 'Toxic',
-  Nitro = 'Nitro',
-  Dust = 'Dust & Ashes'
+  'All' = 'All',
+  'Candyman' = 'Candyman',
+  'Dice' = 'Dice',
+  'Doombox' = 'Doombox',
+  'Dust' = 'Dust',
+  'Grid' = 'Grid',
+  'Jet' = 'Jet',
+  'Latch' = 'Latch',
+  'Nitro' = 'Nitro',
+  'Raptor' = 'Raptor',
+  'Switch' = 'Switch',
+  'Sonata' = 'Sonata',
+  'Toxic' = 'Toxic'
 }
 
 export enum Stage {
-  All = 'all',
-  Desert = 'desert',
-  District = 'district',
-  Factory = 'factory',
-  Field = 'field',
-  Outskirts = 'outskirts',
-  Pool = 'pool',
-  Room = 'room',
-  Sewers = 'sewers',
-  Streets = 'streets',
-  Subways = 'subways'
+  'All' = 'All',
+  'Desert' = 'Desert',
+  'District' = 'District',
+  'Factory' = 'Factory',
+  'Field' = 'Field',
+  'Outskirts' = 'Outskirts',
+  'Pool' = 'Pool',
+  'Room' = 'Room',
+  'Sewers' = 'Sewers',
+  'Streets' = 'Streets',
+  'Subways' = 'Subways'
 }
