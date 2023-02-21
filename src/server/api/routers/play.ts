@@ -1,8 +1,7 @@
 import { z } from "zod";
-import { adminProtectedProcedure } from './../trpc';
 
 import type { Character, Environment, Speed, Stage, Type } from "@prisma/client";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, moderatorOrAboveProtectedProcedure, publicProcedure } from "../trpc";
 
 export const playRouter = createTRPCRouter({
   getById: publicProcedure.input(
@@ -15,7 +14,7 @@ export const playRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.play.findMany()
   }),
-  create: adminProtectedProcedure.input(
+  create: moderatorOrAboveProtectedProcedure.input(
     z.object({
       name: z.string(),
       youtubeId: z.string(),
