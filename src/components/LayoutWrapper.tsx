@@ -2,6 +2,7 @@ import Link from "next/link"
 import { headerNavLinks } from "../data/headerNavLinks"
 import { siteMetadata } from "../data/siteMetadata"
 import { Footer } from "./Footer"
+import { ThemeSwitch } from "./ThemeSwitch"
 
 interface LayoutWrapperProps {
   children: JSX.Element
@@ -40,8 +41,8 @@ export const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
                 </Link>
               ))}
             </div>
-            {/* <ThemeSwitch />
-            <MobileNav /> */}
+            <ThemeSwitch />
+            {/* <MobileNav /> */}
           </div>
         </header>
         <main className="mb-auto">{children}</main>

@@ -4,7 +4,10 @@ import { type AppType } from "next/app";
 
 import { api } from "../utils/api";
 
+import { ThemeProvider } from "next-themes";
+import Head from "next/head";
 import { LayoutWrapper } from "../components/LayoutWrapper";
+import { siteMetadata } from "../data/siteMetadata";
 import "../styles/globals.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -13,9 +16,14 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <LayoutWrapper>
-        <Component {...pageProps} />
-      </LayoutWrapper>
+      <ThemeProvider attribute="class" defaultTheme={siteMetadata.theme}>
+        <Head>
+          <meta content="width=device-width, initial-scale=1" name="viewport" />
+        </Head>
+        <LayoutWrapper>
+          <Component {...pageProps} />
+        </LayoutWrapper>
+      </ThemeProvider>
     </SessionProvider>
   );
 };
