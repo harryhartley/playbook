@@ -3,6 +3,7 @@ import Link from "next/link"
 import { headerNavLinks } from "../data/headerNavLinks"
 import { siteMetadata } from "../data/siteMetadata"
 import { Footer } from "./Footer"
+import { MobileNav } from "./MobileNav"
 import { ThemeSwitch } from "./ThemeSwitch"
 
 interface LayoutWrapperProps {
@@ -51,7 +52,7 @@ export const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
             >
               {sessionData ? "Sign out" : "Sign in"}
             </button>
-            {/* <MobileNav /> */}
+            <MobileNav />
           </div>
         </header>
         <main className="mb-auto">{children}</main>
