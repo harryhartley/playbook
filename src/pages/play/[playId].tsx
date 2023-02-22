@@ -12,7 +12,6 @@ const Home: NextPage = () => {
   return (
     <>
       <main>
-        <div className="flex justify-center text-2xl m-2">PLAYBOOK</div>
         <div className={`w-full p-2`}>
           <PlayCard {...play.data} />
         </div>

@@ -16,7 +16,7 @@ export const PlayCard = ({id, name, youtubeId, description, type, speed, environ
   return (
     <div className={`w-full mb-4 h-full shadow-lg bg-gray-800 border-gray-800 rounded-xl`}>
         {/* Youtube Embed */}
-        <YoutubeEmbed youtubeId={youtubeId as string} />
+        {youtubeId && <YoutubeEmbed youtubeId={youtubeId} />}
         <div className="p-4">
           <div className="flex-initial">
             {/* Title */}
