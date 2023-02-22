@@ -1,3 +1,4 @@
+import { signIn, signOut, useSession } from "next-auth/react"
 import Link from "next/link"
 import { headerNavLinks } from "../data/headerNavLinks"
 import { siteMetadata } from "../data/siteMetadata"
@@ -9,6 +10,8 @@ interface LayoutWrapperProps {
 }
 
 export const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
+  const { data: sessionData } = useSession();
+
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
       <div className="flex h-screen flex-col justify-between">
@@ -42,6 +45,12 @@ export const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
               ))}
             </div>
             <ThemeSwitch />
+            <button 
+              className="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4" 
+              onClick={sessionData ? () => void signOut() : () => void signIn()}
+            >
+              {sessionData ? "Sign out" : "Sign in"}
+            </button>
             {/* <MobileNav /> */}
           </div>
         </header>

@@ -1,36 +1,20 @@
 import { FireIcon } from "@heroicons/react/24/outline";
 import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
 import Link from "next/link";
 import { Tag } from "../components/Tag";
 import { api } from "../utils/api";
 
 const Home: NextPage = () => {
-  const { data: sessionData } = useSession();
   const { data: plays } = api.play.getAll.useQuery();
   
   return (
     <>
-      <Head>
-          <title>Playbook</title>
-          <meta name="description" content="The Lethal League Blaze playbook" />
-          <link rel="icon" href="/favicon.ico" />
-      </Head>
       <main>
-        <button className="rounded-full bg-red-300 px-10 py-3" onClick={sessionData ? () => void signOut() : () => void signIn()}>
-          {sessionData ? "Sign out" : "Sign in"}
-        </button>
-        <p>{ sessionData?.user.name ? `Signed in as ${sessionData.user.name}` : "Not signed in"}</p>
-
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           <div className="space-y-2 pt-6 pb-8 md:space-y-5">
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-9 sm:leading-10 md:leading-14 tracking-tight text-gray-900 dark:text-gray-100 ">
-              Latest
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold leading-9 sm:leading-10 md:leading-14 tracking-tight text-gray-900 dark:text-gray-100 ">
+              Latest Plays
             </h1>
-            <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-              Description
-            </p>
           </div>
           <ul className="divide-y divide-gray-200 dark:divide-gray-700">
             {!plays && 'Loading plays...'}

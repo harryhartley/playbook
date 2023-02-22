@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { PlayCard } from "../../components/PlayCard";
 import { api } from "../../utils/api";
@@ -12,11 +11,6 @@ const Home: NextPage = () => {
   
   return (
     <>
-      <Head>
-          <title>Playbook</title>
-          <meta name="description" content="The Lethal League Blaze playbook" />
-          <link rel="icon" href="/favicon.ico" />
-      </Head>
       <main>
         <div className="flex justify-center text-2xl m-2">PLAYBOOK</div>
         <div className={`w-full p-2`}>
