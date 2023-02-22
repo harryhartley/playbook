@@ -23,13 +23,9 @@ export const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
                 {/* <div className="mr-3">
                   <Logo />
                 </div> */}
-                {typeof siteMetadata.title === 'string' ? (
-                  <div className="hidden h-6 text-2xl font-semibold sm:block">
-                    {siteMetadata.title}
-                  </div>
-                ) : (
-                  siteMetadata.title
-                )}
+                <div className="hidden h-6 text-2xl font-semibold sm:block">
+                  {siteMetadata.title}
+                </div>
               </div>
             </Link>
           </div>
