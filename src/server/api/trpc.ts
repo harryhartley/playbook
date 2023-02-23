@@ -119,7 +119,8 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * procedure.
  */
 const enforceUserIsModeratorOrAbove = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user || ["MODERATOR", "ADMIN"].includes(ctx.session.user.role)) {
+  console.log(ctx.session?.user.role)
+  if (!ctx.session || !ctx.session.user || !["MODERATOR", "ADMIN"].includes(ctx.session.user.role)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
@@ -135,7 +136,7 @@ const enforceUserIsModeratorOrAbove = t.middleware(({ ctx, next }) => {
  * procedure.
  */
 const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user || ["ADMIN"].includes(ctx.session.user.role)) {
+  if (!ctx.session || !ctx.session.user || !["ADMIN"].includes(ctx.session.user.role)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
