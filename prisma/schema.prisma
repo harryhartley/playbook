@@ -71,22 +71,26 @@ enum Stage {
 }
 
 model Play {
-    id          String      @id @default(cuid())
-    createdAt   DateTime    @default(now())
-    updatedAt   DateTime    @updatedAt
-    userId      String
-    name        String
-    youtubeId   String
-    description String
-    type        Type
-    speed       Speed
-    environment Environment
-    character   Character
-    stage       Stage
-    difficulty  Int
-    user        User        @relation(fields: [userId], references: [id])
+    id           String      @id @default(cuid())
+    createdAt    DateTime    @default(now())
+    updatedAt    DateTime    @updatedAt
+    createdById  String
+    approved     Boolean     @default(false)
+    approvedById String
+    name         String
+    youtubeId    String
+    description  String
+    type         Type
+    speed        Speed
+    environment  Environment
+    character    Character
+    stage        Stage
+    difficulty   Int
+    createdBy    User        @relation(name: "UserPlayCreations", fields: [createdById], references: [id])
+    approvedBy   User?       @relation(name: "UserPlayApprovals", fields: [approvedById], references: [id])
 
-    @@index([userId])
+    @@index([createdById])
+    @@index([approvedById])
 }
 
 // Necessary for Next auth
@@ -134,7 +138,8 @@ model User {
     role          Role      @default(USER)
     accounts      Account[]
     sessions      Session[]
-    plays         Play[]
+    playApprovals Play[]    @relation(name: "UserPlayApprovals")
+    PlayCreations Play[]    @relation(name: "UserPlayCreations")
 }
 
 model VerificationToken {

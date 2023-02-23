@@ -6,7 +6,10 @@ import { Tag } from "./Tag";
 const YoutubeEmbed = ({ youtubeId }: { youtubeId: string }) => (
   <div className="video-responsive aspect-w-16 aspect-h-9">
     <iframe
-      src={`https://www.youtube.com/embed/${youtubeId}?modestbranding=1&autohide=1&showinfo=0&controls=0${youtubeId.includes('?') ? '' : `&playlist=${youtubeId.slice(-11)}&loop=1`}`}
+      src={`https://www.youtube.com/embed/${youtubeId}?modestbranding=1&autohide=1&showinfo=0&controls=0${youtubeId.includes('?') ? 
+        '' : 
+        `&playlist=${youtubeId.slice(-11)}&loop=1`}`
+      }
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
     />
   </div>
@@ -18,12 +21,6 @@ export const Play = ({play}: {play: PlayType}) => {
     <li className="py-12">
       <article>
         <div className="space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0">
-          {/* <dl>
-            <dt className="sr-only">Published on</dt>
-            <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-              <time dateTime={play.createdAt.toLocaleDateString('en-CA')}>{play.createdAt.toLocaleDateString('en-CA')}</time>
-            </dd>
-          </dl> */}
           <div className="space-y-5 xl:col-span-2">
             <div className="space-y-6">
               <div>
@@ -45,11 +42,6 @@ export const Play = ({play}: {play: PlayType}) => {
                 {play.description}
               </div>
             </div>
-            {/* <div className="text-base font-medium leading-6">
-              <Link href={''} className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                Read more
-              </Link>
-            </div> */}
             <div>
               {Array(play.difficulty).fill(0).map((e, i) => (
                 <button key={`fire-${i}`} className="mb-3 text-red-500">
