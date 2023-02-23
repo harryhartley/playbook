@@ -35,7 +35,7 @@ export const Play = ({play}: {play: PlayType}) => {
                 <div className="flex flex-wrap">
                   {[
                     play.character, play.type, play.speed, play.stage, play.environment
-                  ].map((tag, idx) => <Tag key={idx} text={tag} />)}
+                  ].filter(tag => tag !== 'All').map((tag, idx) => <Tag key={idx} text={tag} />)}
                 </div>
               </div>
               <div className="prose max-w-none text-gray-500 dark:text-gray-400">
