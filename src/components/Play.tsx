@@ -3,22 +3,34 @@ import type { Play as PlayType } from '@prisma/client';
 import Link from "next/link";
 import { Tag } from "./Tag";
 
+const YoutubeEmbed = ({ youtubeId }: { youtubeId: string }) => (
+  <div className="video-responsive aspect-w-16 aspect-h-9">
+    <iframe
+      src={`https://www.youtube.com/embed/${youtubeId}?modestbranding=1&autohide=1&showinfo=0&controls=0${youtubeId.includes('?') ? '' : `&playlist=${youtubeId.slice(-11)}&loop=1`}`}
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    />
+  </div>
+);
+
 export const Play = ({play}: {play: PlayType}) => {
   const id = play.id
   return (
     <li className="py-12">
       <article>
-        <div className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
-          <dl>
+        <div className="space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0">
+          {/* <dl>
             <dt className="sr-only">Published on</dt>
             <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
               <time dateTime={play.createdAt.toLocaleDateString('en-CA')}>{play.createdAt.toLocaleDateString('en-CA')}</time>
             </dd>
-          </dl>
-          <div className="space-y-5 xl:col-span-3">
+          </dl> */}
+          <div className="space-y-5 xl:col-span-2">
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold leading-8 tracking-tight">
+                  <p className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                    <time dateTime={play.createdAt.toLocaleDateString('en-CA')}>{play.createdAt.toLocaleDateString('en-CA')}</time>
+                  </p>
                   <Link href={{ pathname: '/play/[id]', query: { id } }} className="text-gray-900 dark:text-gray-100">
                     {play.name}
                   </Link>
@@ -45,6 +57,9 @@ export const Play = ({play}: {play: PlayType}) => {
                 </button>
               ))}
             </div>
+          </div>
+          <div className="xl:col-span-1">
+            <YoutubeEmbed youtubeId={play.youtubeId} />
           </div>
         </div>
       </article>
