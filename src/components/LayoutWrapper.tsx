@@ -35,7 +35,7 @@ export const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
                 <Link
                   key={link.title}
                   href={link.href}
-                  className="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4"
+                  className="p-1 font-medium sm:p-4"
                 >
                   {link.title}
                 </Link>
@@ -43,7 +43,7 @@ export const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
             </div>
             <ThemeSwitch />
             <button 
-              className="p-1 font-medium text-gray-900 dark:text-gray-100 sm:p-4" 
+              className="p-1 font-medium sm:p-4" 
               onClick={sessionData ? () => void signOut() : () => void signIn()}
             >
               {sessionData ? "Sign out" : "Sign in"}

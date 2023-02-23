@@ -142,7 +142,7 @@ const Home: NextPage = () => {
   }
 
   if (session?.user?.role !== 'ADMIN') {
-  return <p>Not authorised</p>;
+    return <p>Not authorised</p>;
   }
 
   return (

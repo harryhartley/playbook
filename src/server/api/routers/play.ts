@@ -11,8 +11,11 @@ export const playRouter = createTRPCRouter({
       return ctx.prisma.play.findUnique({ where: { id: input }})
     }
   ),
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.play.findMany()
+  getAllApproved: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.play.findMany({ where: { approved: true }})
+  }),
+  getAllUnapproved: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.play.findMany({ where: { approved: false }})
   }),
   create: moderatorOrAboveProtectedProcedure.input(
     z.object({
