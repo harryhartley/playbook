@@ -40,12 +40,13 @@ export const Play = ({ play, youtubeEmbed }: PlayProps) => {
 
   return (
     <>
-      <title>Hello Discord</title>
-      <meta content='Embed Title' property='og:title' />
-      <meta content='Site Description' property='og:description' />
-      <meta content='https://embed.com/this-is-the-site-url' property='og:url' />
-      <meta content='https://embed.com/embedimage.png' property='og:image' />
-      <meta content='#43B581' data-react-helmet='true' name='theme-color' />
+      <title>LLB Playbook</title>
+      <meta content='Advanced Doombox Spike Setup by CookingTiger' property='og:title' />
+      <meta content='An advanced spike setup with Doombox, utilising air turns' property='og:description' />
+      <meta content='https://playbook-sand.vercel.app/play/cleihuzk30005cxcizs743oim' property='og:url' />
+      <meta content='https://img.youtube.com/vi/lalCEHmS74Y/hqdefault.jpg' property='og:image' />
+      <meta content='#87CEEB' data-react-helmet='true' name='theme-color' />
+      <meta name='twitter:card' content='summary_large_image' />
 
       <li className={`py-6 ${hidden}`}>
         <article>
