@@ -40,9 +40,14 @@ export const Header = () => {
           </>
         )}
         {sessionData && isUserModeratorOrAbove(sessionData.user.role) && (
-          <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/dashboard' }}>
-            Dashboard
-          </Link>
+          <>
+            <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/submit' }}>
+              Submit
+            </Link>
+            <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/dashboard' }}>
+              Dashboard
+            </Link>
+          </>
         )}
         <button className='p-1 font-medium sm:p-4' onClick={sessionData ? () => void signOut() : () => void signIn()}>
           {sessionData ? 'Sign out' : 'Sign in'}

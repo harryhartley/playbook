@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import type { Play } from '@prisma/client'
-import { type NextPage } from 'next'
 import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 import type { FieldErrors, SubmitHandler, UseFormRegister } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { Character, Environment, Speed, Stage, Type } from '../lib/enums'
@@ -137,14 +136,32 @@ const renderSelect = (register: UseFormRegister<PlayForm>, label: keyof PlayForm
 
 type PlayForm = Omit<Play, 'id' | 'createdAt' | 'updatedAt'>
 
-const Home: NextPage = () => {
+interface PlayFormProps {
+  playId?: string
+}
+
+export const PlayForm = ({ playId }: PlayFormProps) => {
   const { data: session } = useSession()
   //   const router = useRouter()
   const {
     register: r,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<PlayForm>()
+
+  const { data: play } = playId ? api.play.getById.useQuery(playId) : { data: {} as Play }
+  useEffect(() => {
+    setValue('name', play?.name ?? '')
+    setValue('youtubeId', play?.youtubeId ?? '')
+    setValue('description', play?.description ?? '')
+    setValue('type', play?.type ?? 'Bait')
+    setValue('speed', play?.speed ?? 'All')
+    setValue('environment', play?.environment ?? 'Match')
+    setValue('character', play?.character ?? 'All')
+    setValue('stage', play?.stage ?? 'All')
+    setValue('difficulty', play?.difficulty ?? 1)
+  }, [play, setValue])
 
   const createPlay = api.play.create.useMutation()
   const onSubmit: SubmitHandler<PlayForm> = (data) => {
@@ -156,18 +173,12 @@ const Home: NextPage = () => {
         approved: isUserModeratorOrAbove(session.user.role),
       })
     }
-    // if (createPlay.isSuccess) {
-    //   () => router.push('/')
-    // }
-  }
-
-  if (session?.user?.role !== 'ADMIN') {
-    return <p>Not authorised</p>
   }
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={() => handleSubmit(onSubmit)}>
+        {/* <form onSubmit={() => handleSubmit(onSubmit)}> */}
         {renderInput(r, errors, 'name', 'Play Title')}
         {renderYoutubeInput(r, errors, 'youtubeId', 'Youtube Embed URL')}
         {renderTextArea(r, errors, 'description', 'Play Description')}
@@ -187,5 +198,3 @@ const Home: NextPage = () => {
     </>
   )
 }
-
-export default Home
