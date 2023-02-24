@@ -2,6 +2,7 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { headerNavLinks } from '../data/headerNavLinks'
 import { siteMetadata } from '../data/siteMetadata'
+import { isUserModeratorOrAbove } from '../utils/auth'
 import { MobileNav } from './MobileNav'
 import { ThemeSwitch } from './ThemeSwitch'
 
@@ -42,7 +43,7 @@ export const Header = () => {
         <Link className="p-1 font-medium sm:p-4" href={{ pathname: '/play/[userId]', query: { userId } }}>
           Profile
         </Link></> }
-        { sessionData && ["MODERATOR", "ADMIN"].includes(sessionData.user.role) && <Link className="p-1 font-medium sm:p-4" href={{ pathname: '/dashboard' }}>
+        { sessionData && isUserModeratorOrAbove(sessionData.user.role) && <Link className="p-1 font-medium sm:p-4" href={{ pathname: '/dashboard' }}>
           Dashboard
         </Link> }
         <button 

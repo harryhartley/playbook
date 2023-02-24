@@ -6,6 +6,7 @@ import type { FieldErrors, SubmitHandler, UseFormRegister } from "react-hook-for
 import { useForm } from "react-hook-form";
 import { Character, Environment, Speed, Stage, Type } from '../lib/enums';
 import { api } from "../utils/api";
+import { isUserModeratorOrAbove } from "../utils/auth";
 import { validationValues } from '../validation/play';
 
 const renderInput = (register: UseFormRegister<PlayForm>, errors: FieldErrors, label: keyof PlayForm, placeholder: string) => {
@@ -134,7 +135,7 @@ const Home: NextPage = () => {
   const createPlay = api.play.create.useMutation()
   const onSubmit: SubmitHandler<PlayForm> = data => {
   if (!createPlay.isLoading && session) {
-    createPlay.mutate({...data, difficulty: Number(data.difficulty), userId: session.user.id})
+    createPlay.mutate({...data, difficulty: Number(data.difficulty), userId: session.user.id, approved: isUserModeratorOrAbove(session.user.role)})
   }
   // if (createPlay.isSuccess) {
   //   () => router.push('/')

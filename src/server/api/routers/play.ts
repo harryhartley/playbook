@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { protectedProcedure } from './../trpc';
 
 import type { Character, Environment, Speed, Stage, Type } from "@prisma/client";
 import { createTRPCRouter, moderatorOrAboveProtectedProcedure, publicProcedure } from "../trpc";
@@ -21,10 +22,24 @@ export const playRouter = createTRPCRouter({
   getAllApproved: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.play.findMany({ orderBy: [{ createdAt: 'desc' }], where: { approved: true }})
   }),
-  getAllUnapproved: publicProcedure.query(({ ctx }) => {
+  getAllUnapproved: moderatorOrAboveProtectedProcedure.query(({ ctx }) => {
     return ctx.prisma.play.findMany({ orderBy: [{ createdAt: 'desc' }], where: { approved: false }})
   }),
-  create: moderatorOrAboveProtectedProcedure.input(
+  approveById: moderatorOrAboveProtectedProcedure.input(
+    z.string().cuid()
+  )
+  .mutation(({ ctx, input }) => {
+      return ctx.prisma.play.update({ where: { id: input }, data: { approved: true }})
+    }
+  ),
+  unapproveById: moderatorOrAboveProtectedProcedure.input(
+    z.string().cuid()
+  )
+  .mutation(({ ctx, input }) => {
+      return ctx.prisma.play.update({ where: { id: input }, data: { approved: false }})
+    }
+  ),
+  create: protectedProcedure.input(
     z.object({
       name: z.string(),
       youtubeId: z.string(),
@@ -35,7 +50,8 @@ export const playRouter = createTRPCRouter({
       character: z.string(),
       stage: z.string(),
       difficulty: z.number().int().min(1).max(5),
-      userId: z.string().cuid()
+      userId: z.string().cuid(),
+      approved: z.boolean()
     })
   )
   .mutation(({ ctx, input }) => {
@@ -54,10 +70,18 @@ export const playRouter = createTRPCRouter({
             environment: input.environment as Environment,
             character: input.character as Character,
             stage: input.stage as Stage,
-            difficulty: input.difficulty
+            difficulty: input.difficulty,
+            approved: input.approved
           }
         }
       }
     })
-  })
+  }),
+  deleteById: moderatorOrAboveProtectedProcedure.input(
+    z.string().cuid()
+  )
+  .mutation(({ ctx, input }) => {
+      return ctx.prisma.play.delete({ where: { id: input }})
+    }
+  ),
 });
