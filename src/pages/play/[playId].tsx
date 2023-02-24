@@ -15,9 +15,9 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>LLB Playbook</title>
-        <meta content='Advanced Doombox Spike Setup by CookingTiger' property='og:title' />
-        <meta content='An advanced spike setup with Doombox, utilising air turns' property='og:description' />
-        <meta content='https://playbook-sand.vercel.app/play/cleihuzk30005cxcizs743oim' property='og:url' />
+        <meta content={play.name} property='og:title' />
+        <meta content={play.description} property='og:description' />
+        <meta content={`https://playbook-sand.vercel.app/play/${play.id}`} property='og:url' />
         <meta content='https://img.youtube.com/vi/lalCEHmS74Y/hqdefault.jpg' property='og:image' />
         <meta content='#87CEEB' data-react-helmet='true' name='theme-color' />
         <meta name='twitter:card' content='summary_large_image' />

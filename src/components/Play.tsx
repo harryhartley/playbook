@@ -10,8 +10,12 @@ import { Tag } from './Tag'
 const YoutubeEmbed = ({ youtubeId }: { youtubeId: string }) => (
   <div className='video-responsive aspect-w-16 aspect-h-9'>
     <iframe
-      src={`https://www.youtube.com/embed/${youtubeId}?modestbranding=1&autohide=1&showinfo=0&controls=0${
-        youtubeId.includes('?') ? '' : `&playlist=${youtubeId.slice(-11)}&loop=1`
+      src={`${
+        youtubeId.includes('?')
+          ? youtubeId
+          : `${
+              youtubeId.split('?clip')[0] ?? ''
+            }?modestbranding=1&autohide=1&showinfo=0&controls=0&playlist=${youtubeId.slice(-11)}&loop=1`
       }`}
       allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
     />

@@ -8,8 +8,7 @@ export const validationValues = {
   },
   youtubeId: {
     required: true,
-    maxLength: 105,
-    pattern: /^https:\/\/www.youtube.com\/embed\/[a-z0-9_-]{11}(\?clip=[a-z0-9_-]{36}&amp;clipt=[a-z0-9_-]{11})?$/gi,
+    pattern: /^https:\/\/www.youtube.com\/embed\/[a-z0-9_-]{11}(\?clip=[a-z0-9_-]{36}&amp;clipt=[a-z0-9_-]+)?$/gi,
   },
   description: {
     required: true,
@@ -25,7 +24,6 @@ const validateName = (name: string | undefined) => {
 
 const validateYoutubeId = (youtubeId: string | undefined) => {
   if (!youtubeId) return false
-  if (youtubeId.length > validationValues.youtubeId.maxLength) return false
   if (!youtubeId.match(validationValues.youtubeId.pattern)) return false
   return true
 }

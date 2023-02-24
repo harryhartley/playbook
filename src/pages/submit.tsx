@@ -74,11 +74,6 @@ const renderYoutubeInput = (
             {placeholder} does not match id format
           </span>
         )}
-        {errors[label] && errors[label]?.type === 'maxLength' && (
-          <span role='alert' className='text-xs italic text-red-600'>
-            Value exceeds maximum length of {validationValues.youtubeId.maxLength}
-          </span>
-        )}
       </div>
     </div>
   )
