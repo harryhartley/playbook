@@ -7,6 +7,7 @@ import { ThemeSwitch } from './ThemeSwitch'
 
 export const Header = () => {
   const { data: sessionData } = useSession();
+  const userId = sessionData?.user.id
   
   return (
     <header className="flex items-center justify-between py-10">
@@ -35,6 +36,15 @@ export const Header = () => {
           ))}
         </div>
         <ThemeSwitch />
+        { sessionData && <><div className="p-1 font-medium sm:p-4">
+          Signed in as {sessionData?.user.name}
+        </div>
+        <Link className="p-1 font-medium sm:p-4" href={{ pathname: '/play/[userId]', query: { userId } }}>
+          Profile
+        </Link></> }
+        { sessionData && ["MODERATOR", "ADMIN"].includes(sessionData.user.role) && <Link className="p-1 font-medium sm:p-4" href={{ pathname: '/dashboard' }}>
+          Dashboard
+        </Link> }
         <button 
           className="p-1 font-medium sm:p-4" 
           onClick={sessionData ? () => void signOut() : () => void signIn()}
