@@ -8,19 +8,19 @@ export enum Type {
   'Neutral' = 'Neutral',
   'Offense' = 'Offense',
   'Okizeme' = 'Okizeme',
-  'Serve' = 'Serve'
+  'Serve' = 'Serve',
 }
 
 export enum Speed {
   'All' = 'All',
   'High' = 'High',
   'Low' = 'Low',
-  'Mid' = 'Mid'
+  'Mid' = 'Mid',
 }
 
 export enum Environment {
   'Match' = 'Match',
-  'Training' = 'Training'
+  'Training' = 'Training',
 }
 
 export enum Character {
@@ -36,7 +36,7 @@ export enum Character {
   'Raptor' = 'Raptor',
   'Switch' = 'Switch',
   'Sonata' = 'Sonata',
-  'Toxic' = 'Toxic'
+  'Toxic' = 'Toxic',
 }
 
 export enum Stage {
@@ -50,5 +50,5 @@ export enum Stage {
   'Room' = 'Room',
   'Sewers' = 'Sewers',
   'Streets' = 'Streets',
-  'Subways' = 'Subways'
+  'Subways' = 'Subways',
 }

@@ -15,15 +15,15 @@
  * These allow you to access things when processing a request, like the
  * database, the session, etc.
  */
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type Session } from "next-auth";
+import { type CreateNextContextOptions } from '@trpc/server/adapters/next'
+import { type Session } from 'next-auth'
 
-import { getServerAuthSession } from "../auth";
-import { prisma } from "../db";
+import { getServerAuthSession } from '../auth'
+import { prisma } from '../db'
 
 type CreateContextOptions = {
-  session: Session | null;
-};
+  session: Session | null
+}
 
 /**
  * This helper generates the "internals" for a tRPC context. If you need to use
@@ -39,8 +39,8 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
     prisma,
-  };
-};
+  }
+}
 
 /**
  * This is the actual context you will use in your router. It will be used to
@@ -49,15 +49,15 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
-  const { req, res } = opts;
+  const { req, res } = opts
 
   // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res });
+  const session = await getServerAuthSession({ req, res })
 
   return createInnerTRPCContext({
     session,
-  });
-};
+  })
+}
 
 /**
  * 2. INITIALIZATION
@@ -65,15 +65,15 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  * This is where the tRPC API is initialized, connecting the context and
  * transformer.
  */
-import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
+import { initTRPC, TRPCError } from '@trpc/server'
+import superjson from 'superjson'
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
   transformer: superjson,
   errorFormatter({ shape }) {
-    return shape;
+    return shape
   },
-});
+})
 
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
@@ -87,7 +87,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  *
  * @see https://trpc.io/docs/router
  */
-export const createTRPCRouter = t.router;
+export const createTRPCRouter = t.router
 
 /**
  * Public (unauthenticated) procedure
@@ -96,7 +96,7 @@ export const createTRPCRouter = t.router;
  * tRPC API. It does not guarantee that a user querying is authorized, but you
  * can still access user session data if they are logged in.
  */
-export const publicProcedure = t.procedure;
+export const publicProcedure = t.procedure
 
 /**
  * Reusable middleware that enforces users are logged in before running the
@@ -104,15 +104,15 @@ export const publicProcedure = t.procedure;
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   if (!ctx.session || !ctx.session.user) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
       session: { ...ctx.session, user: ctx.session.user },
     },
-  });
-});
+  })
+})
 
 /**
  * Reusable middleware that enforces users are logged and admin in before running the
@@ -120,33 +120,33 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  */
 const enforceUserIsModeratorOrAbove = t.middleware(({ ctx, next }) => {
   console.log(ctx.session?.user.role)
-  if (!ctx.session || !ctx.session.user || !["MODERATOR", "ADMIN"].includes(ctx.session.user.role)) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+  if (!ctx.session || !ctx.session.user || !['MODERATOR', 'ADMIN'].includes(ctx.session.user.role)) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
       session: { ...ctx.session, user: ctx.session.user },
     },
-  });
-});
+  })
+})
 
 /**
  * Reusable middleware that enforces users are logged and admin in before running the
  * procedure.
  */
 const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user || !["ADMIN"].includes(ctx.session.user.role)) {
-    throw new TRPCError({ code: "UNAUTHORIZED" });
+  if (!ctx.session || !ctx.session.user || !['ADMIN'].includes(ctx.session.user.role)) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
       session: { ...ctx.session, user: ctx.session.user },
     },
-  });
-});
+  })
+})
 
-export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export const protectedProcedure = t.procedure.use(enforceUserIsAuthed)
 export const moderatorOrAboveProtectedProcedure = t.procedure.use(enforceUserIsModeratorOrAbove)
-export const adminProtectedProcedure = t.procedure.use(enforceUserIsAdmin);
+export const adminProtectedProcedure = t.procedure.use(enforceUserIsAdmin)

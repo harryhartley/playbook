@@ -1,11 +1,9 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import type { GetServerSidePropsContext } from "next";
-import {
-  getServerSession, type DefaultSession, type NextAuthOptions
-} from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
-import { env } from "../env.mjs";
-import { prisma } from "./db";
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import type { GetServerSidePropsContext } from 'next'
+import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
+import DiscordProvider from 'next-auth/providers/discord'
+import { env } from '../env.mjs'
+import { prisma } from './db'
 
 /**
  * Module augmentation for `next-auth` types.
@@ -14,13 +12,13 @@ import { prisma } from "./db";
  *
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  **/
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
-      id: string;
-      role: string;
+      id: string
+      role: string
       // ...other properties
-    } & DefaultSession["user"];
+    } & DefaultSession['user']
   }
 
   interface User {
@@ -39,11 +37,11 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     session({ session, user }) {
       if (session.user) {
-        session.user.id = user.id;
-        session.user.role = user.role;
+        session.user.id = user.id
+        session.user.role = user.role
         // session.user.role = user.role; <-- put other properties on the session here
       }
-      return session;
+      return session
     },
   },
   adapter: PrismaAdapter(prisma),
@@ -62,7 +60,7 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      **/
   ],
-};
+}
 
 /**
  * Wrapper for `getServerSession` so that you don't need to import the
@@ -71,8 +69,8 @@ export const authOptions: NextAuthOptions = {
  * @see https://next-auth.js.org/configuration/nextjs
  **/
 export const getServerAuthSession = (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
+  req: GetServerSidePropsContext['req']
+  res: GetServerSidePropsContext['res']
 }) => {
-  return getServerSession(ctx.req, ctx.res, authOptions);
-};
+  return getServerSession(ctx.req, ctx.res, authOptions)
+}
