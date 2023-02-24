@@ -15,6 +15,10 @@ const YoutubeEmbed = ({ youtubeId }: { youtubeId: string }) => (
   </div>
 );
 
+const formatDate = (date: Date) => {
+  return date.toISOString().split('T')[0]
+}
+
 interface PlayProps {
   play: PlayType
   youtubeEmbed: 'inline' | 'above' | 'none'
@@ -31,7 +35,7 @@ export const Play = ({play, youtubeEmbed}: PlayProps) => {
               <div>
                 <h2 className="text-2xl font-bold leading-8 tracking-tight">
                   <p className="text-base font-medium leading-6 text-gray-500">
-                    <time dateTime={play.createdAt.toLocaleDateString('en-CA')}>{play.createdAt.toLocaleDateString('en-CA')}</time>
+                    <time dateTime={formatDate(play.createdAt)}>{formatDate(play.createdAt)}</time>
                   </p>
                   <Link href={{ pathname: '/play/[id]', query: { id } }}>
                     {play.name}
