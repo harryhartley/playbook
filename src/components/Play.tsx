@@ -1,6 +1,7 @@
 import { FireIcon } from '@heroicons/react/24/outline'
 import type { Play as PlayType } from '@prisma/client'
 import { useSession } from 'next-auth/react'
+import Head from 'next/head'
 import Link from 'next/link'
 import { useState } from 'react'
 import { api } from '../utils/api'
@@ -40,13 +41,15 @@ export const Play = ({ play, youtubeEmbed }: PlayProps) => {
 
   return (
     <>
-      <title>LLB Playbook</title>
-      <meta content='Advanced Doombox Spike Setup by CookingTiger' property='og:title' />
-      <meta content='An advanced spike setup with Doombox, utilising air turns' property='og:description' />
-      <meta content='https://playbook-sand.vercel.app/play/cleihuzk30005cxcizs743oim' property='og:url' />
-      <meta content='https://img.youtube.com/vi/lalCEHmS74Y/hqdefault.jpg' property='og:image' />
-      <meta content='#87CEEB' data-react-helmet='true' name='theme-color' />
-      <meta name='twitter:card' content='summary_large_image' />
+      <Head>
+        <title>LLB Playbook</title>
+        <meta content='Advanced Doombox Spike Setup by CookingTiger' property='og:title' />
+        <meta content='An advanced spike setup with Doombox, utilising air turns' property='og:description' />
+        <meta content='https://playbook-sand.vercel.app/play/cleihuzk30005cxcizs743oim' property='og:url' />
+        <meta content='https://img.youtube.com/vi/lalCEHmS74Y/hqdefault.jpg' property='og:image' />
+        <meta content='#87CEEB' data-react-helmet='true' name='theme-color' />
+        <meta name='twitter:card' content='summary_large_image' />
+      </Head>
 
       <li className={`py-6 ${hidden}`}>
         <article>
