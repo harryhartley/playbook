@@ -34,7 +34,7 @@ export const Header = () => {
         {sessionData && (
           <>
             <div className='p-1 font-medium sm:p-4'>Signed in as {sessionData?.user.name}</div>
-            <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/play/[userId]', query: { userId } }}>
+            <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/user/[userId]', query: { userId } }}>
               Profile
             </Link>
           </>
