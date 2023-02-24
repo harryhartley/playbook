@@ -54,24 +54,24 @@ export const Play = ({ play, youtubeEmbed }: PlayProps) => {
                     <p className='text-sm text-gray-400'>by {user?.name}</p>
                   </div>
                 </h2>
-                <div className='flex flex-wrap'>
+                <div className='flex flex-wrap gap-2'>
                   {[play.character, play.type, play.speed, play.stage, play.environment]
                     .filter((tag) => tag !== 'All')
                     .map((tag, idx) => (
                       <Tag key={idx} text={tag} />
                     ))}
+                  <div>
+                    {Array(play.difficulty)
+                      .fill(0)
+                      .map((e, i) => (
+                        <button key={`fire-${i}`} className='text-red-400'>
+                          <FireIcon className='h-4 w-4' />
+                        </button>
+                      ))}
+                  </div>
                 </div>
               </div>
               <div className='prose max-w-none text-gray-500 dark:text-gray-400'>{play.description}</div>
-            </div>
-            <div>
-              {Array(play.difficulty)
-                .fill(0)
-                .map((e, i) => (
-                  <button key={`fire-${i}`} className='mb-3 text-red-500'>
-                    <FireIcon className='h-8 w-8' />
-                  </button>
-                ))}
             </div>
           </div>
           {youtubeEmbed === 'inline' && (
