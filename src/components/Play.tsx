@@ -28,7 +28,7 @@ interface PlayProps {
 }
 
 export const Play = ({ play, youtubeEmbed }: PlayProps) => {
-  const [hidden, setHidden] = useState('')
+  const [hidden, setHidden] = useState('block')
   const id = play.id
 
   const { data: user } = api.user.getById.useQuery(play.userId)
@@ -41,6 +41,11 @@ export const Play = ({ play, youtubeEmbed }: PlayProps) => {
   return (
     <li className={`py-6 ${hidden}`}>
       <article>
+        {youtubeEmbed === 'above' && (
+          <div className='xl:col-span-1'>
+            <YoutubeEmbed youtubeId={play.youtubeId} />
+          </div>
+        )}
         <div className='space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0'>
           <div className='space-y-2 xl:col-span-2'>
             <div className='space-y-2'>
