@@ -15,7 +15,12 @@ const YoutubeEmbed = ({ youtubeId }: { youtubeId: string }) => (
   </div>
 );
 
-export const Play = ({play}: {play: PlayType}) => {
+interface PlayProps {
+  play: PlayType
+  youtubeEmbed: 'inline' | 'above' | 'none'
+}
+
+export const Play = ({play, youtubeEmbed}: PlayProps) => {
   const id = play.id
   return (
     <li className="py-12">
@@ -50,9 +55,9 @@ export const Play = ({play}: {play: PlayType}) => {
               ))}
             </div>
           </div>
-          <div className="xl:col-span-1">
+          { youtubeEmbed === 'inline' ?? <div className="xl:col-span-1">
             <YoutubeEmbed youtubeId={play.youtubeId} />
-          </div>
+          </div> }
         </div>
       </article>
     </li>

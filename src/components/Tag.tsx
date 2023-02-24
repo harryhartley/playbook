@@ -1,4 +1,4 @@
-type TagProps = {
+interface TagProps {
   text: string
 }
 
