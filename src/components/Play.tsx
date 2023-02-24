@@ -39,101 +39,110 @@ export const Play = ({ play, youtubeEmbed }: PlayProps) => {
   const deletePlay = api.play.deleteById.useMutation()
 
   return (
-    <li className={`py-6 ${hidden}`}>
-      <article>
-        {youtubeEmbed === 'above' && (
-          <div className='xl:col-span-1'>
-            <YoutubeEmbed youtubeId={play.youtubeId} />
-          </div>
-        )}
-        <div className='space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0'>
-          <div className='space-y-2 xl:col-span-2'>
-            <div className='space-y-2'>
-              <div>
-                <h2 className='text-2xl font-bold leading-8 tracking-tight'>
-                  <p className='text-base font-medium leading-6 text-gray-500'>
-                    <time dateTime={formatDate(play.createdAt)}>{formatDate(play.createdAt)}</time>
-                  </p>
-                  <div className='flex items-center gap-4'>
-                    <Link href={{ pathname: '/play/[id]', query: { id } }}>{play.name}</Link>
-                    <p className='text-sm text-gray-400'>by {user?.name}</p>
-                  </div>
-                </h2>
-                <div className='flex flex-wrap gap-2'>
-                  {[play.character, play.type, play.speed, play.stage, play.environment]
-                    .filter((tag) => tag !== 'All')
-                    .map((tag, idx) => (
-                      <Tag key={idx} text={tag} />
-                    ))}
-                  <div>
-                    {Array(play.difficulty)
-                      .fill(0)
-                      .map((e, i) => (
-                        <button key={`fire-${i}`} className='text-red-400'>
-                          <FireIcon className='h-4 w-4' />
-                        </button>
-                      ))}
-                  </div>
-                </div>
-              </div>
-              <div className='prose max-w-none text-gray-500'>{play.description}</div>
-            </div>
-            {/* move buttons to new component and refactor - loads of duplicated code here */}
-            {session && isUserModeratorOrAbove(session?.user.role) && (
-              <>
-                <button className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-200 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white dark:focus:ring-cyan-800'>
-                  <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
-                    Edit
-                  </span>
-                </button>
-                {play.approved ? (
-                  <button
-                    onClick={() => {
-                      unapprovePlay.mutate(id)
-                      setHidden('hidden')
-                    }}
-                    className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-pink-200 group-hover:from-pink-500 group-hover:to-orange-400 dark:text-white dark:focus:ring-pink-800'
-                  >
-                    <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
-                      Unapprove
-                    </span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => {
-                      approvePlay.mutate(id)
-                      setHidden('hidden')
-                    }}
-                    className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-teal-300 to-lime-300 p-0.5 text-sm font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-lime-200 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 dark:focus:ring-lime-800'
-                  >
-                    <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
-                      Approve
-                    </span>
-                  </button>
-                )}
-                {!play.approved && (
-                  <button
-                    onClick={() => {
-                      deletePlay.mutate(id)
-                      setHidden('hidden')
-                    }}
-                    className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-pink-200 group-hover:from-pink-500 group-hover:to-orange-400 dark:text-white dark:focus:ring-pink-800'
-                  >
-                    <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
-                      Delete
-                    </span>
-                  </button>
-                )}
-              </>
-            )}
-          </div>
-          {youtubeEmbed === 'inline' && (
+    <>
+      <title>Hello Discord</title>
+      <meta content='Embed Title' property='og:title' />
+      <meta content='Site Description' property='og:description' />
+      <meta content='https://embed.com/this-is-the-site-url' property='og:url' />
+      <meta content='https://embed.com/embedimage.png' property='og:image' />
+      <meta content='#43B581' data-react-helmet='true' name='theme-color' />
+
+      <li className={`py-6 ${hidden}`}>
+        <article>
+          {youtubeEmbed === 'above' && (
             <div className='xl:col-span-1'>
               <YoutubeEmbed youtubeId={play.youtubeId} />
             </div>
           )}
-        </div>
-      </article>
-    </li>
+          <div className='space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0'>
+            <div className='space-y-2 xl:col-span-2'>
+              <div className='space-y-2'>
+                <div>
+                  <h2 className='text-2xl font-bold leading-8 tracking-tight'>
+                    <p className='text-base font-medium leading-6 text-gray-500'>
+                      <time dateTime={formatDate(play.createdAt)}>{formatDate(play.createdAt)}</time>
+                    </p>
+                    <div className='flex items-center gap-4'>
+                      <Link href={{ pathname: '/play/[id]', query: { id } }}>{play.name}</Link>
+                      <p className='text-sm text-gray-400'>by {user?.name}</p>
+                    </div>
+                  </h2>
+                  <div className='flex flex-wrap gap-2'>
+                    {[play.character, play.type, play.speed, play.stage, play.environment]
+                      .filter((tag) => tag !== 'All')
+                      .map((tag, idx) => (
+                        <Tag key={idx} text={tag} />
+                      ))}
+                    <div>
+                      {Array(play.difficulty)
+                        .fill(0)
+                        .map((e, i) => (
+                          <button key={`fire-${i}`} className='text-red-400'>
+                            <FireIcon className='h-4 w-4' />
+                          </button>
+                        ))}
+                    </div>
+                  </div>
+                </div>
+                <div className='prose max-w-none text-gray-500'>{play.description}</div>
+              </div>
+              {/* move buttons to new component and refactor - loads of duplicated code here */}
+              {session && isUserModeratorOrAbove(session?.user.role) && (
+                <>
+                  <button className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-200 group-hover:from-cyan-500 group-hover:to-blue-500 dark:text-white dark:focus:ring-cyan-800'>
+                    <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
+                      Edit
+                    </span>
+                  </button>
+                  {play.approved ? (
+                    <button
+                      onClick={() => {
+                        unapprovePlay.mutate(id)
+                        setHidden('hidden')
+                      }}
+                      className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-pink-200 group-hover:from-pink-500 group-hover:to-orange-400 dark:text-white dark:focus:ring-pink-800'
+                    >
+                      <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
+                        Unapprove
+                      </span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        approvePlay.mutate(id)
+                        setHidden('hidden')
+                      }}
+                      className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-teal-300 to-lime-300 p-0.5 text-sm font-medium text-gray-900 focus:outline-none focus:ring-4 focus:ring-lime-200 group-hover:from-teal-300 group-hover:to-lime-300 dark:text-white dark:hover:text-gray-900 dark:focus:ring-lime-800'
+                    >
+                      <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
+                        Approve
+                      </span>
+                    </button>
+                  )}
+                  {!play.approved && (
+                    <button
+                      onClick={() => {
+                        deletePlay.mutate(id)
+                        setHidden('hidden')
+                      }}
+                      className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-pink-200 group-hover:from-pink-500 group-hover:to-orange-400 dark:text-white dark:focus:ring-pink-800'
+                    >
+                      <span className='relative rounded-md bg-white px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0 dark:bg-gray-900'>
+                        Delete
+                      </span>
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
+            {youtubeEmbed === 'inline' && (
+              <div className='xl:col-span-1'>
+                <YoutubeEmbed youtubeId={play.youtubeId} />
+              </div>
+            )}
+          </div>
+        </article>
+      </li>
+    </>
   )
 }
