@@ -59,7 +59,7 @@ export const Play = ({play, youtubeEmbed}: PlayProps) => {
               ))}
             </div>
           </div>
-          { youtubeEmbed === 'inline' ?? <div className="xl:col-span-1">
+          { youtubeEmbed === 'inline' && <div className="xl:col-span-1">
             <YoutubeEmbed youtubeId={play.youtubeId} />
           </div> }
         </div>
