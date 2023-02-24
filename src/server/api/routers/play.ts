@@ -62,6 +62,41 @@ export const playRouter = createTRPCRouter({
         },
       })
     }),
+  updateById: moderatorOrAboveProtectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+        data: z.object({
+          name: z.string(),
+          youtubeId: z.string(),
+          description: z.string(),
+          type: z.string(),
+          speed: z.string(),
+          environment: z.string(),
+          character: z.string(),
+          stage: z.string(),
+          difficulty: z.number().int().min(1).max(5),
+        }),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.play.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.data.name,
+          youtubeId: input.data.youtubeId,
+          description: input.data.description,
+          type: input.data.type as Type,
+          speed: input.data.speed as Speed,
+          environment: input.data.environment as Environment,
+          character: input.data.character as Character,
+          stage: input.data.stage as Stage,
+          difficulty: input.data.difficulty,
+        },
+      })
+    }),
   deleteById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
     return ctx.prisma.play.delete({ where: { id: input } })
   }),

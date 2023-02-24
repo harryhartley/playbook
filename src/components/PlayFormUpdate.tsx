@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import type { Play } from '@prisma/client'
 import { useSession } from 'next-auth/react'
+import { useEffect } from 'react'
 import type { FieldErrors, SubmitHandler, UseFormRegister } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { Character, Environment, Speed, Stage, Type } from '../lib/enums'
@@ -149,20 +150,19 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
     setValue,
   } = useForm<PlayForm>()
 
-  api.play.getById.useQuery(playId ?? '', {
-    enabled: false,
-    onSuccess(data) {
-      data && setValue('name', data.name)
-      data && setValue('youtubeId', data.youtubeId)
-      data && setValue('description', data.description)
-      data && setValue('type', data.type)
-      data && setValue('speed', data.speed)
-      data && setValue('environment', data.environment)
-      data && setValue('character', data.character)
-      data && setValue('stage', data.stage)
-      data && setValue('difficulty', data.difficulty)
-    },
-  })
+  const { data: play } = playId ? api.play.getById.useQuery(playId) : { data: {} as Play }
+  useEffect(() => {
+    setValue('name', play?.name ?? '')
+    setValue('youtubeId', play?.youtubeId ?? '')
+    setValue('description', play?.description ?? '')
+    setValue('type', play?.type ?? 'Bait')
+    setValue('speed', play?.speed ?? 'All')
+    setValue('environment', play?.environment ?? 'Match')
+    setValue('character', play?.character ?? 'All')
+    setValue('stage', play?.stage ?? 'All')
+    setValue('difficulty', play?.difficulty ?? 1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [play])
 
   const createPlay = api.play.create.useMutation()
   const onSubmitCreate: SubmitHandler<PlayForm> = (data) => {
