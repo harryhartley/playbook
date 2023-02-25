@@ -7,6 +7,7 @@ import { Character, Environment, Speed, Stage, Type } from '../lib/enums'
 import { api } from '../utils/api'
 import { isUserModeratorOrAbove } from '../utils/auth'
 import { validationValues } from '../validation/play'
+import { Play as PlayComponent } from './Play'
 
 const renderInput = (
   register: UseFormRegister<PlayForm>,
@@ -147,10 +148,11 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm<PlayForm>()
 
-  api.play.getById.useQuery(playId ?? '', {
-    enabled: false,
+  api.play.getById.useQuery(playId as string, {
+    enabled: !!playId,
     onSuccess(data) {
       data && setValue('name', data.name)
       data && setValue('youtubeId', data.youtubeId)
@@ -185,7 +187,10 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(playId ? onSubmitUpdate : onSubmitCreate)}>
+      <h1 className='md:leading-14 mb-4 text-lg font-bold leading-9 tracking-tight sm:text-xl sm:leading-10 md:text-3xl'>
+        Play Submission Form
+      </h1>
+      <form className='mb-10' onSubmit={handleSubmit(playId ? onSubmitUpdate : onSubmitCreate)}>
         {renderInput(r, errors, 'name', 'Play Title')}
         {renderYoutubeInput(r, errors, 'youtubeId', 'Youtube Embed URL')}
         {renderTextArea(r, errors, 'description', 'Play Description')}
@@ -202,6 +207,28 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
           type='submit'
         />
       </form>
+      <h1 className='md:leading-14 text-lg font-bold leading-9 tracking-tight sm:text-xl sm:leading-10 md:text-3xl'>
+        Play Preview
+      </h1>
+      <PlayComponent
+        play={{
+          id: '',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          userId: session?.user.name ?? '',
+          approved: false,
+          name: watch('name'),
+          youtubeId: '',
+          description: watch('description'),
+          type: watch('type'),
+          speed: watch('speed'),
+          environment: watch('environment'),
+          character: watch('character'),
+          difficulty: watch('difficulty'),
+          stage: watch('stage'),
+        }}
+        youtubeEmbed='none'
+      />
     </>
   )
 }
