@@ -16,7 +16,8 @@ const Home: NextPage = () => {
     return <p>Not authorised</p>
   }
 
-  const { data: playCount } = api.play.getCount.useQuery()
+  // const { data: playCount } = api.play.getCount.useQuery()
+  const playCount = 325
   const { data: plays } = api.play.getAllUnapproved.useQuery({ currentPage, pageSize })
 
   return (

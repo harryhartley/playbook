@@ -13,71 +13,81 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
 
   return (
     <div className='flex justify-center'>
-      <nav className='isolate inline-flex -space-x-px rounded-md shadow-sm' aria-label='Pagination'>
-        <button
-          onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
-          className='relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20'
-        >
-          <span className='sr-only'>Previous</span>
-          <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
-        </button>
-        {Array(Math.ceil(itemCount / pageSize))
-          .fill(0)
-          .map((_, idx) => {
-            if (idx + 1 === currentPage) {
+      <nav aria-label='Pagination'>
+        <ul className='inline-flex space-x-2'>
+          <li>
+            <button
+              onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
+              className='focus:shadow-outline flex h-10 w-10 items-center justify-center rounded-full text-indigo-600 transition-colors duration-150 hover:bg-indigo-100'
+            >
+              <span className='sr-only'>Previous</span>
+              <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
+            </button>
+          </li>
+          {Array(Math.ceil(itemCount / pageSize))
+            .fill(0)
+            .map((_, idx) => {
+              if (idx + 1 === currentPage) {
+                return (
+                  <li key={idx}>
+                    <button
+                      onClick={() => setCurrentPage(idx + 1)}
+                      className='focus:shadow-outline h-10 w-10 rounded-full border border-r-0 border-indigo-600 bg-indigo-600 text-white transition-colors duration-150'
+                    >
+                      {idx + 1}
+                    </button>
+                  </li>
+                )
+              }
+              if (idx + 1 === 1 || idx + 1 === Math.ceil(itemCount / pageSize)) {
+                return (
+                  <li key={idx}>
+                    <button
+                      onClick={() => setCurrentPage(idx + 1)}
+                      className='focus:shadow-outline h-10 w-10 rounded-full text-indigo-600 transition-colors duration-150 hover:bg-indigo-100'
+                    >
+                      {idx + 1}
+                    </button>
+                  </li>
+                )
+              }
+              if (idx + 1 === currentPage - neighbours - 1 || idx + 1 === currentPage + neighbours + 1) {
+                return (
+                  <button
+                    key={idx}
+                    className='focus:shadow-outline h-10 w-10 cursor-default rounded-full text-indigo-600'
+                  >
+                    ...
+                  </button>
+                )
+              }
+              if (idx + 1 < currentPage - neighbours || idx + 1 > currentPage + neighbours) {
+                return null
+              }
               return (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentPage(idx + 1)}
-                  className='relative z-10 inline-flex items-center border border-indigo-500 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20'
-                >
-                  {idx + 1}
-                </button>
+                <li key={idx}>
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentPage(idx + 1)}
+                    className='focus:shadow-outline h-10 w-10 rounded-full text-indigo-600 transition-colors duration-150 hover:bg-indigo-100'
+                  >
+                    {idx + 1}
+                  </button>
+                </li>
               )
-            }
-            if (idx + 1 === 1 || idx + 1 === Math.ceil(itemCount / pageSize)) {
-              return (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentPage(idx + 1)}
-                  className='relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20'
-                >
-                  {idx + 1}
-                </button>
-              )
-            }
-            if (idx + 1 === currentPage - neighbours - 1 || idx + 1 === currentPage + neighbours + 1) {
-              return (
-                <span
-                  key={idx}
-                  className='relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700'
-                >
-                  ...
-                </span>
-              )
-            }
-            if (idx + 1 < currentPage - neighbours || idx + 1 > currentPage + neighbours) {
-              return null
-            }
-            return (
-              <button
-                key={idx}
-                onClick={() => setCurrentPage(idx + 1)}
-                className='relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20'
-              >
-                {idx + 1}
-              </button>
-            )
-          })}
-        <button
-          onClick={() =>
-            setCurrentPage(currentPage === Math.ceil(itemCount / pageSize) ? currentPage : currentPage + 1)
-          }
-          className='relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20'
-        >
-          <span className='sr-only'>Next</span>
-          <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
-        </button>
+            })}
+          <li>
+            <button
+              onClick={() =>
+                setCurrentPage(currentPage === Math.ceil(itemCount / pageSize) ? currentPage : currentPage + 1)
+              }
+              className='focus:shadow-outline flex h-10 w-10 items-center justify-center rounded-full text-indigo-600 transition-colors duration-150 hover:bg-indigo-100'
+            >
+              <span className='sr-only'>Next</span>
+              <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
+            </button>
+          </li>
+        </ul>
       </nav>
     </div>
   )
