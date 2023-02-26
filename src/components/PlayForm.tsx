@@ -223,7 +223,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
           id: '',
           createdAt: new Date(),
           updatedAt: new Date(),
-          userId: session?.user.name || '',
+          userId: session?.user.id,
           approved: false,
           name: watch('name'),
           youtubeId: '',

@@ -14,7 +14,6 @@ interface PlayCardProps {
 
 export const PlayCard = ({ play }: PlayCardProps) => {
   const id = play.id
-
   const { data: user } = api.user.getById.useQuery(play.userId)
 
   return (
