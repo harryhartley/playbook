@@ -11,9 +11,24 @@ export const playRouter = createTRPCRouter({
   getAllByUserId: publicProcedure.input(z.string().cuid()).query(({ ctx, input }) => {
     return ctx.prisma.play.findMany({ where: { userId: input } })
   }),
-  getAllApproved: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.play.findMany({ orderBy: [{ createdAt: 'desc' }], where: { approved: true } })
+  getCount: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.play.count()
   }),
+  getAllApproved: publicProcedure
+    .input(
+      z.object({
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.play.findMany({
+        orderBy: [{ createdAt: 'desc' }],
+        where: { approved: true },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+      })
+    }),
   getAllUnapproved: moderatorOrAboveProtectedProcedure.query(({ ctx }) => {
     return ctx.prisma.play.findMany({ orderBy: [{ createdAt: 'desc' }], where: { approved: false } })
   }),
