@@ -15,7 +15,7 @@ const Home: NextPage = () => {
     <main>
       <div className='divide-y'>
         <div className='space-y-2 pt-6 pb-8 md:space-y-5'>
-          <h1 className='md:leading-14 text-2xl font-extrabold leading-9 tracking-tight sm:text-3xl sm:leading-10 md:text-5xl'>
+          <h1 className='md:leading-14 font-radio-grotesk text-2xl font-extrabold leading-9 tracking-tight sm:text-3xl sm:leading-10 md:text-5xl'>
             Latest Plays
           </h1>
         </div>
