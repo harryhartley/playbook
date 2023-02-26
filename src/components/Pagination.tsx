@@ -18,7 +18,7 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
           <li>
             <button
               onClick={() => setCurrentPage(currentPage === 1 ? 1 : currentPage - 1)}
-              className='focus:shadow-outline flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-150 hover:bg-gray-200'
+              className='flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-150 hover:bg-gray-200'
             >
               <span className='sr-only'>Previous</span>
               <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
@@ -32,7 +32,7 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
                   <li key={idx}>
                     <button
                       onClick={() => setCurrentPage(idx + 1)}
-                      className='focus:shadow-outline h-10 w-10 rounded-full border border-r-0 border-gray-500 bg-gray-500 text-white transition-colors duration-150'
+                      className='border-r-1 h-10 w-10 rounded-full border border-black'
                     >
                       {idx + 1}
                     </button>
@@ -44,7 +44,7 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
                   <li key={idx}>
                     <button
                       onClick={() => setCurrentPage(idx + 1)}
-                      className='focus:shadow-outline h-10 w-10 rounded-full transition-colors duration-150 hover:bg-gray-200'
+                      className='h-10 w-10 rounded-full transition-colors duration-150 hover:bg-gray-200'
                     >
                       {idx + 1}
                     </button>
@@ -53,7 +53,7 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
               }
               if (idx + 1 === currentPage - neighbours - 1 || idx + 1 === currentPage + neighbours + 1) {
                 return (
-                  <button key={idx} className='focus:shadow-outline h-10 w-10 cursor-default rounded-full'>
+                  <button key={idx} className='h-10 w-10 cursor-default rounded-full'>
                     ...
                   </button>
                 )
@@ -66,7 +66,7 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
                   <button
                     key={idx}
                     onClick={() => setCurrentPage(idx + 1)}
-                    className='focus:shadow-outline h-10 w-10 rounded-full transition-colors duration-150 hover:bg-gray-200'
+                    className='h-10 w-10 rounded-full transition-colors duration-150 hover:bg-gray-200'
                   >
                     {idx + 1}
                   </button>
@@ -78,7 +78,7 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
               onClick={() =>
                 setCurrentPage(currentPage === Math.ceil(itemCount / pageSize) ? currentPage : currentPage + 1)
               }
-              className='focus:shadow-outline flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-150 hover:bg-gray-200'
+              className='flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-150 hover:bg-gray-200'
             >
               <span className='sr-only'>Next</span>
               <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
