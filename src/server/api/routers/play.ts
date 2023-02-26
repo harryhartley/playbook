@@ -42,9 +42,21 @@ export const playRouter = createTRPCRouter({
         take: input.pageSize,
       })
     }),
-  getAllUnapproved: moderatorOrAboveProtectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.play.findMany({ orderBy: [{ createdAt: 'desc' }], where: { approved: false } })
-  }),
+  getAllUnapproved: moderatorOrAboveProtectedProcedure
+    .input(
+      z.object({
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.play.findMany({
+        orderBy: [{ createdAt: 'desc' }],
+        where: { approved: false },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+      })
+    }),
   approveById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
     return ctx.prisma.play.update({ where: { id: input }, data: { approved: true } })
   }),
