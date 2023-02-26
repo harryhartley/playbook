@@ -24,8 +24,11 @@ export const playRouter = createTRPCRouter({
         take: input.pageSize,
       })
     }),
-  getCount: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.play.count()
+  getCountApproved: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.play.count({ where: { approved: true } })
+  }),
+  getCountUnapproved: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.play.count({ where: { approved: false } })
   }),
   getAllApproved: publicProcedure
     .input(

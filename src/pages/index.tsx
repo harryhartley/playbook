@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 10
 
-  const { data: playCount } = api.play.getCount.useQuery()
+  const { data: playCount } = api.play.getCountApproved.useQuery()
   const { data: plays } = api.play.getAllApproved.useQuery({ currentPage, pageSize })
 
   return (
