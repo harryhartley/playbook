@@ -8,9 +8,22 @@ export const playRouter = createTRPCRouter({
   getById: publicProcedure.input(z.string().cuid()).query(({ ctx, input }) => {
     return ctx.prisma.play.findUnique({ where: { id: input } })
   }),
-  getAllByUserId: publicProcedure.input(z.string().cuid()).query(({ ctx, input }) => {
-    return ctx.prisma.play.findMany({ where: { userId: input } })
-  }),
+  getAllByUserId: publicProcedure
+    .input(
+      z.object({
+        userId: z.string().cuid(),
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.play.findMany({
+        orderBy: [{ createdAt: 'desc' }],
+        where: { userId: input.userId },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+      })
+    }),
   getCount: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.play.count()
   }),
