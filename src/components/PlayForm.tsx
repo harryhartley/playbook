@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-extra-semi */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import type { Play } from '@prisma/client'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import type { FieldErrors, SubmitHandler, UseFormRegister } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { Character, Environment, Speed, Stage, Type } from '../lib/enums'
@@ -143,6 +145,8 @@ interface PlayFormProps {
 
 export const PlayForm = ({ playId }: PlayFormProps) => {
   const { data: session } = useSession()
+  const router = useRouter()
+
   const {
     register: r,
     handleSubmit,
@@ -166,7 +170,11 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
     },
   })
 
-  const createPlay = api.play.create.useMutation()
+  const createPlay = api.play.create.useMutation({
+    onSuccess() {
+      void router.push('/')
+    },
+  })
   const onSubmitCreate: SubmitHandler<PlayForm> = (data) => {
     if (!createPlay.isLoading && session) {
       createPlay.mutate({
