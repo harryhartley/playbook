@@ -13,7 +13,9 @@ interface PlayCardProps {
 }
 
 export const PlayCard = ({ play }: PlayCardProps) => {
-  const id = play.id
+  const playId = play.id
+  const userId = play.userId
+
   const { data: user } = api.user.getById.useQuery(play.userId)
 
   return (
@@ -24,8 +26,10 @@ export const PlayCard = ({ play }: PlayCardProps) => {
             <time dateTime={formatDate(play.createdAt)}>{formatDate(play.createdAt)}</time>
           </p>
           <div className='flex items-center gap-4'>
-            <Link href={{ pathname: '/play/[id]', query: { id } }}>{play.name}</Link>
-            <p className='text-sm text-gray-400'>by {user?.name}</p>
+            <Link href={{ pathname: '/play/[playId]', query: { playId } }}>{play.name}</Link>
+            <p className='text-sm text-gray-400'>
+              by <Link href={{ pathname: '/user/[userId]', query: { userId } }}>{user?.name}</Link>
+            </p>
           </div>
         </h2>
         <div className='flex flex-wrap gap-2'>
