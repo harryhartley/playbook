@@ -21,11 +21,11 @@ const Home: NextPage = () => {
   return (
     <>
       <main>
-        <div className='flex items-center gap-8 space-y-2 pt-6 pb-8 md:space-y-5'>
+        <div className='flex justify-items-center gap-8 space-y-2 pt-6 pb-8 md:space-y-5'>
+          <img className={'h-24 w-24 rounded-full'} src={user.data?.image ?? ''} alt='Profile Image' />
           <h1 className='md:leading-14 text-2xl font-extrabold leading-9 tracking-tight sm:text-3xl sm:leading-10 md:text-5xl'>
             {user.data?.name}
           </h1>
-          <img src={user.data?.image ?? ''} alt='Profile Image' width={100} height={100} />
         </div>
         <h2 className='md:leading-14 text-lg font-bold leading-9 tracking-tight sm:text-xl sm:leading-10 md:text-3xl'>
           Plays: {userPlayCount._count.plays}
