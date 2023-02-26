@@ -10,6 +10,7 @@ interface PaginationProps {
 
 export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }: PaginationProps) => {
   const neighbours = 2
+  const numberOfPages = Math.ceil(itemCount / pageSize) || 1
 
   return (
     <div className='flex justify-center'>
@@ -24,7 +25,7 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
               <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
             </button>
           </li>
-          {Array(Math.ceil(itemCount / pageSize))
+          {Array(numberOfPages)
             .fill(0)
             .map((_, idx) => {
               if (idx + 1 === currentPage) {
@@ -39,7 +40,7 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
                   </li>
                 )
               }
-              if (idx + 1 === 1 || idx + 1 === Math.ceil(itemCount / pageSize)) {
+              if (idx + 1 === 1 || idx + 1 === numberOfPages) {
                 return (
                   <li key={idx}>
                     <button
@@ -75,9 +76,7 @@ export const Pagination = ({ currentPage, setCurrentPage, itemCount, pageSize }:
             })}
           <li>
             <button
-              onClick={() =>
-                setCurrentPage(currentPage === Math.ceil(itemCount / pageSize) ? currentPage : currentPage + 1)
-              }
+              onClick={() => setCurrentPage(currentPage === numberOfPages ? currentPage : currentPage + 1)}
               className='flex h-10 w-10 items-center justify-center rounded-full transition-colors duration-150 hover:bg-gray-200'
             >
               <span className='sr-only'>Next</span>
