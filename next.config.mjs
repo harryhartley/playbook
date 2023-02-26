@@ -20,5 +20,8 @@ const config = {
     locales: ['en'],
     defaultLocale: 'en',
   },
+  images: {
+    domains: ['https://img.youtube.com'],
+  },
 }
 export default config

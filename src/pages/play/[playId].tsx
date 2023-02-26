@@ -18,7 +18,10 @@ const Home: NextPage = () => {
         <meta content={play.name} property='og:title' />
         <meta content={play.description} property='og:description' />
         <meta content={`https://playbook-sand.vercel.app/play/${play.id}`} property='og:url' />
-        <meta content={`https://img.youtube.com/vi/%{play.id.slice(30, 41)}/hqdefault.jpg`} property='og:image' />
+        <meta
+          content={`https://img.youtube.com/vi/${play.youtubeId.slice(30, 41)}/hqdefault.jpg`}
+          property='og:image'
+        />
         <meta content='#87CEEB' data-react-helmet='true' name='theme-color' />
         <meta name='twitter:card' content='summary_large_image' />
       </Head>
