@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { headerNavLinks } from '../data/headerNavLinks'
@@ -33,7 +34,10 @@ export const Header = () => {
         <ThemeSwitch />
         {sessionData && (
           <>
-            <div className='p-1 font-medium sm:p-4'>Signed in as {sessionData?.user.name}</div>
+            <div className='flex items-center'>
+              <div className='p-1 font-medium sm:p-4'>Signed in as {sessionData?.user.name}</div>
+              <img className='h-10 w-10 rounded-full' src={sessionData?.user.image ?? ''} alt='Profile Picture'></img>
+            </div>
             <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/user/[userId]', query: { userId } }}>
               Profile
             </Link>
