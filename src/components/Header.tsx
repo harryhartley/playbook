@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { headerNavLinks } from '../data/headerNavLinks'
 import { siteMetadata } from '../data/siteMetadata'
-import { isUserModeratorOrAbove } from '../utils/auth'
+import { isUserContributorOrAbove, isUserModeratorOrAbove } from '../utils/auth'
 import { MobileNav } from './MobileNav'
 import { ThemeSwitch } from './ThemeSwitch'
 
@@ -39,11 +39,15 @@ export const Header = () => {
             </Link>
           </>
         )}
-        {sessionData && isUserModeratorOrAbove(sessionData.user.role) && (
+        {sessionData && isUserContributorOrAbove(sessionData.user.role) && (
           <>
             <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/submit' }}>
               Submit
             </Link>
+          </>
+        )}
+        {sessionData && isUserModeratorOrAbove(sessionData.user.role) && (
+          <>
             <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/dashboard' }}>
               Dashboard
             </Link>

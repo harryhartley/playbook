@@ -7,6 +7,7 @@ import { Character, Environment, Speed, Stage, Type } from '../lib/enums'
 import { api } from '../utils/api'
 import { isUserModeratorOrAbove } from '../utils/auth'
 import { validationValues } from '../validation/play'
+import { PlayCard } from './PlayCard'
 
 const renderInput = (
   register: UseFormRegister<PlayForm>,
@@ -147,6 +148,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm<PlayForm>()
 
   api.play.getById.useQuery(playId as string, {
@@ -205,15 +207,15 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
           type='submit'
         />
       </form>
-      {/* <h1 className='md:leading-14 text-lg font-bold leading-9 tracking-tight sm:text-xl sm:leading-10 md:text-3xl'>
+      <h1 className='md:leading-14 text-lg font-bold leading-9 tracking-tight sm:text-xl sm:leading-10 md:text-3xl'>
         Play Preview
       </h1>
-      <PlayComponent
+      <PlayCard
         play={{
           id: '',
           createdAt: new Date(),
           updatedAt: new Date(),
-          userId: session?.user.name ?? '',
+          userId: session?.user.name || '',
           approved: false,
           name: watch('name'),
           youtubeId: '',
@@ -225,8 +227,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
           difficulty: watch('difficulty'),
           stage: watch('stage'),
         }}
-        youtubeEmbed='none'
-      /> */}
+      />
     </>
   )
 }
