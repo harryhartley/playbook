@@ -215,27 +215,31 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
           type='submit'
         />
       </form>
-      <h1 className='md:leading-14 text-lg font-bold leading-9 tracking-tight sm:text-xl sm:leading-10 md:text-3xl'>
-        Play Preview
-      </h1>
-      <PlayCard
-        play={{
-          id: '',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          userId: session?.user.id ?? '',
-          approved: false,
-          name: watch('name'),
-          youtubeId: '',
-          description: watch('description'),
-          type: watch('type'),
-          speed: watch('speed'),
-          environment: watch('environment'),
-          character: watch('character'),
-          difficulty: watch('difficulty'),
-          stage: watch('stage'),
-        }}
-      />
+      {session && (
+        <>
+          <h1 className='md:leading-14 text-lg font-bold leading-9 tracking-tight sm:text-xl sm:leading-10 md:text-3xl'>
+            Play Preview
+          </h1>
+          <PlayCard
+            play={{
+              id: '',
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              userId: session.user.id,
+              approved: false,
+              name: watch('name'),
+              youtubeId: '',
+              description: watch('description'),
+              type: watch('type'),
+              speed: watch('speed'),
+              environment: watch('environment'),
+              character: watch('character'),
+              difficulty: watch('difficulty'),
+              stage: watch('stage'),
+            }}
+          />
+        </>
+      )}
     </>
   )
 }
