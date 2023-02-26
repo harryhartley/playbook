@@ -118,6 +118,23 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * Reusable middleware that enforces users are logged and admin in before running the
  * procedure.
  */
+const enforceUserIsContributorOrAbove = t.middleware(({ ctx, next }) => {
+  console.log(ctx.session?.user.role)
+  if (!ctx.session || !ctx.session.user || !['CONTRIBUTOR', 'MODERATOR', 'ADMIN'].includes(ctx.session.user.role)) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
+  }
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  })
+})
+
+/**
+ * Reusable middleware that enforces users are logged and admin in before running the
+ * procedure.
+ */
 const enforceUserIsModeratorOrAbove = t.middleware(({ ctx, next }) => {
   console.log(ctx.session?.user.role)
   if (!ctx.session || !ctx.session.user || !['MODERATOR', 'ADMIN'].includes(ctx.session.user.role)) {
@@ -148,5 +165,6 @@ const enforceUserIsAdmin = t.middleware(({ ctx, next }) => {
 })
 
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed)
+export const contributorOrAboveProtectedProcedure = t.procedure.use(enforceUserIsContributorOrAbove)
 export const moderatorOrAboveProtectedProcedure = t.procedure.use(enforceUserIsModeratorOrAbove)
 export const adminProtectedProcedure = t.procedure.use(enforceUserIsAdmin)
