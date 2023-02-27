@@ -1,8 +1,12 @@
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { headerNavLinks } from '../data/headerNavLinks'
 
 export const MobileNav = () => {
+  const { data: sessionData } = useSession()
+  const userId = sessionData?.user.id
+
   const [navShow, setNavShow] = useState(false)
 
   const onToggleNav = () => {
@@ -20,12 +24,7 @@ export const MobileNav = () => {
   return (
     <div className='sm:hidden'>
       <button type='button' className='ml-1 mr-1 h-8 w-8 rounded py-1' aria-label='Toggle Menu' onClick={onToggleNav}>
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          viewBox='0 0 20 20'
-          fill='currentColor'
-          className='text-gray-900 dark:text-gray-100'
-        >
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor'>
           <path
             fillRule='evenodd'
             d='M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z'
@@ -66,6 +65,45 @@ export const MobileNav = () => {
               </Link>
             </div>
           ))}
+          {sessionData && (
+            <>
+              <div key={'Profile'} className='px-12 py-4'>
+                <Link
+                  href={{ pathname: '/user/[userId]', query: { userId } }}
+                  className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'
+                  onClick={onToggleNav}
+                >
+                  Profile
+                </Link>
+              </div>
+              <div key={'Submit'} className='px-12 py-4'>
+                <Link
+                  href={{ pathname: '/submit' }}
+                  className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'
+                  onClick={onToggleNav}
+                >
+                  Submit
+                </Link>
+              </div>
+              <div key={'Submit'} className='px-12 py-4'>
+                <Link
+                  href={{ pathname: '/dashboard' }}
+                  className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'
+                  onClick={onToggleNav}
+                >
+                  {`${sessionData.user.role.charAt(0)}${sessionData.user.role.toLowerCase().slice(1)}`} Dashboard
+                </Link>
+              </div>
+              <div className='px-12 py-4'>
+                <div
+                  className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'
+                  onClick={() => void signOut()}
+                >
+                  Sign Out
+                </div>
+              </div>
+            </>
+          )}
         </nav>
       </div>
     </div>

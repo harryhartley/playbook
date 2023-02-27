@@ -4,7 +4,7 @@ type NavLink = {
 }
 
 export const headerNavLinks: NavLink[] = [
-  // { href: '/plays', title: 'Plays' },
-  // { href: '/dictionary', title: 'Dictionary' },
-  // { href: '/about', title: 'About' },
+  { href: '/plays', title: 'Plays' },
+  { href: '/dictionary', title: 'Dictionary' },
+  { href: '/about', title: 'About' },
 ]

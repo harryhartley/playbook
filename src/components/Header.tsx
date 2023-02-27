@@ -31,35 +31,61 @@ export const Header = () => {
             </Link>
           ))}
         </div>
-        <ThemeSwitch />
-        {sessionData && (
-          <>
-            <div className='flex items-center'>
-              <div className='p-1 font-medium sm:p-4'>Signed in as {sessionData?.user.name}</div>
-              <img className='h-10 w-10 rounded-full' src={sessionData?.user.image ?? ''} alt='Profile Picture'></img>
+
+        {sessionData ? (
+          <nav
+            aria-label='primary'
+            className='relative z-20 hidden flex-grow flex-col pb-4 md:flex md:flex-row md:justify-end md:pb-0'
+          >
+            <div className='group relative'>
+              <button className='mt-2 flex w-full flex-row items-center rounded-lg bg-transparent px-4 py-4 text-left text-base font-bold focus:outline-none md:mt-0 md:ml-4 md:inline md:w-auto'>
+                <span>
+                  {sessionData && (
+                    <>
+                      <div className='flex items-center'>
+                        <div className='p-1 font-medium sm:p-4'>Signed in as {sessionData?.user.name}</div>
+                        <img
+                          className='h-10 w-10 rounded-full'
+                          src={sessionData?.user.image ?? ''}
+                          alt='Profile Picture'
+                        ></img>
+                      </div>
+                    </>
+                  )}
+                </span>
+              </button>
+              <div className='bg-grey-200 absolute z-10 hidden group-hover:block'>
+                <div className='bg-white px-2 pt-2 pb-4 shadow-lg'>
+                  <div className='grid grid-cols-1'>
+                    <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/user/[userId]', query: { userId } }}>
+                      Profile
+                    </Link>
+                    {isUserContributorOrAbove(sessionData.user.role) && (
+                      <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/submit' }}>
+                        Submit
+                      </Link>
+                    )}
+                    {isUserModeratorOrAbove(sessionData.user.role) && (
+                      <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/dashboard' }}>
+                        {`${sessionData.user.role.charAt(0)}${sessionData.user.role.toLowerCase().slice(1)}`} Dashboard
+                      </Link>
+                    )}
+                    <div className='cursor-pointer p-1 font-medium sm:p-4' onClick={() => void signOut()}>
+                      Sign Out
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/user/[userId]', query: { userId } }}>
-              Profile
-            </Link>
-          </>
+          </nav>
+        ) : (
+          <div className='cursor-pointer p-1 font-medium sm:p-4' onClick={() => void signIn()}>
+            Sign in
+          </div>
         )}
-        {sessionData && isUserContributorOrAbove(sessionData.user.role) && (
-          <>
-            <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/submit' }}>
-              Submit
-            </Link>
-          </>
-        )}
-        {sessionData && isUserModeratorOrAbove(sessionData.user.role) && (
-          <>
-            <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/dashboard' }}>
-              Dashboard
-            </Link>
-          </>
-        )}
-        <button className='p-1 font-medium sm:p-4' onClick={sessionData ? () => void signOut() : () => void signIn()}>
-          {sessionData ? 'Sign out' : 'Sign in'}
-        </button>
+
+        <ThemeSwitch />
+
         <MobileNav />
       </div>
     </header>
