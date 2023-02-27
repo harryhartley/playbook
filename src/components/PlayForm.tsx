@@ -168,6 +168,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
       data && setValue('stage', data.stage)
       data && setValue('difficulty', data.difficulty)
     },
+    refetchOnWindowFocus: false,
   })
 
   const createPlay = api.play.create.useMutation({

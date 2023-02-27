@@ -1,8 +1,34 @@
+import { createProxySSGHelpers } from '@trpc/react-query/ssg'
+import type { GetServerSidePropsContext } from 'next'
 import { type NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import superjson from 'superjson'
 import { Play } from '../../components/Play'
+import { appRouter } from '../../server/api/root'
+import { createInnerTRPCContext } from '../../server/api/trpc'
+import { getServerAuthSession } from '../../server/auth'
 import { api } from '../../utils/api'
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerAuthSession(ctx)
+
+  const ssg = createProxySSGHelpers({
+    router: appRouter,
+    ctx: createInnerTRPCContext({ session }),
+    transformer: superjson,
+  })
+
+  if (typeof ctx.query.playId === 'string') {
+    await ssg.play.getById.fetch(ctx.query.playId)
+  }
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+    },
+  }
+}
 
 const Home: NextPage = () => {
   const { query } = useRouter()
