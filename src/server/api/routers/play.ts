@@ -1,8 +1,12 @@
 import { z } from 'zod'
-import { protectedProcedure } from './../trpc'
 
 import type { Character, Environment, Speed, Stage, Type } from '@prisma/client'
-import { createTRPCRouter, moderatorOrAboveProtectedProcedure, publicProcedure } from '../trpc'
+import {
+  contributorOrAboveProtectedProcedure,
+  createTRPCRouter,
+  moderatorOrAboveProtectedProcedure,
+  publicProcedure,
+} from '../trpc'
 
 export const playRouter = createTRPCRouter({
   getById: publicProcedure.input(z.string().cuid()).query(({ ctx, input }) => {
@@ -66,7 +70,7 @@ export const playRouter = createTRPCRouter({
   unapproveById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
     return ctx.prisma.play.update({ where: { id: input }, data: { approved: false } })
   }),
-  create: protectedProcedure
+  create: contributorOrAboveProtectedProcedure
     .input(
       z.object({
         name: z.string(),
