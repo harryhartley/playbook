@@ -56,9 +56,6 @@ const Home: NextPage = () => {
           </h1>
         </div>
 
-        <div>{JSON.stringify(query)}</div>
-        <div>{JSON.stringify(filter)}</div>
-
         {/* filter! */}
         {/* <div className='flex justify-center gap-4'>
           {filters.map((filter, idx) => (
