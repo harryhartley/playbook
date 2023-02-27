@@ -39,12 +39,28 @@ export const playRouter = createTRPCRouter({
       z.object({
         currentPage: z.number().int().min(1),
         pageSize: z.number().int().min(1),
+        filter: z.object({
+          c: z.string().optional(),
+          e: z.string().optional(),
+          t: z.string().optional(),
+          st: z.string().optional(),
+          sp: z.string().optional(),
+          d: z.number().optional(),
+        }),
       })
     )
     .query(({ ctx, input }) => {
       return ctx.prisma.play.findMany({
         orderBy: [{ createdAt: 'desc' }],
-        where: { approved: true },
+        where: {
+          approved: true,
+          character: input.filter.c as Character,
+          environment: input.filter.e as Environment,
+          type: input.filter.t as Type,
+          stage: input.filter.st as Stage,
+          speed: input.filter.sp as Speed,
+          difficulty: input.filter.d,
+        },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
       })

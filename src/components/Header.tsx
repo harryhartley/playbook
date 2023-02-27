@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { headerNavLinks } from '../data/headerNavLinks'
 import { siteMetadata } from '../data/siteMetadata'
 import { isUserContributorOrAbove, isUserModeratorOrAbove } from '../utils/auth'
+import { toTitleCase } from '../utils/string'
 import { MobileNav } from './MobileNav'
 import { ThemeSwitch } from './ThemeSwitch'
 
@@ -67,7 +68,7 @@ export const Header = () => {
                     )}
                     {isUserModeratorOrAbove(sessionData.user.role) && (
                       <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/dashboard' }}>
-                        {`${sessionData.user.role.charAt(0)}${sessionData.user.role.toLowerCase().slice(1)}`} Dashboard
+                        {`${toTitleCase(sessionData.user.role)} Dasboard`}
                       </Link>
                     )}
                     <div className='cursor-pointer p-1 font-medium sm:p-4' onClick={() => void signOut()}>

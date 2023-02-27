@@ -2,6 +2,7 @@ import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { headerNavLinks } from '../data/headerNavLinks'
+import { toTitleCase } from '../utils/string'
 
 export const MobileNav = () => {
   const { data: sessionData } = useSession()
@@ -91,7 +92,7 @@ export const MobileNav = () => {
                   className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'
                   onClick={onToggleNav}
                 >
-                  {`${sessionData.user.role.charAt(0)}${sessionData.user.role.toLowerCase().slice(1)}`} Dashboard
+                  {`${toTitleCase(sessionData.user.role)} Dasboard`}
                 </Link>
               </div>
               <div className='px-12 py-4'>
