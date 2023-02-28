@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Pagination } from '../components/Pagination'
 import { Play } from '../components/Play'
 import { api } from '../utils/api'
-import { toTitleCase } from '../utils/string'
+import { isInt, toTitleCase } from '../utils/string'
 
 // const FilterDropdown = ({ filter }: { filter: { name: string; values:  } }) => {
 //   return (
@@ -23,7 +23,11 @@ import { toTitleCase } from '../utils/string'
 const generateFilter = (query: ParsedUrlQuery) => {
   return {
     ...(!!query.c && typeof query.c === 'string' && toTitleCase(query.c) !== 'All' && { c: toTitleCase(query.c) }),
-    ...(!!query.d && typeof query.d === 'number' && query.d >= 1 && query.d <= 5 && { d: Math.floor(query.d) }),
+    ...(!!query.d &&
+      typeof query.d === 'string' &&
+      isInt(query.d) &&
+      parseInt(query.d, 10) >= 1 &&
+      parseInt(query.d, 10) <= 5 && { d: Math.floor(parseInt(query.d, 10)) }),
     ...(!!query.e && typeof query.e === 'string' && toTitleCase(query.e) !== 'All' && { e: toTitleCase(query.e) }),
     ...(!!query.sp && typeof query.sp === 'string' && toTitleCase(query.sp) !== 'All' && { sp: toTitleCase(query.sp) }),
     ...(!!query.st && typeof query.st === 'string' && toTitleCase(query.st) !== 'All' && { st: toTitleCase(query.st) }),
