@@ -56,7 +56,7 @@ export const Header = () => {
                 </span>
               </button>
               <div className='bg-grey-200 absolute z-10 hidden group-hover:block'>
-                <div className='bg-white px-2 pt-2 pb-4 shadow-lg'>
+                <div className='bg-white px-2 pt-2 pb-4 shadow-lg dark:bg-black'>
                   <div className='grid grid-cols-1'>
                     <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/user/[userId]', query: { userId } }}>
                       Profile

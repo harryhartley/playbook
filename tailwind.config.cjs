@@ -9,4 +9,5 @@ module.exports = {
   variants: {
     display: ['group-hover'],
   },
+  darkMode: 'class',
 }
