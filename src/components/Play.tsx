@@ -6,15 +6,17 @@ import { api } from '../utils/api'
 import { isUserModeratorOrAbove } from '../utils/auth'
 import { PlayCard } from './PlayCard'
 
-const YoutubeEmbed = ({ youtubeId }: { youtubeId: string }) => (
+const YoutubeEmbed = ({ youtubeId, controls }: { youtubeId: string; controls: boolean }) => (
   <div className='video-responsive aspect-w-16 aspect-h-9'>
     <iframe
       src={`${
         youtubeId.includes('?')
           ? youtubeId
-          : `${
-              youtubeId.split('?clip')[0] ?? ''
-            }?modestbranding=1&autohide=1&showinfo=0&controls=0&playlist=${youtubeId.slice(-11)}&loop=1`
+          : `${youtubeId.split('?clip')[0] ?? ''}${
+              controls
+                ? ''
+                : `?modestbranding=1&autohide=1&showinfo=0&controls=0&playlist=${youtubeId.slice(-11)}&loop=1`
+            }`
       }`}
       allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
     />
@@ -40,7 +42,7 @@ export const Play = ({ play, youtubeEmbed }: PlayProps) => {
       <article>
         {youtubeEmbed === 'above' && (
           <div className='xl:col-span-1'>
-            <YoutubeEmbed youtubeId={play.youtubeId} />
+            <YoutubeEmbed youtubeId={play.youtubeId} controls={true} />
           </div>
         )}
         <div className='space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0'>
@@ -100,7 +102,7 @@ export const Play = ({ play, youtubeEmbed }: PlayProps) => {
           </div>
           {youtubeEmbed === 'inline' && (
             <div className='xl:col-span-1'>
-              <YoutubeEmbed youtubeId={play.youtubeId} />
+              <YoutubeEmbed youtubeId={play.youtubeId} controls={false} />
             </div>
           )}
         </div>
