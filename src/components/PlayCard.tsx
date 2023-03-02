@@ -1,5 +1,5 @@
-import { StarIcon as StarIconSolid } from '@heroicons/react/20/solid'
-import { FireIcon, StarIcon as StarIconOutline } from '@heroicons/react/24/outline'
+import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/20/solid'
+import { BookmarkIcon as BookmarkIconOutline, FireIcon } from '@heroicons/react/24/outline'
 import type { Play as PlayType } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -44,14 +44,14 @@ export const PlayCard = ({ play }: PlayCardProps) => {
                   onClick={() => deleteBookmark.mutate({ userId: session.user.id, playId })}
                   className='text-yellow-400'
                 >
-                  <StarIconSolid className='h-7 w-7' />
+                  <BookmarkIconSolid className='h-7 w-7' />
                 </button>
               ) : (
                 <button
                   onClick={() => session && createBookmark.mutate({ userId: session.user.id, playId })}
                   className='text-yellow-400'
                 >
-                  <StarIconOutline className='h-7 w-7' />
+                  <BookmarkIconOutline className='h-7 w-7' />
                 </button>
               ))}
             <Link href={{ pathname: '/play/[playId]', query: { playId } }}>{play.name}</Link>
