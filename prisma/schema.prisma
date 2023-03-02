@@ -70,7 +70,7 @@ enum Stage {
   Subway
 }
 
-model Favourite {
+model Bookmark {
   user       User     @relation(fields: [userId], references: [id])
   userId     String
   play       Play     @relation(fields: [playId], references: [id])
@@ -98,7 +98,7 @@ model Play {
   stage       Stage
   difficulty  Int
   user        User        @relation(fields: [userId], references: [id])
-  favourites  Favourite[]
+  bookmarks   Bookmark[]
 
   @@index([userId])
 }
@@ -151,7 +151,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   plays         Play[]
-  favourites    Favourite[]
+  bookmarks     Bookmark[]
 }
 
 model VerificationToken {
