@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-extra-semi */
 import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/20/solid'
 import { BookmarkIcon as BookmarkIconOutline, FireIcon } from '@heroicons/react/24/outline'
 import type { Play as PlayType } from '@prisma/client'
@@ -21,7 +22,7 @@ export const PlayCard = ({ play }: PlayCardProps) => {
 
   const { data: user } = api.user.getById.useQuery(play.userId)
 
-  const bookmark = api.bookmark.get.useQuery({ userId: session?.user.id || '', playId })
+  const bookmark = api.bookmark.get.useQuery({ userId: session?.user.id || '', playId }, { enabled: !!session })
 
   const createBookmark = api.bookmark.create.useMutation({
     onSuccess: () => bookmark.refetch(),
