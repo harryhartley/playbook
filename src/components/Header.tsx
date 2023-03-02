@@ -61,6 +61,9 @@ export const Header = () => {
                     <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/user/[userId]', query: { userId } }}>
                       Profile
                     </Link>
+                    <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/bookmarks' }}>
+                      Bookmarks
+                    </Link>
                     {isUserContributorOrAbove(sessionData.user.role) && (
                       <Link className='p-1 font-medium sm:p-4' href={{ pathname: '/submit' }}>
                         Submit

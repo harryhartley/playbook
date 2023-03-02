@@ -2,6 +2,7 @@ import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { headerNavLinks } from '../data/headerNavLinks'
+import { isUserContributorOrAbove, isUserModeratorOrAbove } from '../utils/auth'
 import { toTitleCase } from '../utils/string'
 
 export const MobileNav = () => {
@@ -77,24 +78,37 @@ export const MobileNav = () => {
                   Profile
                 </Link>
               </div>
-              <div key={'Submit'} className='px-12 py-4'>
+              <div key={'Bookmarks'} className='px-12 py-4'>
                 <Link
-                  href={{ pathname: '/submit' }}
+                  href={{ pathname: '/bookmarks' }}
                   className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'
                   onClick={onToggleNav}
                 >
-                  Submit
+                  Bookmarks
                 </Link>
               </div>
-              <div key={'Submit'} className='px-12 py-4'>
-                <Link
-                  href={{ pathname: '/dashboard' }}
-                  className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'
-                  onClick={onToggleNav}
-                >
-                  {`${toTitleCase(sessionData.user.role)} Dasboard`}
-                </Link>
-              </div>
+              {isUserContributorOrAbove(sessionData.user.role) && (
+                <div key={'Submit'} className='px-12 py-4'>
+                  <Link
+                    href={{ pathname: '/submit' }}
+                    className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'
+                    onClick={onToggleNav}
+                  >
+                    Submit
+                  </Link>
+                </div>
+              )}
+              {isUserModeratorOrAbove(sessionData.user.role) && (
+                <div key={'Dashboard'} className='px-12 py-4'>
+                  <Link
+                    href={{ pathname: '/dashboard' }}
+                    className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'
+                    onClick={onToggleNav}
+                  >
+                    {`${toTitleCase(sessionData.user.role)} Dasboard`}
+                  </Link>
+                </div>
+              )}
               <div className='px-12 py-4'>
                 <div
                   className='text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100'

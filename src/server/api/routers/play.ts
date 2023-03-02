@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { protectedProcedure } from './../trpc'
 
 import type { Character, Environment, Speed, Stage, Type } from '@prisma/client'
 import {
@@ -61,6 +62,22 @@ export const playRouter = createTRPCRouter({
           speed: input.filter.sp as Speed,
           difficulty: input.filter.d,
         },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+      })
+    }),
+  getBookmarkedPlaysByUserId: protectedProcedure
+    .input(
+      z.object({
+        userId: z.string().cuid(),
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.play.findMany({
+        orderBy: [{ createdAt: 'desc' }],
+        where: { bookmarks: { some: { userId: input.userId } } },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
       })

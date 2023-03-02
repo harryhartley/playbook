@@ -187,7 +187,11 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
     }
   }
 
-  const updatePlayById = api.play.updateById.useMutation()
+  const updatePlayById = api.play.updateById.useMutation({
+    onSuccess() {
+      void router.push('/')
+    },
+  })
   const onSubmitUpdate: SubmitHandler<PlayForm> = (data) => {
     if (!updatePlayById.isLoading && session && playId) {
       updatePlayById.mutate({ id: playId, data: { ...data, difficulty: Number(data.difficulty) } })
