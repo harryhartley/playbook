@@ -2,148 +2,162 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider     = "mysql"
-    // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-    // Further reading:
-    // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-    // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url          = env("DATABASE_URL")
-    relationMode = "prisma"
+  provider     = "mysql"
+  // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+  // Further reading:
+  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 enum Type {
-    Bait
-    Control
-    Corpse
-    Defense
-    Drill
-    Interception
-    Neutral
-    Offense
-    Okizeme
-    Serve
+  Bait
+  Control
+  Corpse
+  Defense
+  Drill
+  Interception
+  Neutral
+  Offense
+  Okizeme
+  Serve
 }
 
 enum Speed {
-    All
-    High
-    Low
-    Mid
+  All
+  High
+  Low
+  Mid
 }
 
 enum Environment {
-    Match
-    Training
+  Match
+  Training
 }
 
 enum Character {
-    All
-    Candyman
-    Dice
-    Doombox
-    Dust
-    Grid
-    Jet
-    Latch
-    Nitro
-    Raptor
-    Switch
-    Sonata
-    Toxic
+  All
+  Candyman
+  Dice
+  Doombox
+  Dust
+  Grid
+  Jet
+  Latch
+  Nitro
+  Raptor
+  Switch
+  Sonata
+  Toxic
 }
 
 enum Stage {
-    All
-    Desert
-    District
-    Factory
-    Field
-    Outskirts
-    Pool
-    Room
-    Sewers
-    Streets
-    Subway
+  All
+  Desert
+  District
+  Factory
+  Field
+  Outskirts
+  Pool
+  Room
+  Sewers
+  Streets
+  Subway
+}
+
+model Favourite {
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  play       Play     @relation(fields: [playId], references: [id])
+  playId     String
+  createdAt  DateTime @default(now())
+
+  @@id([userId, playId])
+  @@index([userId])
+  @@index([playId])
 }
 
 model Play {
-    id          String      @id @default(cuid())
-    createdAt   DateTime    @default(now())
-    updatedAt   DateTime    @updatedAt
-    approved    Boolean     @default(false)
-    userId      String
-    name        String
-    youtubeId   String
-    description String
-    type        Type
-    speed       Speed
-    environment Environment
-    character   Character
-    stage       Stage
-    difficulty  Int
-    user        User        @relation(fields: [userId], references: [id])
+  id          String      @id @default(cuid())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  approved    Boolean     @default(false)
+  userId      String
+  name        String
+  youtubeId   String
+  description String
+  type        Type
+  speed       Speed
+  environment Environment
+  character   Character
+  stage       Stage
+  difficulty  Int
+  user        User        @relation(fields: [userId], references: [id])
+  favourites  Favourite[]
 
-    @@index([userId])
+  @@index([userId])
 }
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? @db.Text
-    access_token      String? @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerAccountId])
-    @@index([userId])
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId])
+  @@index([userId])
 }
 
 enum Role {
-    USER
-    CONTRIBUTOR
-    MODERATOR
-    ADMIN
+  USER
+  CONTRIBUTOR
+  MODERATOR
+  ADMIN
 }
 
 model User {
-    id            String    @id @default(cuid())
-    createdAt     DateTime  @default(now())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    role          Role      @default(USER)
-    accounts      Account[]
-    sessions      Session[]
-    plays         Play[]
+  id            String      @id @default(cuid())
+  createdAt     DateTime    @default(now())
+  name          String?
+  email         String?     @unique
+  emailVerified DateTime?
+  image         String?
+  role          Role        @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  plays         Play[]
+  favourites    Favourite[]
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-    @@unique([identifier, token])
+  @@unique([identifier, token])
 }
