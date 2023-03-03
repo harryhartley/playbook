@@ -77,7 +77,7 @@ const Home: NextPage = () => {
         </div>
 
         {/* filter! */}
-        <form className='my-2 flex justify-evenly'>
+        <form className='flex justify-evenly'>
           {filters.map((filter, idx) => (
             <>
               <select key={idx} {...register(filter.name as keyof FilterForm)}>
