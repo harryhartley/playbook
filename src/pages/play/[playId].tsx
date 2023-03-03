@@ -41,15 +41,27 @@ const Home: NextPage = () => {
     <>
       <Head>
         <title>LLB Playbook</title>
-        <meta content={play.name} property='og:title' />
-        <meta content={play.description} property='og:description' />
-        <meta content={`https://playbook-sand.vercel.app/play/${play.id}`} property='og:url' />
+        <meta property='og:site_name' content='hyhy.gg - LLB Playbook' />
+        <meta property='og:title' content={play.name} />
+        <meta property='og:description' content={play.description} />
+        <meta property='og:url' content={`https://hyhy.gg/play/${play.id}`} />
+        <meta property='og:type' content='video.other' />
+        <meta property='og:video' content={`https://www.youtube.com/embed/${play.youtubeId.slice(30, 41)}`} />
+        <meta property='og:video:url' content={`https://www.youtube.com/embed/${play.youtubeId.slice(30, 41)}`} />
         <meta
-          content={`https://img.youtube.com/vi/${play.youtubeId.slice(30, 41)}/hqdefault.jpg`}
-          property='og:image'
+          property='og:video:secure_url'
+          content={`https://www.youtube.com/embed/${play.youtubeId.slice(30, 41)}`}
         />
+        <meta property='og:video:width' content='1280' />
+        <meta property='og:video:height' content='720' />
+        <meta property='og:video:type' content='text/html' />
+        <meta
+          property='og:image'
+          content={`https://img.youtube.com/vi/${play.youtubeId.slice(30, 41)}/hqdefault.jpg`}
+        />
+        <meta property='og:image:width' content='480' />
+        <meta property='og:image:height' content='360' />
         <meta content='#87CEEB' data-react-helmet='true' name='theme-color' />
-        <meta name='twitter:card' content='summary_large_image' />
       </Head>
 
       <main>
