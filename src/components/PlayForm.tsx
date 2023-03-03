@@ -7,7 +7,6 @@ import type { FieldErrors, SubmitHandler, UseFormRegister } from 'react-hook-for
 import { useForm } from 'react-hook-form'
 import { Character, Environment, Speed, Stage, Type } from '../lib/enums'
 import { api } from '../utils/api'
-import { isUserModeratorOrAbove } from '../utils/auth'
 import { validationValues } from '../validation/play'
 import { PlayCard } from './PlayCard'
 
@@ -181,8 +180,6 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
       createPlay.mutate({
         ...data,
         difficulty: Number(data.difficulty),
-        userId: session.user.id,
-        approved: isUserModeratorOrAbove(session.user.role),
       })
     }
   }

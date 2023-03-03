@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { protectedProcedure } from './../trpc'
 
 import type { Character, Environment, Speed, Stage, Type } from '@prisma/client'
+import { isUserModeratorOrAbove } from '../../../utils/auth'
 import {
   contributorOrAboveProtectedProcedure,
   createTRPCRouter,
@@ -139,14 +140,13 @@ export const playRouter = createTRPCRouter({
         character: z.string(),
         stage: z.string(),
         difficulty: z.number().int().min(1).max(5),
-        userId: z.string().cuid(),
         approved: z.boolean(),
       })
     )
     .mutation(({ ctx, input }) => {
       return ctx.prisma.user.update({
         where: {
-          id: input.userId,
+          id: ctx.session.user.id,
         },
         data: {
           plays: {
@@ -160,7 +160,7 @@ export const playRouter = createTRPCRouter({
               character: input.character as Character,
               stage: input.stage as Stage,
               difficulty: input.difficulty,
-              approved: input.approved,
+              approved: isUserModeratorOrAbove(ctx.session.user.role),
             },
           },
         },
