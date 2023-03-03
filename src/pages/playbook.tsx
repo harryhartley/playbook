@@ -2,9 +2,10 @@ import { type NextPage } from 'next'
 import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'querystring'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { Pagination } from '../components/Pagination'
 import { Play } from '../components/Play'
-import { Character, Stage, Type } from '../lib/enums'
+import { Character, Environment, Speed, Stage, Type } from '../lib/enums'
 import { api } from '../utils/api'
 import { isInt, toTitleCase } from '../utils/string'
 
@@ -23,8 +24,27 @@ const generateFilter = (query: ParsedUrlQuery) => {
   }
 }
 
+const generateFilterString = (filterValues: FilterForm) => {
+  return `?${!filterValues.Character.startsWith('All ') ? `c=${filterValues.Character}` : ''}${
+    !filterValues.Type.startsWith('All ') ? `&t=${filterValues.Type}` : ''
+  }${!filterValues.Speed.startsWith('All ') ? `&sp=${filterValues.Speed}` : ''}${
+    !filterValues.Stage.startsWith('All ') ? `&st=${filterValues.Stage}` : ''
+  }${!filterValues.Environment.startsWith('All ') ? `&e=${filterValues.Environment}` : ''}${
+    !filterValues.Difficulty.startsWith('All ') ? `&d=${filterValues.Difficulty}` : ''
+  }`
+}
+
+type FilterForm = {
+  Character: string
+  Type: string
+  Speed: string
+  Stage: string
+  Environment: string
+  Difficulty: string
+}
+
 const Home: NextPage = () => {
-  const { query } = useRouter()
+  const { query, push } = useRouter()
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 10
 
@@ -36,11 +56,16 @@ const Home: NextPage = () => {
     { refetchOnWindowFocus: false }
   )
 
-  const filters = [
+  const filters: { name: string; values: { [key: string]: string }; plural?: string }[] = [
     { name: 'Character', values: Character },
     { name: 'Type', values: Type },
+    { name: 'Speed', values: Speed },
     { name: 'Stage', values: Stage },
+    { name: 'Environment', values: Environment },
+    { name: 'Difficulty', values: { '1': '1', '2': '2', '3': '3', '4': '4', '5': '5' }, plural: 'All Difficulties' },
   ]
+  const { register, getValues } = useForm<FilterForm>({})
+  const onSubmit = () => void push(`/playbook${generateFilterString(getValues())}`)
 
   return (
     <main>
@@ -53,11 +78,23 @@ const Home: NextPage = () => {
 
         {/* filter! */}
         <div className='flex justify-center gap-4'>
-          {filters.map((filter, idx) => (
-            <select key={idx}>
-              <option>Test</option>
-            </select>
-          ))}
+          <form>
+            {filters.map((filter, idx) => (
+              <>
+                <select key={idx} {...register(filter.name as keyof FilterForm)}>
+                  {[
+                    filter.plural ?? `All ${filter.name}s`,
+                    ...Object.keys(filter.values).filter((e) => e !== 'All'),
+                  ].map((e, idx) => (
+                    <option key={idx}>{e}</option>
+                  ))}
+                </select>
+              </>
+            ))}
+            <button type='button' onClick={onSubmit}>
+              Filter Plays
+            </button>
+          </form>
         </div>
 
         {playCount && plays && (
