@@ -7,7 +7,7 @@ const Home: NextPage = () => {
       <Head>
         <meta content={'SEO Test'} property='og:title' />
         <meta content={'SEO Test Description'} property='og:description' />
-        <meta content={`https://www.youtube.com/v/COCLDCossos`} property='og:video' />
+        <meta content={`https://www.youtube.com/watch?v=COCLDCossos`} property='og:video' />
         {/* <meta content={`https://img.youtube.com/vi/COCLDCossos/hqdefault.jpg`} property='og:image' /> */}
         <meta content='#87CEEB' data-react-helmet='true' name='theme-color' />
         {/* <meta name='twitter:card' content='summary_large_image' /> */}
