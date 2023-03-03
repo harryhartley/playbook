@@ -12,12 +12,12 @@ const Home: NextPage = () => {
 
   const { data: session } = useSession()
 
+  const { data: playCount } = api.play.getCountUnapproved.useQuery(undefined, { refetchOnWindowFocus: false })
+  const { data: plays } = api.play.getAllUnapproved.useQuery({ currentPage, pageSize }, { refetchOnWindowFocus: false })
+
   if (session && !isUserModeratorOrAbove(session.user.role)) {
     return <p>Not authorised</p>
   }
-
-  const { data: playCount } = api.play.getCountUnapproved.useQuery(undefined, { refetchOnWindowFocus: false })
-  const { data: plays } = api.play.getAllUnapproved.useQuery({ currentPage, pageSize }, { refetchOnWindowFocus: false })
 
   return (
     <main>

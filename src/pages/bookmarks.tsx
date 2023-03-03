@@ -11,7 +11,7 @@ const Home: NextPage = () => {
 
   const { data: session } = useSession()
 
-  const { data: bookmarkCount } = api.bookmark.getCountByUserId.useQuery(session?.user.id || '', {
+  const { data: playCount } = api.bookmark.getCountByUserId.useQuery(session?.user.id || '', {
     enabled: !!session,
     refetchOnWindowFocus: false,
   })
@@ -37,11 +37,11 @@ const Home: NextPage = () => {
           </h1>
         </div>
 
-        {bookmarkCount && plays && (
+        {playCount && plays && (
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            itemCount={bookmarkCount}
+            itemCount={playCount}
             pageSize={pageSize}
           />
         )}
