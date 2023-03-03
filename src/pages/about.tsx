@@ -19,13 +19,16 @@ const Home: NextPage = () => {
       </ol>
       <div className='my-2 text-2xl font-bold'>Roadmap</div>
       <ul className='list-disc'>
-        <li className='ml-8'>Playbook filtering UI</li>
-        <li className='ml-8'>Favourite plays</li>
+        <li className='ml-8'>Loading spinners</li>
+        <li className='ml-8'>Dictionary content</li>
+        <li className='ml-8'>Advanced filtering views</li>
+        <li className='ml-8'>Discord webhook auto-posting</li>
+        <li className='ml-8'>Other games?</li>
       </ul>
       <div className='my-2 text-2xl font-bold'>Contributors</div>
       <ul className='list-disc'>
-        <li className='ml-8'>CookingTiger - Initial content to test UI</li>
-        <li className='ml-8'>JawDrop - Initial content to test UI</li>
+        <li className='ml-8'>JawDrop - Initial content to test UI, huge amount of initial content</li>
+        <li className='ml-8'>CookingTiger - Initial content to test UI, initial requirements review</li>
         <li className='ml-8'>communities - Testing and bugfixes</li>
       </ul>
     </main>
