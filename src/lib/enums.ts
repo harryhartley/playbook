@@ -50,5 +50,5 @@ export enum Stage {
   'Room' = 'Room',
   'Sewers' = 'Sewers',
   'Streets' = 'Streets',
-  'Subways' = 'Subways',
+  'Subway' = 'Subway',
 }
