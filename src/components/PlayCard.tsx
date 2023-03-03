@@ -13,16 +13,20 @@ const formatDate = (date: Date) => {
 
 interface PlayCardProps {
   play: PlayType
+  displayBookmark?: boolean
 }
 
-export const PlayCard = ({ play }: PlayCardProps) => {
+export const PlayCard = ({ play, displayBookmark = true }: PlayCardProps) => {
   const { data: session } = useSession()
   const playId = play.id
   const userId = play.userId
 
   const { data: user } = api.user.getById.useQuery(play.userId, { refetchOnWindowFocus: false })
 
-  const bookmark = api.bookmark.get.useQuery({ userId: session?.user.id || '', playId }, { enabled: !!session, refetchOnWindowFocus: false })
+  const bookmark = api.bookmark.get.useQuery(
+    { userId: session?.user.id || '', playId },
+    { enabled: !!session && displayBookmark, refetchOnWindowFocus: false }
+  )
 
   const createBookmark = api.bookmark.create.useMutation({
     onSuccess: () => bookmark.refetch(),
@@ -40,6 +44,7 @@ export const PlayCard = ({ play }: PlayCardProps) => {
           </p>
           <div className='flex items-center gap-4'>
             {session &&
+              displayBookmark &&
               (bookmark.data ? (
                 <button
                   onClick={() => deleteBookmark.mutate({ userId: session.user.id, playId })}
