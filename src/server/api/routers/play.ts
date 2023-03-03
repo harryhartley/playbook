@@ -140,7 +140,6 @@ export const playRouter = createTRPCRouter({
         character: z.string(),
         stage: z.string(),
         difficulty: z.number().int().min(1).max(5),
-        approved: z.boolean(),
       })
     )
     .mutation(({ ctx, input }) => {
