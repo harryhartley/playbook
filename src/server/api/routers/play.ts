@@ -29,9 +29,32 @@ export const playRouter = createTRPCRouter({
         take: input.pageSize,
       })
     }),
-  getCountApproved: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.play.count({ where: { approved: true } })
-  }),
+  getCountApproved: publicProcedure
+    .input(
+      z
+        .object({
+          c: z.string().optional(),
+          e: z.string().optional(),
+          t: z.string().optional(),
+          st: z.string().optional(),
+          sp: z.string().optional(),
+          d: z.number().optional(),
+        })
+        .optional()
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.play.count({
+        where: {
+          approved: true,
+          character: input?.c as Character,
+          environment: input?.e as Environment,
+          type: input?.t as Type,
+          stage: input?.st as Stage,
+          speed: input?.sp as Speed,
+          difficulty: input?.d,
+        },
+      })
+    }),
   getCountUnapproved: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.play.count({ where: { approved: false } })
   }),
@@ -40,14 +63,16 @@ export const playRouter = createTRPCRouter({
       z.object({
         currentPage: z.number().int().min(1),
         pageSize: z.number().int().min(1),
-        filter: z.object({
-          c: z.string().optional(),
-          e: z.string().optional(),
-          t: z.string().optional(),
-          st: z.string().optional(),
-          sp: z.string().optional(),
-          d: z.number().optional(),
-        }),
+        filter: z
+          .object({
+            c: z.string().optional(),
+            e: z.string().optional(),
+            t: z.string().optional(),
+            st: z.string().optional(),
+            sp: z.string().optional(),
+            d: z.number().optional(),
+          })
+          .optional(),
       })
     )
     .query(({ ctx, input }) => {
@@ -55,12 +80,12 @@ export const playRouter = createTRPCRouter({
         orderBy: [{ createdAt: 'desc' }],
         where: {
           approved: true,
-          character: input.filter.c as Character,
-          environment: input.filter.e as Environment,
-          type: input.filter.t as Type,
-          stage: input.filter.st as Stage,
-          speed: input.filter.sp as Speed,
-          difficulty: input.filter.d,
+          character: input.filter?.c as Character,
+          environment: input.filter?.e as Environment,
+          type: input.filter?.t as Type,
+          stage: input.filter?.st as Stage,
+          speed: input.filter?.sp as Speed,
+          difficulty: input.filter?.d,
         },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,

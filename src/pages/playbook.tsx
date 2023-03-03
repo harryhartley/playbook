@@ -50,7 +50,7 @@ const Home: NextPage = () => {
 
   const filter = generateFilter(query)
 
-  const { data: playCount } = api.play.getCountApproved.useQuery(undefined, { refetchOnWindowFocus: false })
+  const { data: playCount } = api.play.getCountApproved.useQuery(filter, { refetchOnWindowFocus: false })
   const { data: plays } = api.play.getAllApproved.useQuery(
     { currentPage, pageSize, filter },
     { refetchOnWindowFocus: false }
@@ -65,7 +65,9 @@ const Home: NextPage = () => {
     { name: 'Difficulty', values: { '1': '1', '2': '2', '3': '3', '4': '4', '5': '5' }, plural: 'All Difficulties' },
   ]
   const { register, getValues } = useForm<FilterForm>({})
-  const onSubmit = () => void push(`/playbook${generateFilterString(getValues())}`)
+  const onSubmit = () => {
+    void push(`/playbook${generateFilterString(getValues())}`)
+  }
 
   return (
     <main>
@@ -76,7 +78,6 @@ const Home: NextPage = () => {
           </h1>
         </div>
 
-        {/* filter! */}
         <form className='flex justify-evenly'>
           {filters.map((filter, idx) => (
             <>
