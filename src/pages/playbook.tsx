@@ -77,25 +77,22 @@ const Home: NextPage = () => {
         </div>
 
         {/* filter! */}
-        <div className='flex justify-center gap-4'>
-          <form>
-            {filters.map((filter, idx) => (
-              <>
-                <select key={idx} {...register(filter.name as keyof FilterForm)}>
-                  {[
-                    filter.plural ?? `All ${filter.name}s`,
-                    ...Object.keys(filter.values).filter((e) => e !== 'All'),
-                  ].map((e, idx) => (
+        <form className='my-2 flex justify-evenly'>
+          {filters.map((filter, idx) => (
+            <>
+              <select key={idx} {...register(filter.name as keyof FilterForm)}>
+                {[filter.plural ?? `All ${filter.name}s`, ...Object.keys(filter.values).filter((e) => e !== 'All')].map(
+                  (e, idx) => (
                     <option key={idx}>{e}</option>
-                  ))}
-                </select>
-              </>
-            ))}
-            <button type='button' onClick={onSubmit}>
-              Filter Plays
-            </button>
-          </form>
-        </div>
+                  )
+                )}
+              </select>
+            </>
+          ))}
+          <button type='button' onClick={onSubmit}>
+            Filter Plays
+          </button>
+        </form>
 
         {playCount && plays && (
           <Pagination
