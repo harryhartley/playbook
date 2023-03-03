@@ -20,9 +20,9 @@ export const PlayCard = ({ play }: PlayCardProps) => {
   const playId = play.id
   const userId = play.userId
 
-  const { data: user } = api.user.getById.useQuery(play.userId)
+  const { data: user } = api.user.getById.useQuery(play.userId, { refetchOnWindowFocus: false })
 
-  const bookmark = api.bookmark.get.useQuery({ userId: session?.user.id || '', playId }, { enabled: !!session })
+  const bookmark = api.bookmark.get.useQuery({ userId: session?.user.id || '', playId }, { enabled: !!session, refetchOnWindowFocus: false })
 
   const createBookmark = api.bookmark.create.useMutation({
     onSuccess: () => bookmark.refetch(),
