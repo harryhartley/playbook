@@ -208,11 +208,11 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
         {renderYoutubeInput(r, errors, 'youtubeId', 'Youtube Embed URL')}
         {renderTextArea(r, errors, 'description', 'Play Description')}
         <div className='-mx-3 mb-2 grid grid-cols-2'>
+          {renderSelect(r, 'character', 'Selected Character', Character)}
           {renderSelect(r, 'type', 'Play Type', Type)}
           {renderSelect(r, 'speed', 'Ball Speed', Speed)}
-          {renderSelect(r, 'environment', 'Play Environment', Environment)}
-          {renderSelect(r, 'character', 'Selected Character', Character)}
           {renderSelect(r, 'stage', 'Selected Stage', Stage)}
+          {renderSelect(r, 'environment', 'Play Environment', Environment)}
           {renderSelect(r, 'difficulty', 'Execution Difficulty', { '1': '1', '2': '2', '3': '3', '4': '4', '5': '5' })}
         </div>
         <input
@@ -239,7 +239,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
               speed: watch('speed'),
               environment: watch('environment'),
               character: watch('character'),
-              difficulty: parseInt(watch('difficulty').toString()),
+              difficulty: parseInt((watch('difficulty') || '1').toString()),
               stage: watch('stage'),
             }}
             displayBookmark={false}
