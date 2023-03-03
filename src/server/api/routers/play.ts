@@ -94,7 +94,6 @@ export const playRouter = createTRPCRouter({
   getBookmarkedPlaysByUserId: protectedProcedure
     .input(
       z.object({
-        userId: z.string().cuid(),
         currentPage: z.number().int().min(1),
         pageSize: z.number().int().min(1),
       })
@@ -102,7 +101,7 @@ export const playRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.prisma.play.findMany({
         orderBy: [{ createdAt: 'desc' }],
-        where: { bookmarks: { some: { userId: input.userId } } },
+        where: { bookmarks: { some: { userId: ctx.session.user.id } } },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
       })

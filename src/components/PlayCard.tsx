@@ -23,10 +23,10 @@ export const PlayCard = ({ play, displayBookmark = true }: PlayCardProps) => {
 
   const { data: user } = api.user.getById.useQuery(play.userId, { refetchOnWindowFocus: false })
 
-  const bookmark = api.bookmark.get.useQuery(
-    { userId: session?.user.id || '', playId },
-    { enabled: !!session && displayBookmark, refetchOnWindowFocus: false }
-  )
+  const bookmark = api.bookmark.get.useQuery(playId, {
+    enabled: !!session && displayBookmark,
+    refetchOnWindowFocus: false,
+  })
 
   const createBookmark = api.bookmark.create.useMutation({
     onSuccess: () => bookmark.refetch(),
@@ -46,17 +46,11 @@ export const PlayCard = ({ play, displayBookmark = true }: PlayCardProps) => {
             {session &&
               displayBookmark &&
               (bookmark.data ? (
-                <button
-                  onClick={() => deleteBookmark.mutate({ userId: session.user.id, playId })}
-                  className='text-yellow-400'
-                >
+                <button onClick={() => deleteBookmark.mutate(playId)} className='text-yellow-400'>
                   <BookmarkIconSolid className='h-7 w-7' />
                 </button>
               ) : (
-                <button
-                  onClick={() => session && createBookmark.mutate({ userId: session.user.id, playId })}
-                  className='text-yellow-400'
-                >
+                <button onClick={() => session && createBookmark.mutate(playId)} className='text-yellow-400'>
                   <BookmarkIconOutline className='h-7 w-7' />
                 </button>
               ))}

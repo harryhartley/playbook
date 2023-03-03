@@ -11,13 +11,12 @@ const Home: NextPage = () => {
 
   const { data: session } = useSession()
 
-  const { data: playCount } = api.bookmark.getCountByUserId.useQuery(session?.user.id || '', {
+  const { data: playCount } = api.bookmark.getCountByUserId.useQuery(undefined, {
     enabled: !!session,
     refetchOnWindowFocus: false,
   })
   const { data: plays } = api.play.getBookmarkedPlaysByUserId.useQuery(
     {
-      userId: session?.user.id || '',
       currentPage,
       pageSize,
     },
