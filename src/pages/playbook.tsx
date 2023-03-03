@@ -4,21 +4,9 @@ import type { ParsedUrlQuery } from 'querystring'
 import { useState } from 'react'
 import { Pagination } from '../components/Pagination'
 import { Play } from '../components/Play'
+import { Character, Stage, Type } from '../lib/enums'
 import { api } from '../utils/api'
 import { isInt, toTitleCase } from '../utils/string'
-
-// const FilterDropdown = ({ filter }: { filter: { name: string; values:  } }) => {
-//   return (
-//     <div className='flex flex-col'>
-//       <div>{filter.name}</div>
-//       <div>
-//         {filter.values.values().map((value, idx) => (
-//           <div key={idx}>{value}</div>
-//         ))}
-//       </div>
-//     </div>
-//   )
-// }
 
 const generateFilter = (query: ParsedUrlQuery) => {
   return {
@@ -42,14 +30,17 @@ const Home: NextPage = () => {
 
   const filter = generateFilter(query)
 
-  const { data: playCount } = api.play.getCountApproved.useQuery()
-  const { data: plays } = api.play.getAllApproved.useQuery({ currentPage, pageSize, filter })
+  const { data: playCount } = api.play.getCountApproved.useQuery(undefined, { refetchOnWindowFocus: false })
+  const { data: plays } = api.play.getAllApproved.useQuery(
+    { currentPage, pageSize, filter },
+    { refetchOnWindowFocus: false }
+  )
 
-  // const filters = [
-  //   { name: 'Character', values: Character },
-  //   { name: 'Type', values: Type },
-  //   { name: 'Stage', values: Stage },
-  // ]
+  const filters = [
+    { name: 'Character', values: Character },
+    { name: 'Type', values: Type },
+    { name: 'Stage', values: Stage },
+  ]
 
   return (
     <main>
@@ -61,11 +52,13 @@ const Home: NextPage = () => {
         </div>
 
         {/* filter! */}
-        {/* <div className='flex justify-center gap-4'>
+        <div className='flex justify-center gap-4'>
           {filters.map((filter, idx) => (
-            <FilterDropdown filter={filter} key={idx} />
+            <select key={idx}>
+              <option>Test</option>
+            </select>
           ))}
-        </div> */}
+        </div>
 
         {playCount && plays && (
           <Pagination

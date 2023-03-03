@@ -8,8 +8,11 @@ const Home: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 10
 
-  const { data: playCount } = api.play.getCountApproved.useQuery()
-  const { data: plays } = api.play.getAllApproved.useQuery({ currentPage, pageSize, filter: {} })
+  const { data: playCount } = api.play.getCountApproved.useQuery(undefined, { refetchOnWindowFocus: false })
+  const { data: plays } = api.play.getAllApproved.useQuery(
+    { currentPage, pageSize, filter: {} },
+    { refetchOnWindowFocus: false }
+  )
 
   return (
     <main>

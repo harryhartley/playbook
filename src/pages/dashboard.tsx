@@ -16,8 +16,8 @@ const Home: NextPage = () => {
     return <p>Not authorised</p>
   }
 
-  const { data: playCount } = api.play.getCountUnapproved.useQuery()
-  const { data: plays } = api.play.getAllUnapproved.useQuery({ currentPage, pageSize })
+  const { data: playCount } = api.play.getCountUnapproved.useQuery(undefined, { refetchOnWindowFocus: false })
+  const { data: plays } = api.play.getAllUnapproved.useQuery({ currentPage, pageSize }, { refetchOnWindowFocus: false })
 
   return (
     <main>

@@ -15,12 +15,17 @@ const Home: NextPage = () => {
     return <p>Not signed in</p>
   }
 
-  const { data: bookmarkCount } = api.bookmark.getCountByUserId.useQuery(session.user.id)
-  const { data: plays } = api.play.getBookmarkedPlaysByUserId.useQuery({
-    userId: session.user.id,
-    currentPage,
-    pageSize,
+  const { data: bookmarkCount } = api.bookmark.getCountByUserId.useQuery(session.user.id, {
+    refetchOnWindowFocus: false,
   })
+  const { data: plays } = api.play.getBookmarkedPlaysByUserId.useQuery(
+    {
+      userId: session.user.id,
+      currentPage,
+      pageSize,
+    },
+    { refetchOnWindowFocus: false }
+  )
 
   return (
     <main>
