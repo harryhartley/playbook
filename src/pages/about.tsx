@@ -21,6 +21,7 @@ const Home: NextPage = () => {
       <ul className='list-disc'>
         <li className='ml-8'>Loading spinners</li>
         <li className='ml-8'>Dictionary content</li>
+        <li className='ml-8'>Play requests</li>
         <li className='ml-8'>Advanced filtering views</li>
         <li className='ml-8'>Discord webhook auto-posting</li>
         <li className='ml-8'>Other games?</li>
