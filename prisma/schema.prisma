@@ -87,6 +87,7 @@ model Play {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   approved    Boolean     @default(false)
+  archived    Boolean     @default(false)
   userId      String
   name        String
   youtubeId   String
