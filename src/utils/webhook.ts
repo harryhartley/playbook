@@ -1,14 +1,11 @@
-import { EmbedBuilder, WebhookClient } from 'discord.js'
-
 export const postToWebhook = () => {
-  const webhookClient = new WebhookClient({ id: '', token: '' })
-
-  const embed = new EmbedBuilder().setTitle('Some Title').setColor(0x00ffff)
-
-  void webhookClient.send({
-    content: 'Webhook test',
-    username: 'some-username',
-    avatarURL: 'https://i.imgur.com/AfFp7pu.png',
-    embeds: [embed],
+  void fetch('http://example.com/movies.json', {
+    method: 'POST',
+    body: '',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   })
 }
+
+// https://discord.com/api/webhooks/1083424170202890332/0Hw9FX4Vv_jqnW_D82NpiYnGEptkZ8OYpj1nkY3_ZgwfaXjviKo1vTbHk7Uax_IZLkWW
