@@ -9,6 +9,7 @@ import { appRouter } from '../../server/api/root'
 import { createInnerTRPCContext } from '../../server/api/trpc'
 import { getServerAuthSession } from '../../server/auth'
 import { api } from '../../utils/api'
+import { getEmbedUrl, getThumbnailUrl } from '../../utils/youtube'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx)
@@ -46,19 +47,13 @@ const Home: NextPage = () => {
         <meta property='og:description' content={play.description} />
         <meta property='og:url' content={`https://hyhy.gg/play/${play.id}`} />
         <meta property='og:type' content='video.other' />
-        <meta property='og:video' content={`https://www.youtube.com/embed/${play.youtubeId.slice(30, 41)}`} />
-        <meta property='og:video:url' content={`https://www.youtube.com/embed/${play.youtubeId.slice(30, 41)}`} />
-        <meta
-          property='og:video:secure_url'
-          content={`https://www.youtube.com/embed/${play.youtubeId.slice(30, 41)}`}
-        />
+        <meta property='og:video' content={getEmbedUrl(play.youtubeId)} />
+        <meta property='og:video:url' content={getEmbedUrl(play.youtubeId)} />
+        <meta property='og:video:secure_url' content={getEmbedUrl(play.youtubeId)} />
         <meta property='og:video:width' content='1280' />
         <meta property='og:video:height' content='720' />
         <meta property='og:video:type' content='text/html' />
-        <meta
-          property='og:image'
-          content={`https://img.youtube.com/vi/${play.youtubeId.slice(30, 41)}/hqdefault.jpg`}
-        />
+        <meta property='og:image' content={getThumbnailUrl(play.youtubeId)} />
         <meta property='og:image:width' content='480' />
         <meta property='og:image:height' content='360' />
         <meta content='#87CEEB' data-react-helmet='true' name='theme-color' />
