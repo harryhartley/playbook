@@ -17,7 +17,8 @@ const postToWebhook = async (req: NextApiRequest, res: NextApiResponse) => {
       case 'POST':
         const params = {
           username: siteMetadata.title,
-          avatar_url: '',
+          content: 'A new play has been uploaded to the playbook!',
+          avatar_url: 'https://i.ytimg.com/vi/SdorjQIf5V0/maxresdefault.jpg',
           tts: false,
           embeds: [
             {

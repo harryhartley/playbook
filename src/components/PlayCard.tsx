@@ -12,7 +12,7 @@ const formatDate = (date: Date) => {
 }
 
 interface PlayCardProps {
-  play: Omit<PlayType, 'archived'>
+  play: Omit<PlayType, 'archived'> & { user: { name: string | null } }
   displayBookmark?: boolean
 }
 
@@ -21,18 +21,16 @@ export const PlayCard = ({ play, displayBookmark = true }: PlayCardProps) => {
   const playId = play.id
   const userId = play.userId
 
-  const { data: user } = api.user.getById.useQuery(play.userId, { refetchOnWindowFocus: false })
-
-  const bookmark = api.bookmark.get.useQuery(playId, {
+  const { data: bookmark, refetch: refetchBookmark } = api.bookmark.get.useQuery(playId, {
     enabled: !!session && displayBookmark,
     refetchOnWindowFocus: false,
   })
 
   const createBookmark = api.bookmark.create.useMutation({
-    onSuccess: () => bookmark.refetch(),
+    onSuccess: () => refetchBookmark(),
   })
   const deleteBookmark = api.bookmark.delete.useMutation({
-    onSuccess: () => bookmark.refetch(),
+    onSuccess: () => refetchBookmark(),
   })
 
   return (
@@ -45,7 +43,7 @@ export const PlayCard = ({ play, displayBookmark = true }: PlayCardProps) => {
           <div className='flex items-center gap-4'>
             {session &&
               displayBookmark &&
-              (bookmark.data ? (
+              (bookmark ? (
                 <button onClick={() => deleteBookmark.mutate(playId)} className='text-yellow-400'>
                   <BookmarkIconSolid className='h-7 w-7' />
                 </button>
@@ -56,7 +54,7 @@ export const PlayCard = ({ play, displayBookmark = true }: PlayCardProps) => {
               ))}
             <Link href={{ pathname: '/play/[playId]', query: { playId } }}>{play.name}</Link>
             <p className='text-sm text-gray-400'>
-              by <Link href={{ pathname: '/user/[userId]', query: { userId } }}>{user?.name}</Link>
+              by <Link href={{ pathname: '/user/[userId]', query: { userId } }}>{play.user.name}</Link>
             </p>
           </div>
         </h2>
