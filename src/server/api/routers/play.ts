@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { protectedProcedure } from './../trpc'
+import { adminProtectedProcedure, protectedProcedure } from './../trpc'
 
 import type { Character, Environment, Speed, Stage, Type } from '@prisma/client'
 import { isUserModeratorOrAbove } from '../../../utils/auth'
@@ -25,7 +25,7 @@ export const playRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.prisma.play.findMany({
         orderBy: [{ createdAt: 'desc' }],
-        where: { userId: input.userId },
+        where: { userId: input.userId, archived: false },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
         include: { user: { select: { name: true } } },
@@ -82,6 +82,7 @@ export const playRouter = createTRPCRouter({
         orderBy: [{ createdAt: 'desc' }],
         where: {
           approved: true,
+          archived: false,
           character: input.filter?.c as Character,
           environment: input.filter?.e as Environment,
           type: input.filter?.t as Type,
@@ -104,7 +105,7 @@ export const playRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.prisma.play.findMany({
         orderBy: [{ createdAt: 'desc' }],
-        where: { bookmarks: { some: { userId: ctx.session.user.id } } },
+        where: { bookmarks: { some: { userId: ctx.session.user.id } }, archived: false },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
         include: { user: { select: { name: true } } },
@@ -120,7 +121,7 @@ export const playRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.prisma.play.findMany({
         orderBy: [{ createdAt: 'desc' }],
-        where: { approved: false },
+        where: { approved: false, archived: false },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
         include: { user: { select: { name: true } } },
@@ -204,7 +205,10 @@ export const playRouter = createTRPCRouter({
         },
       })
     }),
-  deleteById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
+  deleteById: adminProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
     return ctx.prisma.play.delete({ where: { id: input } })
+  }),
+  archiveById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
+    return ctx.prisma.play.update({ where: { id: input }, data: { archived: true } })
   }),
 })

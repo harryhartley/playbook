@@ -37,7 +37,7 @@ export const Play = ({ play, youtubeEmbed, postButton }: PlayProps) => {
 
   const approvePlay = api.play.approveById.useMutation()
   const unapprovePlay = api.play.unapproveById.useMutation()
-  const deletePlay = api.play.deleteById.useMutation()
+  const archivePlay = api.play.archiveById.useMutation()
 
   return (
     <li className={`py-6 ${hidden}`}>
@@ -89,7 +89,7 @@ export const Play = ({ play, youtubeEmbed, postButton }: PlayProps) => {
                 {!play.approved && (
                   <button
                     onClick={() => {
-                      deletePlay.mutate(id)
+                      archivePlay.mutate(id)
                       setHidden('hidden')
                     }}
                     className='group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-pink-200 group-hover:from-pink-500 group-hover:to-orange-400 dark:text-white dark:focus:ring-pink-800'
@@ -102,7 +102,6 @@ export const Play = ({ play, youtubeEmbed, postButton }: PlayProps) => {
                 {play.approved && postButton && (
                   <button
                     onClick={() => {
-                      // This should be localhost on dev!!!
                       void fetch('/api/postToWebhook', {
                         method: 'POST',
                         body: JSON.stringify(play),

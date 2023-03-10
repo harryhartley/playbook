@@ -12,7 +12,7 @@ const formatDate = (date: Date) => {
 }
 
 interface PlayCardProps {
-  play: Omit<PlayType, 'archived'> & { user: { name: string | null } }
+  play: PlayType & { user: { name: string | null } }
   displayBookmark?: boolean
 }
 
