@@ -34,6 +34,7 @@ export const Play = ({ play, youtubeEmbed, postButton }: PlayProps) => {
   const id = play.id
 
   const { data: session } = useSession()
+
   const approvePlay = api.play.approveById.useMutation()
   const unapprovePlay = api.play.unapproveById.useMutation()
   const deletePlay = api.play.deleteById.useMutation()
@@ -101,7 +102,8 @@ export const Play = ({ play, youtubeEmbed, postButton }: PlayProps) => {
                 {play.approved && postButton && (
                   <button
                     onClick={() => {
-                      void fetch('http://localhost:3000/api/postToWebhook', {
+                      // This should be localhost on dev!!!
+                      void fetch('http://hyhy.gg/api/postToWebhook', {
                         method: 'POST',
                         body: JSON.stringify(play),
                       })
