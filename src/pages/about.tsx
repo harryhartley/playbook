@@ -23,7 +23,7 @@ const Home: NextPage = () => {
         <li className='ml-8'>Dictionary content</li>
         <li className='ml-8'>Play requests</li>
         <li className='ml-8'>Advanced filtering views</li>
-        <li className='ml-8'>Discord webhook auto-posting</li>
+        <li className='ml-8'>Post directly from Discord</li>
         <li className='ml-8'>Other games?</li>
       </ul>
       <div className='my-2 text-2xl font-bold'>Contributors</div>
