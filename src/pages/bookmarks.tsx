@@ -48,7 +48,7 @@ const Home: NextPage = () => {
         <ul className='divide-y'>
           {!plays && 'Loading plays...'}
           {plays && !plays.length && 'No plays found'}
-          {plays && plays.map((play, idx) => <Play key={idx} play={play} youtubeEmbed={'inline'} />)}
+          {plays && plays.map((play, idx) => <Play key={idx} play={play} youtubeEmbed={'inline'} postButton={false} />)}
         </ul>
       </div>
     </main>

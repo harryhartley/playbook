@@ -60,7 +60,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <Play play={play} youtubeEmbed='above' />
+        <Play play={play} youtubeEmbed='above' postButton={true} />
       </main>
     </>
   )

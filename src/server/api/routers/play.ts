@@ -12,7 +12,7 @@ import {
 
 export const playRouter = createTRPCRouter({
   getById: publicProcedure.input(z.string().cuid()).query(({ ctx, input }) => {
-    return ctx.prisma.play.findUnique({ where: { id: input } })
+    return ctx.prisma.play.findUnique({ where: { id: input }, include: { user: { select: { name: true } } } })
   }),
   getAllByUserId: publicProcedure
     .input(
@@ -28,6 +28,7 @@ export const playRouter = createTRPCRouter({
         where: { userId: input.userId },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
+        include: { user: { select: { name: true } } },
       })
     }),
   getCountApproved: publicProcedure
@@ -90,6 +91,7 @@ export const playRouter = createTRPCRouter({
         },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
+        include: { user: { select: { name: true } } },
       })
     }),
   getBookmarkedPlaysByUserId: protectedProcedure
@@ -105,6 +107,7 @@ export const playRouter = createTRPCRouter({
         where: { bookmarks: { some: { userId: ctx.session.user.id } } },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
+        include: { user: { select: { name: true } } },
       })
     }),
   getAllUnapproved: moderatorOrAboveProtectedProcedure
@@ -120,6 +123,7 @@ export const playRouter = createTRPCRouter({
         where: { approved: false },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
+        include: { user: { select: { name: true } } },
       })
     }),
   approveById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
