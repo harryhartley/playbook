@@ -11,7 +11,7 @@ const postToWebhook = async (req: NextApiRequest, res: NextApiResponse) => {
   const play = JSON.parse(req.body as string) as Play & { user: { name: string | null } }
 
   if (!session || !isUserModeratorOrAbove(session?.user.role ?? '')) {
-    res.status(401).end('Not authorised')
+    res.status(401).json('Not authorised')
   } else {
     switch (req.method) {
       case 'POST':
@@ -52,7 +52,7 @@ const postToWebhook = async (req: NextApiRequest, res: NextApiResponse) => {
 
       default:
         res.setHeader('Allow', ['POST'])
-        res.status(405).end(`Method ${req.method ?? ''} not allowed`)
+        res.status(405).json(`Method ${req.method ?? ''} not allowed`)
     }
   }
 }
