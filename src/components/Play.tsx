@@ -103,7 +103,7 @@ export const Play = ({ play, youtubeEmbed, postButton }: PlayProps) => {
                   <button
                     onClick={() => {
                       // This should be localhost on dev!!!
-                      void fetch('http://hyhy.gg/api/postToWebhook', {
+                      void fetch('/api/postToWebhook', {
                         method: 'POST',
                         body: JSON.stringify(play),
                       })
