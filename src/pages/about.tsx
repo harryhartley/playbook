@@ -28,6 +28,7 @@ const Home: NextPage = () => {
       </ul>
       <div className='my-2 text-2xl font-bold'>Contributors</div>
       <ul className='list-disc'>
+        <li className='ml-8'>Gentle - Helping to host the OG Playbook and teaching me a lot of modern webdev</li>
         <li className='ml-8'>JawDrop - Initial content to test UI, huge amount of initial content</li>
         <li className='ml-8'>CookingTiger - Initial content to test UI, initial requirements review</li>
         <li className='ml-8'>communities - Testing and bugfixes</li>
