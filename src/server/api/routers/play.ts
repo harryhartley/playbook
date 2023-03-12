@@ -95,7 +95,7 @@ export const playRouter = createTRPCRouter({
         include: { user: { select: { name: true } } },
       })
     }),
-  getBookmarkedPlaysByUserId: protectedProcedure
+  getBookmarkedPlays: protectedProcedure
     .input(
       z.object({
         currentPage: z.number().int().min(1),

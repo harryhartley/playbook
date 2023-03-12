@@ -11,11 +11,7 @@ const Home: NextPage = () => {
 
   const { data: session } = useSession()
 
-  const { data: playCount } = api.bookmark.getCountByUserId.useQuery(undefined, {
-    enabled: !!session,
-    refetchOnWindowFocus: false,
-  })
-  const { data: plays } = api.play.getBookmarkedPlaysByUserId.useQuery(
+  const { data: plays } = api.play.getBookmarkedPlays.useQuery(
     {
       currentPage,
       pageSize,
@@ -36,19 +32,21 @@ const Home: NextPage = () => {
           </h1>
         </div>
 
-        {playCount && playCount > 0 && plays && (
+        {plays && plays.length > 0 && (
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            itemCount={playCount}
+            itemCount={plays?.length}
             pageSize={pageSize}
           />
         )}
 
         <ul className='divide-y'>
           {!plays && 'Loading plays...'}
-          {plays && !plays.length && 'No plays found'}
-          {plays && plays.map((play, idx) => <Play key={idx} play={play} youtubeEmbed={'inline'} postButton={false} />)}
+          {plays && plays.length === 0 && 'No plays found'}
+          {plays &&
+            plays.length > 0 &&
+            plays.map((play, idx) => <Play key={idx} play={play} youtubeEmbed={'inline'} postButton={false} />)}
         </ul>
       </div>
     </main>

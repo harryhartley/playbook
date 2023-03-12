@@ -15,7 +15,7 @@ const Home: NextPage = () => {
     enabled: typeof query.userId === 'string',
     refetchOnWindowFocus: false,
   })
-  const { data: userPlays } = api.play.getAllByUserId.useQuery(
+  const { data: plays } = api.play.getAllByUserId.useQuery(
     { userId: query.userId as string, currentPage, pageSize },
     {
       enabled: typeof query.userId === 'string',
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
 
   if (typeof query.userId !== 'string') return <p>Bad ID</p>
   if (userIsError) return <p>User not found</p>
-  if (!user || !userPlays) return <p>Loading user...</p>
+  if (!user) return <p>Loading...</p>
 
   return (
     <>
@@ -37,24 +37,24 @@ const Home: NextPage = () => {
           </h1>
         </div>
         <h2 className='md:leading-14 text-lg font-bold leading-9 tracking-tight sm:text-xl sm:leading-10 md:text-3xl'>
-          Plays: {userPlays.length}
+          Plays: {plays && plays.length}
         </h2>
 
-        {userPlays.length > 0 && (
+        {plays && plays.length > 0 && (
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            itemCount={userPlays.length}
+            itemCount={plays.length}
             pageSize={pageSize}
           />
         )}
 
         <ul className='divide-y'>
-          {!userPlays && 'Loading plays...'}
-          {userPlays && userPlays.length === 0 && 'No plays found'}
-          {userPlays &&
-            userPlays.length > 0 &&
-            userPlays.map((play, idx) => <Play key={idx} play={play} youtubeEmbed={'inline'} postButton={false} />)}
+          {!plays && 'Loading plays...'}
+          {plays && plays.length === 0 && 'No plays found'}
+          {plays &&
+            plays.length > 0 &&
+            plays.map((play, idx) => <Play key={idx} play={play} youtubeEmbed={'inline'} postButton={false} />)}
         </ul>
       </main>
     </>

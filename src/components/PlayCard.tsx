@@ -21,7 +21,7 @@ export const PlayCard = ({ play, displayBookmark = true }: PlayCardProps) => {
   const playId = play.id
   const userId = play.userId
 
-  const { data: bookmark, refetch: refetchBookmark } = api.bookmark.get.useQuery(playId, {
+  const { data: bookmark, refetch: refetchBookmark } = api.bookmark.getByPlayId.useQuery(playId, {
     enabled: !!session && displayBookmark,
     refetchOnWindowFocus: false,
   })
