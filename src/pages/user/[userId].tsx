@@ -31,7 +31,7 @@ const Home: NextPage = () => {
           Plays: {userPlayCount._count.plays}
         </h2>
 
-        {userPlayCount._count.plays && userPlays && (
+        {userPlayCount._count.plays && userPlayCount._count.plays > 0 && userPlays && (
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

@@ -95,7 +95,7 @@ const Home: NextPage = () => {
           </button>
         </form>
 
-        {playCount && plays && (
+        {playCount && playCount > 0 && plays && (
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
