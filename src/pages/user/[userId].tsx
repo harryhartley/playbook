@@ -11,11 +11,23 @@ const Home: NextPage = () => {
   const pageSize = 10
   const { query } = useRouter()
 
-  if (typeof query.userId !== 'string') return <p>Bad ID</p>
+  const { data: user } = api.user.getById.useQuery(query.userId as string, {
+    enabled: typeof query.userId === 'string',
+    refetchOnWindowFocus: false,
+  })
+  const { data: userPlayCount } = api.user.getPlayCountById.useQuery(query.userId as string, {
+    enabled: typeof query.userId === 'string',
+    refetchOnWindowFocus: false,
+  })
+  const { data: userPlays } = api.play.getAllByUserId.useQuery(
+    { userId: query.userId as string, currentPage, pageSize },
+    {
+      enabled: typeof query.userId === 'string',
+      refetchOnWindowFocus: false,
+    }
+  )
 
-  const { data: user } = api.user.getById.useQuery(query.userId)
-  const { data: userPlayCount } = api.user.getPlayCountById.useQuery(query.userId)
-  const { data: userPlays } = api.play.getAllByUserId.useQuery({ userId: query.userId, currentPage, pageSize })
+  if (typeof query.userId !== 'string') return <p>Bad ID</p>
   if (!user || !userPlayCount) return <p>Loading user...</p>
 
   return (
