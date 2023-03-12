@@ -13,7 +13,7 @@ const Home: NextPage = () => {
 
   if (typeof query.userId !== 'string') return <p>Bad ID</p>
 
-  const user = api.user.getById.useQuery(query.userId)
+  const { data: user } = api.user.getById.useQuery(query.userId)
   const { data: userPlayCount } = api.user.getPlayCountById.useQuery(query.userId)
   const { data: userPlays } = api.play.getAllByUserId.useQuery({ userId: query.userId, currentPage, pageSize })
   if (!user || !userPlayCount) return <p>Loading user...</p>
@@ -22,9 +22,9 @@ const Home: NextPage = () => {
     <>
       <main>
         <div className='flex justify-items-center gap-8 space-y-2 pt-6 pb-8 md:space-y-5'>
-          <img className={'h-24 w-24 rounded-full'} src={user.data?.image ?? ''} alt='Profile Image' />
+          <img className={'h-24 w-24 rounded-full'} src={user.image ?? ''} alt='Profile Image' />
           <h1 className='md:leading-14 text-2xl font-extrabold leading-9 tracking-tight sm:text-3xl sm:leading-10 md:text-5xl'>
-            {user.data?.name}
+            {user.name}
           </h1>
         </div>
         <h2 className='md:leading-14 text-lg font-bold leading-9 tracking-tight sm:text-xl sm:leading-10 md:text-3xl'>
