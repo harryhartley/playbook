@@ -4,7 +4,7 @@ import { type NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import superjson from 'superjson'
-import { Play } from '../../components/Play'
+import { PlayContainer } from '../../components/Play/PlayContainer'
 import { appRouter } from '../../server/api/root'
 import { createInnerTRPCContext } from '../../server/api/trpc'
 import { getServerAuthSession } from '../../server/auth'
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
   const { query } = useRouter()
   if (typeof query.playId !== 'string') return <p>Bad ID</p>
 
-  const { data: play } = api.play.getById.useQuery(query.playId)
+  const { data: play } = api.play.getById.useQuery(query.playId, { refetchOnWindowFocus: false })
   if (!play) return <p>Loading play...</p>
 
   return (
@@ -60,7 +60,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <Play play={play} youtubeEmbed='above' postButton={true} />
+        <PlayContainer play={play} youtubeEmbed='above' postButton={true} />
       </main>
     </>
   )

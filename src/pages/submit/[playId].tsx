@@ -2,7 +2,7 @@
 import { type NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { PlayForm } from '../../components/PlayForm'
+import { PlayForm } from '../../components/Form/CreateUpdatePlay'
 import { isUserModeratorOrAbove } from '../../utils/auth'
 
 const Home: NextPage = () => {

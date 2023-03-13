@@ -4,19 +4,19 @@ import { BookmarkIcon as BookmarkIconOutline, FireIcon } from '@heroicons/react/
 import type { Play as PlayType } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { api } from '../utils/api'
-import { Tag } from './Tag'
+import { api } from '../../utils/api'
+import { PlayTag } from './PlayTag'
 
 const formatDate = (date: Date) => {
   return date.toISOString().split('T')[0]
 }
 
-interface PlayCardProps {
+interface PlayDataProps {
   play: PlayType & { user: { name: string | null } }
   displayBookmark?: boolean
 }
 
-export const PlayCard = ({ play, displayBookmark = true }: PlayCardProps) => {
+export const PlayData = ({ play, displayBookmark = true }: PlayDataProps) => {
   const { data: session } = useSession()
   const playId = play.id
   const userId = play.userId
@@ -62,7 +62,7 @@ export const PlayCard = ({ play, displayBookmark = true }: PlayCardProps) => {
           {[play.character, play.type, play.speed, play.stage, play.environment]
             .filter((tag) => tag !== 'All')
             .map((tag, idx) => (
-              <Tag key={idx} text={tag} />
+              <PlayTag key={idx} text={tag} />
             ))}
           <div>
             {Array(play.difficulty)

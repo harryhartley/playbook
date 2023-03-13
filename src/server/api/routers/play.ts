@@ -31,34 +31,10 @@ export const playRouter = createTRPCRouter({
         include: { user: { select: { name: true } } },
       })
     }),
-  getCountApproved: publicProcedure
-    .input(
-      z
-        .object({
-          c: z.string().optional(),
-          e: z.string().optional(),
-          t: z.string().optional(),
-          st: z.string().optional(),
-          sp: z.string().optional(),
-          d: z.number().optional(),
-        })
-        .optional()
-    )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.play.count({
-        where: {
-          approved: true,
-          character: input?.c as Character,
-          environment: input?.e as Environment,
-          type: input?.t as Type,
-          stage: input?.st as Stage,
-          speed: input?.sp as Speed,
-          difficulty: input?.d,
-        },
-      })
-    }),
-  getCountUnapproved: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.play.count({ where: { approved: false } })
+  getCountByUserId: publicProcedure.input(z.string().cuid()).query(({ ctx, input }) => {
+    return ctx.prisma.play.count({
+      where: { userId: input, archived: false },
+    })
   }),
   getAllApproved: publicProcedure
     .input(
@@ -95,20 +71,33 @@ export const playRouter = createTRPCRouter({
         include: { user: { select: { name: true } } },
       })
     }),
-  getBookmarkedPlays: protectedProcedure
+  getCountApproved: protectedProcedure
     .input(
       z.object({
-        currentPage: z.number().int().min(1),
-        pageSize: z.number().int().min(1),
+        filter: z
+          .object({
+            c: z.string().optional(),
+            e: z.string().optional(),
+            t: z.string().optional(),
+            st: z.string().optional(),
+            sp: z.string().optional(),
+            d: z.number().optional(),
+          })
+          .optional(),
       })
     )
     .query(({ ctx, input }) => {
-      return ctx.prisma.play.findMany({
-        orderBy: [{ createdAt: 'desc' }],
-        where: { bookmarks: { some: { userId: ctx.session.user.id } }, archived: false },
-        skip: (input.currentPage - 1) * input.pageSize,
-        take: input.pageSize,
-        include: { user: { select: { name: true } } },
+      return ctx.prisma.play.count({
+        where: {
+          approved: true,
+          archived: false,
+          character: input.filter?.c as Character,
+          environment: input.filter?.e as Environment,
+          type: input.filter?.t as Type,
+          stage: input.filter?.st as Stage,
+          speed: input.filter?.sp as Speed,
+          difficulty: input.filter?.d,
+        },
       })
     }),
   getAllUnapproved: moderatorOrAboveProtectedProcedure
@@ -127,6 +116,32 @@ export const playRouter = createTRPCRouter({
         include: { user: { select: { name: true } } },
       })
     }),
+  getCountUnapproved: moderatorOrAboveProtectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.play.count({
+      where: { approved: false, archived: false },
+    })
+  }),
+  getAllBookmarked: protectedProcedure
+    .input(
+      z.object({
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.play.findMany({
+        orderBy: [{ createdAt: 'desc' }],
+        where: { bookmarks: { some: { userId: ctx.session.user.id } }, archived: false },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+        include: { user: { select: { name: true } } },
+      })
+    }),
+  getCountBookmarked: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.play.count({
+      where: { bookmarks: { some: { userId: ctx.session.user.id } }, archived: false },
+    })
+  }),
   approveById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
     return ctx.prisma.play.update({ where: { id: input }, data: { approved: true } })
   }),

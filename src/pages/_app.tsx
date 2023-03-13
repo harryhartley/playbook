@@ -6,7 +6,7 @@ import { api } from '../utils/api'
 
 import { ThemeProvider } from 'next-themes'
 import Head from 'next/head'
-import { LayoutWrapper } from '../components/LayoutWrapper'
+import { LayoutWrapper } from '../components/Site/LayoutWrapper'
 import { siteMetadata } from '../data/siteMetadata'
 import '../styles/globals.css'
 

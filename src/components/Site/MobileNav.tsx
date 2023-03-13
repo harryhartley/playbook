@@ -1,9 +1,9 @@
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
-import { headerNavLinks } from '../data/headerNavLinks'
-import { isUserContributorOrAbove, isUserModeratorOrAbove } from '../utils/auth'
-import { toTitleCase } from '../utils/string'
+import { headerNavLinks } from '../../data/headerNavLinks'
+import { isUserContributorOrAbove, isUserModeratorOrAbove } from '../../utils/auth'
+import { toTitleCase } from '../../utils/string'
 
 export const MobileNav = () => {
   const { data: sessionData } = useSession()

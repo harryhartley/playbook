@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { type NextPage } from 'next'
 import { useSession } from 'next-auth/react'
-import { PlayForm } from '../../components/PlayForm'
+import { PlayForm } from '../../components/Form/CreateUpdatePlay'
 import { isUserContributorOrAbove } from '../../utils/auth'
 
 const Home: NextPage = () => {

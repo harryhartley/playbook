@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { headerNavLinks } from '../data/headerNavLinks'
-import { siteMetadata } from '../data/siteMetadata'
-import { isUserContributorOrAbove, isUserModeratorOrAbove } from '../utils/auth'
-import { toTitleCase } from '../utils/string'
+import { headerNavLinks } from '../../data/headerNavLinks'
+import { siteMetadata } from '../../data/siteMetadata'
+import { isUserContributorOrAbove, isUserModeratorOrAbove } from '../../utils/auth'
+import { toTitleCase } from '../../utils/string'
 import { MobileNav } from './MobileNav'
 import { ThemeSwitch } from './ThemeSwitch'
 
