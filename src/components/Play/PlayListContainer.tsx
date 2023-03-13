@@ -1,29 +1,8 @@
 import type { Play } from '@prisma/client'
-import { useRouter } from 'next/router'
 import type { Dispatch, SetStateAction } from 'react'
-import { useForm } from 'react-hook-form'
-import { Character, Difficulty, Environment, Speed, Stage, Type } from '../../lib/enums'
 import { Pagination } from '../Pagination'
 import { PlayContainer } from './PlayContainer'
-
-const generateFilterString = (filterValues: FilterForm) => {
-  return `?${!filterValues.Character.startsWith('All ') ? `c=${filterValues.Character}` : ''}${
-    !filterValues.Type.startsWith('All ') ? `&t=${filterValues.Type}` : ''
-  }${!filterValues.Speed.startsWith('All ') ? `&sp=${filterValues.Speed}` : ''}${
-    !filterValues.Stage.startsWith('All ') ? `&st=${filterValues.Stage}` : ''
-  }${!filterValues.Environment.startsWith('All ') ? `&e=${filterValues.Environment}` : ''}${
-    !filterValues.Difficulty.startsWith('All ') ? `&d=${filterValues.Difficulty}` : ''
-  }`
-}
-
-type FilterForm = {
-  Character: string
-  Type: string
-  Speed: string
-  Stage: string
-  Environment: string
-  Difficulty: string
-}
+import { PlayFilters } from './PlayFilters'
 
 interface PlayListContainerProps {
   title?: string
@@ -46,22 +25,6 @@ export const PlayListContainer = ({
   displayPlayCount = false,
   displayFilter = false,
 }: PlayListContainerProps) => {
-  const { push } = useRouter()
-
-  const filters: { name: string; values: { [key: string]: string }; plural?: string }[] = [
-    { name: 'Character', values: Character },
-    { name: 'Type', values: Type },
-    { name: 'Speed', values: Speed },
-    { name: 'Stage', values: Stage },
-    { name: 'Environment', values: Environment },
-    { name: 'Difficulty', values: Difficulty, plural: 'All Difficulties' },
-  ]
-  const { register, getValues } = useForm<FilterForm>({})
-
-  const onSubmit = () => {
-    void push(`/playbook${generateFilterString(getValues())}`)
-  }
-
   return (
     <div className='divide-y'>
       {title && (
@@ -78,24 +41,7 @@ export const PlayListContainer = ({
         </h2>
       )}
 
-      {displayFilter && (
-        <form className='flex justify-evenly'>
-          {filters.map((filter, idx) => (
-            <>
-              <select key={idx} {...register(filter.name as keyof FilterForm)}>
-                {[filter.plural ?? `All ${filter.name}s`, ...Object.keys(filter.values).filter((e) => e !== 'All')].map(
-                  (e, idx) => (
-                    <option key={idx}>{e}</option>
-                  )
-                )}
-              </select>
-            </>
-          ))}
-          <button type='button' onClick={onSubmit}>
-            Filter Plays
-          </button>
-        </form>
-      )}
+      {displayFilter && <PlayFilters />}
 
       {plays && playsCount && playsCount > 0 ? (
         <Pagination
