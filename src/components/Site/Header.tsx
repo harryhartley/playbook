@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { BeatLoader } from 'react-spinners'
 import { headerNavLinks } from '../../data/headerNavLinks'
 import { siteMetadata } from '../../data/siteMetadata'
 import { isUserContributorOrAbove, isUserModeratorOrAbove } from '../../utils/auth'
@@ -9,7 +10,7 @@ import { MobileNav } from './MobileNav'
 import { ThemeSwitch } from './ThemeSwitch'
 
 export const Header = () => {
-  const { data: sessionData } = useSession()
+  const { data: sessionData, status: sessionStatus } = useSession()
   const userId = sessionData?.user.id
 
   return (
@@ -33,7 +34,9 @@ export const Header = () => {
           ))}
         </div>
 
-        {sessionData ? (
+        {sessionStatus === 'loading' ? (
+          <BeatLoader />
+        ) : sessionData ? (
           <nav
             aria-label='primary'
             className='relative z-20 hidden flex-grow flex-col pb-4 md:flex md:flex-row md:justify-end md:pb-0'

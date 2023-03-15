@@ -1,6 +1,7 @@
 import { type NextPage } from 'next'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
+import { BeatLoader } from 'react-spinners'
 import { PlayListContainer } from '../components/Play/PlayListContainer'
 import { api } from '../utils/api'
 
@@ -10,8 +11,10 @@ const Home: NextPage = () => {
 
   const { data: session } = useSession()
 
-  const { data: playsCount } = api.play.getCountBookmarked.useQuery(undefined, { refetchOnWindowFocus: false })
-  const { data: plays } = api.play.getAllBookmarked.useQuery(
+  const { data: playsCount, isLoading: isLoadingCount } = api.play.getCountBookmarked.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  })
+  const { data: plays, isLoading: isLoadingPlays } = api.play.getAllBookmarked.useQuery(
     {
       currentPage,
       pageSize,
@@ -25,14 +28,20 @@ const Home: NextPage = () => {
 
   return (
     <main>
-      <PlayListContainer
-        title='Bookmarked Plays'
-        plays={plays}
-        playsCount={playsCount}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        pageSize={pageSize}
-      />
+      {isLoadingPlays || isLoadingCount ? (
+        <div className='flex justify-center'>
+          <BeatLoader />
+        </div>
+      ) : (
+        <PlayListContainer
+          title='Bookmarked Plays'
+          plays={plays}
+          playsCount={playsCount}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pageSize={pageSize}
+        />
+      )}
     </main>
   )
 }

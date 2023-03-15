@@ -3,6 +3,7 @@ import { type NextPage } from 'next'
 import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'querystring'
 import { useState } from 'react'
+import { BeatLoader } from 'react-spinners'
 import { PlayListContainer } from '../components/Play/PlayListContainer'
 import { api } from '../utils/api'
 import { isInt, toTitleCase } from '../utils/string'
@@ -40,23 +41,32 @@ const Home: NextPage = () => {
 
   const filter = generateFilter(query)
 
-  const { data: playsCount } = api.play.getCountApproved.useQuery({ filter }, { refetchOnWindowFocus: false })
-  const { data: plays } = api.play.getAllApproved.useQuery(
+  const { data: playsCount, isLoading: isLoadingCount } = api.play.getCountApproved.useQuery(
+    { filter },
+    { refetchOnWindowFocus: false }
+  )
+  const { data: plays, isLoading: isLoadingPlays } = api.play.getAllApproved.useQuery(
     { currentPage, pageSize, filter },
     { refetchOnWindowFocus: false }
   )
 
   return (
     <main>
-      <PlayListContainer
-        title='Playbook'
-        plays={plays}
-        playsCount={playsCount}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        pageSize={pageSize}
-        displayFilter={true}
-      />
+      {isLoadingPlays || isLoadingCount ? (
+        <div className='flex justify-center'>
+          <BeatLoader />
+        </div>
+      ) : (
+        <PlayListContainer
+          title='Playbook'
+          plays={plays}
+          playsCount={playsCount}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          pageSize={pageSize}
+          displayFilter={true}
+        />
+      )}
     </main>
   )
 }
