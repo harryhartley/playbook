@@ -19,9 +19,8 @@ const Home: NextPage = () => {
       </ol>
       <div className='my-2 text-2xl font-bold'>Roadmap</div>
       <ul className='list-disc'>
-        <li className='ml-8'>Loading spinners</li>
         <li className='ml-8'>Dictionary content</li>
-        <li className='ml-8'>Play requests</li>
+        <li className='ml-8'>Play requests/bounties</li>
         <li className='ml-8'>Advanced filtering views</li>
         <li className='ml-8'>Post directly from Discord</li>
         <li className='ml-8'>Other games?</li>
