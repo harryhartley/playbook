@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { adminProtectedProcedure, protectedProcedure } from './../trpc'
 
-import type { Character, Environment, Speed, Stage, Type } from '@prisma/client'
+import { Character, Environment, Speed, Stage, Type } from '@prisma/client'
 import { isUserModeratorOrAbove } from '../../../utils/auth'
 import {
   contributorOrAboveProtectedProcedure,
@@ -43,12 +43,12 @@ export const playRouter = createTRPCRouter({
         pageSize: z.number().int().min(1),
         filter: z
           .object({
-            c: z.string().optional(),
-            e: z.string().optional(),
-            t: z.string().optional(),
-            st: z.string().optional(),
-            sp: z.string().optional(),
-            d: z.number().optional(),
+            c: z.nativeEnum(Character).optional(),
+            e: z.nativeEnum(Environment).optional(),
+            t: z.nativeEnum(Type).optional(),
+            st: z.nativeEnum(Stage).optional(),
+            sp: z.nativeEnum(Speed).optional(),
+            d: z.number().int().min(1).max(5).optional(),
           })
           .optional(),
       })
@@ -59,11 +59,11 @@ export const playRouter = createTRPCRouter({
         where: {
           approved: true,
           archived: false,
-          character: input.filter?.c as Character,
-          environment: input.filter?.e as Environment,
-          type: input.filter?.t as Type,
-          stage: input.filter?.st as Stage,
-          speed: input.filter?.sp as Speed,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
           difficulty: input.filter?.d,
         },
         skip: (input.currentPage - 1) * input.pageSize,
@@ -76,12 +76,12 @@ export const playRouter = createTRPCRouter({
       z.object({
         filter: z
           .object({
-            c: z.string().optional(),
-            e: z.string().optional(),
-            t: z.string().optional(),
-            st: z.string().optional(),
-            sp: z.string().optional(),
-            d: z.number().optional(),
+            c: z.nativeEnum(Character).optional(),
+            e: z.nativeEnum(Environment).optional(),
+            t: z.nativeEnum(Type).optional(),
+            st: z.nativeEnum(Stage).optional(),
+            sp: z.nativeEnum(Speed).optional(),
+            d: z.number().int().min(1).max(5).optional(),
           })
           .optional(),
       })
@@ -91,11 +91,11 @@ export const playRouter = createTRPCRouter({
         where: {
           approved: true,
           archived: false,
-          character: input.filter?.c as Character,
-          environment: input.filter?.e as Environment,
-          type: input.filter?.t as Type,
-          stage: input.filter?.st as Stage,
-          speed: input.filter?.sp as Speed,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
           difficulty: input.filter?.d,
         },
       })
@@ -154,11 +154,11 @@ export const playRouter = createTRPCRouter({
         name: z.string(),
         youtubeId: z.string(),
         description: z.string(),
-        type: z.string(),
-        speed: z.string(),
-        environment: z.string(),
-        character: z.string(),
-        stage: z.string(),
+        type: z.nativeEnum(Type),
+        speed: z.nativeEnum(Speed),
+        environment: z.nativeEnum(Environment),
+        character: z.nativeEnum(Character),
+        stage: z.nativeEnum(Stage),
         difficulty: z.number().int().min(1).max(5),
       })
     )
@@ -173,11 +173,11 @@ export const playRouter = createTRPCRouter({
               name: input.name,
               youtubeId: input.youtubeId,
               description: input.description,
-              type: input.type as Type,
-              speed: input.speed as Speed,
-              environment: input.environment as Environment,
-              character: input.character as Character,
-              stage: input.stage as Stage,
+              type: input.type,
+              speed: input.speed,
+              environment: input.environment,
+              character: input.character,
+              stage: input.stage,
               difficulty: input.difficulty,
               approved: isUserModeratorOrAbove(ctx.session.user.role),
             },
@@ -193,11 +193,11 @@ export const playRouter = createTRPCRouter({
           name: z.string(),
           youtubeId: z.string(),
           description: z.string(),
-          type: z.string(),
-          speed: z.string(),
-          environment: z.string(),
-          character: z.string(),
-          stage: z.string(),
+          type: z.nativeEnum(Type),
+          speed: z.nativeEnum(Speed),
+          environment: z.nativeEnum(Environment),
+          character: z.nativeEnum(Character),
+          stage: z.nativeEnum(Stage),
           difficulty: z.number().int().min(1).max(5),
         }),
       })
@@ -211,11 +211,11 @@ export const playRouter = createTRPCRouter({
           name: input.data.name,
           youtubeId: input.data.youtubeId,
           description: input.data.description,
-          type: input.data.type as Type,
-          speed: input.data.speed as Speed,
-          environment: input.data.environment as Environment,
-          character: input.data.character as Character,
-          stage: input.data.stage as Stage,
+          type: input.data.type,
+          speed: input.data.speed,
+          environment: input.data.environment,
+          character: input.data.character,
+          stage: input.data.stage,
           difficulty: input.data.difficulty,
         },
       })
