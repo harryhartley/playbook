@@ -1,9 +1,9 @@
 import type { Play } from '@prisma/client'
+import { Character, Environment, Speed, Stage, Type } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
-import { Character, Difficulty, Environment, Speed, Stage, Type } from '../../lib/enums'
 import { api } from '../../utils/api'
 import { PlayData } from '../Play/PlayData'
 import { TagDropdown } from './TagDropdown'
@@ -85,7 +85,12 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
           <TagDropdown register={r} label='speed' placeholder='Ball Speed' o={Speed} />
           <TagDropdown register={r} label='stage' placeholder='Stage' o={Stage} />
           <TagDropdown register={r} label='environment' placeholder='Play Environment' o={Environment} />
-          <TagDropdown register={r} label='difficulty' placeholder='Execution Difficulty' o={Difficulty} />
+          <TagDropdown
+            register={r}
+            label='difficulty'
+            placeholder='Execution Difficulty'
+            o={{ '1': '1', '2': '2', '3': '3', '4': '4', '5': '5' }}
+          />
         </div>
         <input
           className={`mb-3 block w-full appearance-none rounded border border-gray-200 bg-gray-200 py-3 px-4 leading-tight text-gray-700 hover:border-gray-500 focus:bg-white focus:outline-none`}

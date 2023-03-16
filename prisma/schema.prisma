@@ -28,6 +28,15 @@ enum Type {
   Serve
 }
 
+// model Type {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   name String
+//   game        Game        @relation(fields: [gameId], references: [id])
+//   gameId      String
+// }
+
 enum Speed {
   All
   High
@@ -35,10 +44,28 @@ enum Speed {
   Mid
 }
 
+// model Speed {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   name String
+//   game        Game        @relation(fields: [gameId], references: [id])
+//   gameId      String
+// }
+
 enum Environment {
   Match
   Training
 }
+
+// model Environment {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   name String
+//   game        Game        @relation(fields: [gameId], references: [id])
+//   gameId      String
+// }
 
 enum Character {
   All
@@ -56,6 +83,15 @@ enum Character {
   Toxic
 }
 
+// model Character {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   name String
+//   game        Game        @relation(fields: [gameId], references: [id])
+//   gameId      String
+// }
+
 enum Stage {
   All
   Desert
@@ -70,16 +106,38 @@ enum Stage {
   Subway
 }
 
+// model Stage {
+//   id        String   @id @default(cuid())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   name String
+//   game        Game        @relation(fields: [gameId], references: [id])
+//   gameId      String
+// }
+
 model Bookmark {
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  play       Play     @relation(fields: [playId], references: [id])
-  playId     String
-  createdAt  DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  play      Play     @relation(fields: [playId], references: [id])
+  playId    String
+  createdAt DateTime @default(now())
 
   @@id([userId, playId])
   @@index([userId])
   @@index([playId])
+}
+
+model Game {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  plays     Play[]
+  // stages    Stage[]
+  // characters Character[]
+  // environments Environment[]
+  // speeds Speed[]
+  // types Type[]
 }
 
 model Play {
@@ -100,8 +158,11 @@ model Play {
   difficulty  Int
   user        User        @relation(fields: [userId], references: [id])
   bookmarks   Bookmark[]
+  game        Game        @relation(fields: [gameId], references: [id])
+  gameId      String
 
   @@index([userId])
+  @@index([gameId])
 }
 
 // Necessary for Next auth
@@ -142,14 +203,14 @@ enum Role {
 }
 
 model User {
-  id            String      @id @default(cuid())
-  createdAt     DateTime    @default(now())
+  id            String     @id @default(cuid())
+  createdAt     DateTime   @default(now())
   name          String?
-  email         String?     @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
-  role          Role        @default(USER)
-  banned        Boolean     @default(false)
+  role          Role       @default(USER)
+  banned        Boolean    @default(false)
   accounts      Account[]
   sessions      Session[]
   plays         Play[]

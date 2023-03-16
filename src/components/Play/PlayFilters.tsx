@@ -1,6 +1,6 @@
+import { Character, Environment, Speed, Stage, Type } from '@prisma/client'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import { Character, Difficulty, Environment, Speed, Stage, Type } from '../../lib/enums'
 
 const generateFilterString = (filterValues: FilterForm) => {
   return `?${!filterValues.Character.startsWith('All ') ? `c=${filterValues.Character}` : ''}${
@@ -30,7 +30,7 @@ export const PlayFilters = () => {
     { name: 'Speed', values: Speed },
     { name: 'Stage', values: Stage },
     { name: 'Environment', values: Environment },
-    { name: 'Difficulty', values: Difficulty, plural: 'All Difficulties' },
+    { name: 'Difficulty', values: { '1': '1', '2': '2', '3': '3', '4': '4', '5': '5' }, plural: 'All Difficulties' },
   ]
 
   const { register, getValues } = useForm<FilterForm>({})
