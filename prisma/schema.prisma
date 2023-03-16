@@ -159,8 +159,8 @@ model Play {
   difficulty  Int
   user        User        @relation(fields: [userId], references: [id])
   bookmarks   Bookmark[]
-  game        Game        @relation(fields: [gameId], references: [id])
-  gameId      String
+  game        Game?        @relation(fields: [gameId], references: [id])
+  gameId      String?
 
   @@index([userId])
   @@index([gameId])
