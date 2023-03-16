@@ -132,6 +132,7 @@ model Game {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name      String
+  abbreviation String @unique
   plays     Play[]
   // stages    Stage[]
   // characters Character[]
