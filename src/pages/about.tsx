@@ -19,6 +19,7 @@ const Home: NextPage = () => {
       </ol>
       <div className='my-2 text-2xl font-bold'>Roadmap</div>
       <ul className='list-disc'>
+        <li className='ml-8'>Design system overhaul</li>
         <li className='ml-8'>Dictionary content</li>
         <li className='ml-8'>Play requests/bounties</li>
         <li className='ml-8'>Advanced filtering views</li>
