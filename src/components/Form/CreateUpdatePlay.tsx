@@ -109,6 +109,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
               updatedAt: new Date(),
               user: { name: session.user.name ?? '' },
               userId: session.user.id,
+              gameId: null,
               approved: false,
               archived: false,
               name: watch('name'),
