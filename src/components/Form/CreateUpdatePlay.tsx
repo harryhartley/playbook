@@ -11,7 +11,7 @@
 // import { TextInput } from './TextInput'
 // import { YoutubeTextInput } from './YoutubeTextInput'
 
-// export type PlayForm = Omit<Play, 'id' | 'createdAt' | 'updatedAt'>
+export type PlayForm = Omit<Play, 'id' | 'createdAt' | 'updatedAt'>
 
 // interface PlayFormProps {
 //   playId?: string
@@ -267,8 +267,6 @@ const renderSelect = (register: UseFormRegister<PlayForm>, label: keyof PlayForm
     </div>
   )
 }
-
-type PlayForm = Omit<Play, 'id' | 'createdAt' | 'updatedAt'>
 
 interface PlayFormProps {
   playId?: string
