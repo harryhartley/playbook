@@ -31,7 +31,7 @@ export const YoutubeTextInput = ({ register, errors, label, placeholder }: Youtu
         )}
         {errors[label] && errors[label]?.type === 'pattern' && (
           <span role='alert' className='text-xs italic text-red-600'>
-            {placeholder} does not match id format
+            {placeholder} does not match expected format
           </span>
         )}
       </div>

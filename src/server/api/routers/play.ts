@@ -163,25 +163,19 @@ export const playRouter = createTRPCRouter({
       })
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.user.update({
-        where: {
-          id: ctx.session.user.id,
-        },
+      return ctx.prisma.play.create({
         data: {
-          plays: {
-            create: {
-              name: input.name,
-              youtubeId: input.youtubeId,
-              description: input.description,
-              type: input.type,
-              speed: input.speed,
-              environment: input.environment,
-              character: input.character,
-              stage: input.stage,
-              difficulty: input.difficulty,
-              approved: isUserModeratorOrAbove(ctx.session.user.role),
-            },
-          },
+          userId: ctx.session.user.id,
+          name: input.name,
+          youtubeId: input.youtubeId,
+          description: input.description,
+          type: input.type,
+          speed: input.speed,
+          environment: input.environment,
+          character: input.character,
+          stage: input.stage,
+          difficulty: input.difficulty,
+          approved: isUserModeratorOrAbove(ctx.session.user.role),
         },
       })
     }),
