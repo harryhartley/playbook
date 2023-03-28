@@ -1,4 +1,5 @@
 import { bookmarkRouter } from './routers/bookmark'
+import { gameRouter } from './routers/game'
 import { playRouter } from './routers/play'
 import { userRouter } from './routers/user'
 import { createTRPCRouter } from './trpc'
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   play: playRouter,
   user: userRouter,
   bookmark: bookmarkRouter,
+  game: gameRouter,
 })
 
 // export type definition of API

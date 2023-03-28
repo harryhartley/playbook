@@ -36,9 +36,10 @@ export const playRouter = createTRPCRouter({
       where: { userId: input, archived: false },
     })
   }),
-  getAllApproved: publicProcedure
+  getAllApprovedByGameId: publicProcedure
     .input(
       z.object({
+        gameAbbr: z.string(),
         currentPage: z.number().int().min(1),
         pageSize: z.number().int().min(1),
         filter: z
@@ -57,6 +58,7 @@ export const playRouter = createTRPCRouter({
       return ctx.prisma.play.findMany({
         orderBy: [{ createdAt: 'desc' }],
         where: {
+          game: { abbreviation: input.gameAbbr },
           approved: true,
           archived: false,
           character: input.filter?.c,
@@ -71,9 +73,10 @@ export const playRouter = createTRPCRouter({
         include: { user: { select: { name: true } } },
       })
     }),
-  getCountApproved: protectedProcedure
+  getCountApprovedByGameId: protectedProcedure
     .input(
       z.object({
+        gameAbbr: z.string(),
         filter: z
           .object({
             c: z.nativeEnum(Character).optional(),
@@ -89,6 +92,7 @@ export const playRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.prisma.play.count({
         where: {
+          game: { abbreviation: input.gameAbbr },
           approved: true,
           archived: false,
           character: input.filter?.c,

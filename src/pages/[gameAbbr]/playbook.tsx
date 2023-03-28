@@ -4,9 +4,9 @@ import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'querystring'
 import { useState } from 'react'
 import { BeatLoader } from 'react-spinners'
-import { PlayListContainer } from '../components/Play/PlayListContainer'
-import { api } from '../utils/api'
-import { isInt, toTitleCase } from '../utils/string'
+import { PlayListContainer } from '../../components/Play/PlayListContainer'
+import { api } from '../../utils/api'
+import { isInt, toTitleCase } from '../../utils/string'
 
 const generateFilter = (query: ParsedUrlQuery) => {
   return {
@@ -41,24 +41,29 @@ const Home: NextPage = () => {
 
   const filter = generateFilter(query)
 
-  const { data: playsCount, isLoading: isLoadingCount } = api.play.getCountApproved.useQuery(
-    { filter },
-    { refetchOnWindowFocus: false }
+  const { data: game, isLoading: isLoadingGame } = api.game.getByGameAbbr.useQuery(query.gameAbbr as string, {
+    enabled: typeof query.gameAbbr === 'string',
+    refetchOnWindowFocus: false,
+  })
+
+  const { data: playsCount, isLoading: isLoadingCount } = api.play.getCountApprovedByGameId.useQuery(
+    { gameAbbr: query.gameAbbr as string, filter },
+    { enabled: typeof query.gameAbbr === 'string', refetchOnWindowFocus: false }
   )
-  const { data: plays, isLoading: isLoadingPlays } = api.play.getAllApproved.useQuery(
-    { currentPage, pageSize, filter },
-    { refetchOnWindowFocus: false }
+  const { data: plays, isLoading: isLoadingPlays } = api.play.getAllApprovedByGameId.useQuery(
+    { gameAbbr: query.gameAbbr as string, currentPage, pageSize, filter },
+    { enabled: typeof query.gameAbbr === 'string', refetchOnWindowFocus: false }
   )
 
   return (
     <main>
-      {isLoadingPlays || isLoadingCount ? (
+      {isLoadingGame || isLoadingPlays || isLoadingCount ? (
         <div className='flex justify-center'>
           <BeatLoader />
         </div>
       ) : (
         <PlayListContainer
-          title='Playbook'
+          title={`${game?.name || ''} Playbook`}
           plays={plays}
           playsCount={playsCount}
           currentPage={currentPage}

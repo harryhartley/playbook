@@ -1,5 +1,5 @@
 export const siteMetadata = {
-  title: 'LLB Playbook',
+  title: 'Playbook',
   author: 'hyhy',
   github: 'https://github.com/harryhartley/playbook',
   theme: 'system',

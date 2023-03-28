@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { BeatLoader } from 'react-spinners'
 import { UserListContainer } from '../components/Admin/UserListContainer'
 import { api } from '../utils/api'
-import { isUserModeratorOrAbove } from '../utils/auth'
+import { isUserAdmin } from '../utils/auth'
 
 const Home: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
     { refetchOnWindowFocus: false }
   )
 
-  if (session && !isUserModeratorOrAbove(session.user.role)) {
+  if (session && !isUserAdmin(session.user.role)) {
     return <p>Not authorised</p>
   }
 
