@@ -45,8 +45,6 @@ const Home: NextPage = () => {
       <Head>
         {play && (
           <>
-            <title>LLB Playbook</title>
-            <meta property='og:site_name' content='hyhy.gg - LLB Playbook' />
             <meta property='og:title' content={play.name} />
             <meta property='og:description' content={play.description} />
             <meta property='og:url' content={`https://hyhy.gg/play/${play.id}`} />
