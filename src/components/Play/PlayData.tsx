@@ -5,11 +5,8 @@ import type { Play as PlayType } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { api } from '../../utils/api'
+import { formatDate } from '../../utils/date'
 import { PlayTag } from './PlayTag'
-
-const formatDate = (date: Date) => {
-  return date.toISOString().split('T')[0]
-}
 
 interface PlayDataProps {
   play: PlayType & { user: { name: string | null } }
