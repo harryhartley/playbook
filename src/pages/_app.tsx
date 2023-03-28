@@ -7,6 +7,7 @@ import { api } from '../utils/api'
 import { ThemeProvider } from 'next-themes'
 import Head from 'next/head'
 import { LayoutWrapper } from '../components/Site/LayoutWrapper'
+import { SEO } from '../components/Site/SEO'
 import { siteMetadata } from '../data/siteMetadata'
 import '../styles/globals.css'
 
@@ -17,6 +18,7 @@ const MyApp: AppType<{ session: Session | null }> = ({ Component, pageProps: { s
         <Head>
           <meta content='width=device-width, initial-scale=1' name='viewport' />
         </Head>
+        <SEO />
         <LayoutWrapper>
           <Component {...pageProps} />
         </LayoutWrapper>
