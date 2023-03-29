@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-extra-semi */
-import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/20/solid'
-import { BookmarkIcon as BookmarkIconOutline, FireIcon } from '@heroicons/react/24/outline'
+import { FireIcon } from '@heroicons/react/24/outline'
 import type { Bookmark, Play as PlayType } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useState } from 'react'
-import { api } from '../../utils/api'
 import { formatDate } from '../../utils/date'
+import { PlayBookmark } from './PlayBookmark'
 import { PlayTag } from './PlayTag'
 
 interface PlayDataProps {
@@ -19,15 +17,6 @@ export const PlayData = ({ play, displayBookmark = true }: PlayDataProps) => {
   const playId = play.id
   const userId = play.userId
 
-  const [isBookmarked, setIsBookmarked] = useState(play.bookmarks.length > 0)
-
-  const createBookmark = api.bookmark.create.useMutation({
-    onSuccess: () => setIsBookmarked(!isBookmarked),
-  })
-  const deleteBookmark = api.bookmark.delete.useMutation({
-    onSuccess: () => setIsBookmarked(!isBookmarked),
-  })
-
   return (
     <div className='space-y-2'>
       <div>
@@ -36,17 +25,7 @@ export const PlayData = ({ play, displayBookmark = true }: PlayDataProps) => {
             <time dateTime={formatDate(play.createdAt)}>{formatDate(play.createdAt)}</time>
           </p>
           <div className='flex items-center gap-4'>
-            {session &&
-              displayBookmark &&
-              (isBookmarked ? (
-                <button onClick={() => deleteBookmark.mutate(playId)} className='text-yellow-400'>
-                  <BookmarkIconSolid className='h-7 w-7' />
-                </button>
-              ) : (
-                <button onClick={() => session && createBookmark.mutate(playId)} className='text-yellow-400'>
-                  <BookmarkIconOutline className='h-7 w-7' />
-                </button>
-              ))}
+            {session && displayBookmark && <PlayBookmark playId={playId} bookmarks={play.bookmarks} />}
             <Link href={{ pathname: '/play/[playId]', query: { playId } }}>{play.name}</Link>
             <p className='text-sm text-gray-400'>
               by <Link href={{ pathname: '/user/[userId]', query: { userId } }}>{play.user.name}</Link>
