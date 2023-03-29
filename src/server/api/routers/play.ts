@@ -36,7 +36,71 @@ export const playRouter = createTRPCRouter({
       where: { userId: input, archived: false },
     })
   }),
-  getAllApprovedByGameId: publicProcedure
+  getAllApproved: publicProcedure
+    .input(
+      z.object({
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+        filter: z
+          .object({
+            c: z.nativeEnum(Character).optional(),
+            e: z.nativeEnum(Environment).optional(),
+            t: z.nativeEnum(Type).optional(),
+            st: z.nativeEnum(Stage).optional(),
+            sp: z.nativeEnum(Speed).optional(),
+            d: z.number().int().min(1).max(5).optional(),
+          })
+          .optional(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.play.findMany({
+        orderBy: [{ createdAt: 'desc' }],
+        where: {
+          approved: true,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+        },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+        include: { user: { select: { name: true } } },
+      })
+    }),
+  getCountApproved: protectedProcedure
+    .input(
+      z.object({
+        filter: z
+          .object({
+            c: z.nativeEnum(Character).optional(),
+            e: z.nativeEnum(Environment).optional(),
+            t: z.nativeEnum(Type).optional(),
+            st: z.nativeEnum(Stage).optional(),
+            sp: z.nativeEnum(Speed).optional(),
+            d: z.number().int().min(1).max(5).optional(),
+          })
+          .optional(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.play.count({
+        where: {
+          approved: true,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+        },
+      })
+    }),
+  getAllApprovedByGameAbbr: publicProcedure
     .input(
       z.object({
         gameAbbr: z.string(),
@@ -73,7 +137,7 @@ export const playRouter = createTRPCRouter({
         include: { user: { select: { name: true } } },
       })
     }),
-  getCountApprovedByGameId: protectedProcedure
+  getCountApprovedByGameAbbr: protectedProcedure
     .input(
       z.object({
         gameAbbr: z.string(),

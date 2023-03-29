@@ -46,11 +46,11 @@ const Home: NextPage = () => {
     refetchOnWindowFocus: false,
   })
 
-  const { data: playsCount, isLoading: isLoadingCount } = api.play.getCountApprovedByGameId.useQuery(
+  const { data: playsCount, isLoading: isLoadingCount } = api.play.getCountApprovedByGameAbbr.useQuery(
     { gameAbbr: query.gameAbbr as string, filter },
     { enabled: typeof query.gameAbbr === 'string', refetchOnWindowFocus: false }
   )
-  const { data: plays, isLoading: isLoadingPlays } = api.play.getAllApprovedByGameId.useQuery(
+  const { data: plays, isLoading: isLoadingPlays } = api.play.getAllApprovedByGameAbbr.useQuery(
     { gameAbbr: query.gameAbbr as string, currentPage, pageSize, filter },
     { enabled: typeof query.gameAbbr === 'string', refetchOnWindowFocus: false }
   )
