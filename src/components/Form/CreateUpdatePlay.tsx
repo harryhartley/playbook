@@ -122,6 +122,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
               character: watch('character'),
               difficulty: parseInt((watch('difficulty') || '1').toString()),
               stage: watch('stage'),
+              bookmarks: [],
             }}
             displayBookmark={false}
           />
