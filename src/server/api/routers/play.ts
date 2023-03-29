@@ -28,7 +28,7 @@ export const playRouter = createTRPCRouter({
         where: { userId: input.userId, archived: false },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
-        include: { user: { select: { name: true } } },
+        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
       })
     }),
   getCountByUserId: publicProcedure.input(z.string().cuid()).query(({ ctx, input }) => {
@@ -68,7 +68,7 @@ export const playRouter = createTRPCRouter({
         },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
-        include: { user: { select: { name: true } } },
+        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
       })
     }),
   getCountApproved: protectedProcedure
@@ -134,7 +134,7 @@ export const playRouter = createTRPCRouter({
         },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
-        include: { user: { select: { name: true } } },
+        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
       })
     }),
   getCountApprovedByGameAbbr: protectedProcedure
@@ -181,7 +181,7 @@ export const playRouter = createTRPCRouter({
         where: { approved: false, archived: false },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
-        include: { user: { select: { name: true } } },
+        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
       })
     }),
   getCountUnapproved: moderatorOrAboveProtectedProcedure.query(({ ctx }) => {
@@ -202,7 +202,7 @@ export const playRouter = createTRPCRouter({
         where: { bookmarks: { some: { userId: ctx.session.user.id } }, archived: false },
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
-        include: { user: { select: { name: true } } },
+        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
       })
     }),
   getCountBookmarked: protectedProcedure.query(({ ctx }) => {

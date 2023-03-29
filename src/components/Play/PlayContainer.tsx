@@ -1,4 +1,4 @@
-import type { Play as PlayType } from '@prisma/client'
+import type { Bookmark, Play as PlayType } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { isUserModeratorOrAbove } from '../../utils/auth'
@@ -7,7 +7,7 @@ import { PlayData } from './PlayData'
 import { YoutubeEmbed } from './YoutubeEmbed'
 
 interface PlayContainerProps {
-  play: PlayType & { user: { name: string | null } }
+  play: PlayType & { user: { name: string | null }; bookmarks: Bookmark[] }
   youtubeEmbed: 'inline' | 'above' | 'none'
   postButton: boolean
 }

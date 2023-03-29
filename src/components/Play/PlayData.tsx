@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-extra-semi */
 import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/react/20/solid'
 import { BookmarkIcon as BookmarkIconOutline, FireIcon } from '@heroicons/react/24/outline'
-import type { Play as PlayType } from '@prisma/client'
+import type { Bookmark, Play as PlayType } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useState } from 'react'
 import { api } from '../../utils/api'
 import { formatDate } from '../../utils/date'
 import { PlayTag } from './PlayTag'
 
 interface PlayDataProps {
-  play: PlayType & { user: { name: string | null } }
+  play: PlayType & { user: { name: string | null }; bookmarks: Bookmark[] }
   displayBookmark?: boolean
 }
 
@@ -18,16 +19,13 @@ export const PlayData = ({ play, displayBookmark = true }: PlayDataProps) => {
   const playId = play.id
   const userId = play.userId
 
-  const { data: bookmark, refetch: refetchBookmark } = api.bookmark.getByPlayId.useQuery(playId, {
-    enabled: !!session && displayBookmark,
-    refetchOnWindowFocus: false,
-  })
+  const [isBookmarked, setIsBookmarked] = useState(play.bookmarks.length > 0)
 
   const createBookmark = api.bookmark.create.useMutation({
-    onSuccess: () => refetchBookmark(),
+    onSuccess: () => setIsBookmarked(!isBookmarked),
   })
   const deleteBookmark = api.bookmark.delete.useMutation({
-    onSuccess: () => refetchBookmark(),
+    onSuccess: () => setIsBookmarked(!isBookmarked),
   })
 
   return (
@@ -40,7 +38,7 @@ export const PlayData = ({ play, displayBookmark = true }: PlayDataProps) => {
           <div className='flex items-center gap-4'>
             {session &&
               displayBookmark &&
-              (bookmark ? (
+              (isBookmarked ? (
                 <button onClick={() => deleteBookmark.mutate(playId)} className='text-yellow-400'>
                   <BookmarkIconSolid className='h-7 w-7' />
                 </button>

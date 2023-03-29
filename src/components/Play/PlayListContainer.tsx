@@ -1,4 +1,4 @@
-import type { Play } from '@prisma/client'
+import type { Bookmark, Play } from '@prisma/client'
 import type { Dispatch, SetStateAction } from 'react'
 import { Pagination } from '../Pagination'
 import { PlayContainer } from './PlayContainer'
@@ -6,7 +6,14 @@ import { PlayFilters } from './PlayFilters'
 
 interface PlayListContainerProps {
   title?: string
-  plays: (Play & { user: { name: string | null } })[] | undefined
+  plays:
+    | (Play & {
+        user: {
+          name: string | null
+        }
+        bookmarks: Bookmark[]
+      })[]
+    | undefined
   playsCount: number | undefined
   currentPage: number
   setCurrentPage: Dispatch<SetStateAction<number>>
