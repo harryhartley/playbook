@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-extra-semi */
-import { FireIcon } from '@heroicons/react/24/outline'
+import { FireIcon } from '@heroicons/react/20/solid'
 import type { Bookmark, Play as PlayType } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
