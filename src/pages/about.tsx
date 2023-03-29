@@ -32,6 +32,7 @@ const Home: NextPage = () => {
         <li className='ml-8'>JawDrop - Initial content to test UI, huge amount of initial content</li>
         <li className='ml-8'>CookingTiger - Initial content to test UI, initial requirements review</li>
         <li className='ml-8'>communities - Testing and bugfixes</li>
+        <li className='ml-8'>baltikus - Testing and bugfixes</li>
       </ul>
     </main>
   )
