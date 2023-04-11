@@ -74,7 +74,7 @@ export const playRouter = createTRPCRouter({
         include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
       })
     }),
-  getCountApproved: protectedProcedure
+  getCountApproved: publicProcedure
     .input(
       z.object({
         filter: z
@@ -140,7 +140,7 @@ export const playRouter = createTRPCRouter({
         include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
       })
     }),
-  getCountApprovedByGameAbbr: protectedProcedure
+  getCountApprovedByGameAbbr: publicProcedure
     .input(
       z.object({
         gameAbbr: z.string(),
@@ -231,22 +231,28 @@ export const playRouter = createTRPCRouter({
         character: z.nativeEnum(Character),
         stage: z.nativeEnum(Stage),
         difficulty: z.number().int().min(1).max(5),
+        gameAbbr: z.string(),
       })
     )
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.play.create({
+      return ctx.prisma.game.update({
+        where: { abbreviation: input.gameAbbr },
         data: {
-          userId: ctx.session.user.id,
-          name: input.name,
-          youtubeId: input.youtubeId,
-          description: input.description,
-          type: input.type,
-          speed: input.speed,
-          environment: input.environment,
-          character: input.character,
-          stage: input.stage,
-          difficulty: input.difficulty,
-          approved: isUserModeratorOrAbove(ctx.session.user.role),
+          plays: {
+            create: {
+              userId: ctx.session.user.id,
+              name: input.name,
+              youtubeId: input.youtubeId,
+              description: input.description,
+              type: input.type,
+              speed: input.speed,
+              environment: input.environment,
+              character: input.character,
+              stage: input.stage,
+              difficulty: input.difficulty,
+              approved: isUserModeratorOrAbove(ctx.session.user.role),
+            },
+          },
         },
       })
     }),

@@ -56,6 +56,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
       createPlay.mutate({
         ...data,
         difficulty: Number(data.difficulty),
+        gameAbbr: 'llb',
       })
     }
   }

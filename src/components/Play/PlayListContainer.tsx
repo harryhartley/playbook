@@ -18,6 +18,7 @@ interface PlayListContainerProps {
   currentPage: number
   setCurrentPage: Dispatch<SetStateAction<number>>
   pageSize: number
+  gameAbbr?: string
   displayPlayCount?: boolean
   displayFilter?: boolean
 }
@@ -29,6 +30,7 @@ export const PlayListContainer = ({
   currentPage,
   setCurrentPage,
   pageSize,
+  gameAbbr,
   displayPlayCount = false,
   displayFilter = false,
 }: PlayListContainerProps) => {
@@ -48,7 +50,7 @@ export const PlayListContainer = ({
         </h2>
       )}
 
-      {displayFilter && <PlayFilters />}
+      {displayFilter && <PlayFilters gameAbbr={gameAbbr} />}
 
       {plays && playsCount && playsCount > 0 ? (
         <Pagination

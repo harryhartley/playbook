@@ -21,7 +21,11 @@ type FilterForm = {
   Difficulty: string
 }
 
-export const PlayFilters = () => {
+interface PlayFiltersProps {
+  gameAbbr?: string
+}
+
+export const PlayFilters = ({ gameAbbr }: PlayFiltersProps) => {
   const { push } = useRouter()
 
   const filters: { name: string; values: { [key: string]: string }; plural?: string }[] = [
@@ -36,7 +40,7 @@ export const PlayFilters = () => {
   const { register, getValues } = useForm<FilterForm>({})
 
   const onSubmit = () => {
-    void push(`/playbook${generateFilterString(getValues())}`)
+    void push(`${gameAbbr ? `/${gameAbbr}` : ''}/playbook${generateFilterString(getValues())}`)
   }
 
   return (

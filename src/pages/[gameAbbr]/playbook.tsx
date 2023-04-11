@@ -69,6 +69,7 @@ const Home: NextPage = () => {
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
           pageSize={pageSize}
+          gameAbbr={typeof query.gameAbbr === 'string' ? query.gameAbbr : ''}
           displayFilter={true}
         />
       )}
