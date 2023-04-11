@@ -4,11 +4,13 @@ import { type AppType } from 'next/app'
 
 import { api } from '../utils/api'
 
+import { Analytics } from '@vercel/analytics/react'
 import { ThemeProvider } from 'next-themes'
 import Head from 'next/head'
 import { LayoutWrapper } from '../components/Site/LayoutWrapper'
 import { SEO } from '../components/Site/SEO'
 import { siteMetadata } from '../data/siteMetadata'
+
 import '../styles/globals.css'
 
 const MyApp: AppType<{ session: Session | null }> = ({ Component, pageProps: { session, ...pageProps } }) => {
@@ -20,7 +22,10 @@ const MyApp: AppType<{ session: Session | null }> = ({ Component, pageProps: { s
         </Head>
         <SEO />
         <LayoutWrapper>
-          <Component {...pageProps} />
+          <>
+            <Component {...pageProps} />
+            <Analytics />
+          </>
         </LayoutWrapper>
       </ThemeProvider>
     </SessionProvider>
