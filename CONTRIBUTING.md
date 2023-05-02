@@ -16,21 +16,42 @@ size, disability, ethnicity, gender identity and expression, level of experience
 nationality, personal appearance, race, religion, or sexual identity and
 orientation.
 
-### Our Standards
+## How to Contribute
 
-Examples of behavior that contributes to creating a positive environment
-include:
+### Setup your environment locally
 
-* Using welcoming and inclusive language
-* Being respectful of differing viewpoints and experiences
-* Gracefully accepting constructive criticism
-* Focusing on what is best for the community
-* Showing empathy towards other community members
+Clone the repository to your local development environment
 
-### Attribution
+Create a .env file by copying the example .env file and declaring the variables within
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
-available at [http://contributor-covenant.org/version/1/4][version]
+Then, install the project's dependencies:
 
-[homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/4/
+```bash
+npm i
+```
+
+and run the project with :
+
+```bash
+npm i
+```
+
+### Implement your changes
+
+You should checkout a new branch with a name that is suitable to the work being completed:
+
+```bash
+git checkout -b "feat/<x>/branch name"
+```
+
+Then, you can commit changes to your branch:
+
+```bash
+git add <file> && git commit -m "commit message"
+```
+
+### When you're done
+
+Create a Pull Request on Github from your branch to main
+
+Ensure that a suitable description is included, in addition to any relevant screenshots and other information
