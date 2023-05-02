@@ -27,13 +27,13 @@ Create a .env file by copying the example .env file and declaring the variables 
 Then, install the project's dependencies:
 
 ```bash
-npm i
+pnpm i
 ```
 
 and run the project with :
 
 ```bash
-npm i
+pnpm run dev
 ```
 
 ### Implement your changes
