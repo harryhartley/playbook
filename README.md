@@ -1,4 +1,4 @@
-# The Playbook
+# Playbook
 
 The Playbook is a website to assist the FGC to create and share 'Plays', tech, and other important data, allowing members of the community to share ideas with each other without the limitations of Discord servers and threads.
 
