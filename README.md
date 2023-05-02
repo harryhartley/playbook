@@ -1,9 +1,10 @@
-# LLB Playbook
+# The Playbook
 
-This project is a database of 'plays' for the game Lethal League Blaze, aiming to allow members of the community to share tech and ideas with each other without the limitations of Discord threads.
+The Playbook is a website to assist the FGC to create and share 'Plays', tech, and other important data, allowing members of the community to share ideas with each other without the limitations of Discord servers and threads.
 
-## Tech Stack
+## Stack
 
+- [TypeScript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
 - [Tailwind CSS](https://tailwindcss.com)
