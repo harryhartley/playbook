@@ -1,6 +1,6 @@
 export const getThumbnailUrl = (videoEmbedUrl: string): string => {
   if (videoEmbedUrl.includes('drive.google.com')) {
-    return `https://drive.google.com/thumbnail?id=${videoEmbedUrl.split('/')[6] ?? ''}`
+    return `https://drive.google.com/thumbnail?id=${videoEmbedUrl.split('/')[5] ?? ''}`
   }
   return `https://img.youtube.com/vi/${videoEmbedUrl.slice(30, 41)}/hqdefault.jpg`
 }
