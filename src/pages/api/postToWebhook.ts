@@ -28,7 +28,7 @@ const postToWebhook = async (req: NextApiRequest, res: NextApiResponse) => {
               color: 0x00ffff,
               timestamp: play.createdAt.toString(),
               image: {
-                url: getThumbnailUrl(play.youtubeId),
+                url: getThumbnailUrl(play.videoEmbedUrl),
                 height: 0,
                 width: 0,
               },

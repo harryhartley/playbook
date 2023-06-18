@@ -34,7 +34,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
     enabled: !!playId,
     onSuccess(data) {
       data && setValue('name', data.name)
-      data && setValue('youtubeId', data.youtubeId)
+      data && setValue('videoEmbedUrl', data.videoEmbedUrl)
       data && setValue('description', data.description)
       data && setValue('type', data.type)
       data && setValue('speed', data.speed)
@@ -79,7 +79,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
       </h1>
       <form className='mb-10' onSubmit={handleSubmit(playId ? onSubmitUpdate : onSubmitCreate)}>
         <TextInput register={r} errors={errors} label='name' placeholder='Play Title' />
-        <YoutubeTextInput register={r} errors={errors} label='youtubeId' placeholder='Youtube Embed URL' />
+        <YoutubeTextInput register={r} errors={errors} label='videoEmbedUrl' placeholder='Video Embed URL' />
         <TextArea register={r} errors={errors} label='description' placeholder='Play Description' />
         <div className='-mx-3 mb-2 grid grid-cols-2'>
           <TagDropdown register={r} label='character' placeholder='Character' o={Character} />
@@ -115,7 +115,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
               approved: false,
               archived: false,
               name: watch('name'),
-              youtubeId: '',
+              videoEmbedUrl: '',
               description: watch('description'),
               type: watch('type'),
               speed: watch('speed'),

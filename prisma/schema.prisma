@@ -128,12 +128,12 @@ model Bookmark {
 }
 
 model Game {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  abbreviation String @unique
-  plays     Play[]
+  id           String   @id @default(cuid())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  name         String
+  abbreviation String   @unique
+  plays        Play[]
   // stages    Stage[]
   // characters Character[]
   // environments Environment[]
@@ -142,25 +142,25 @@ model Game {
 }
 
 model Play {
-  id          String      @id @default(cuid())
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  approved    Boolean     @default(false)
-  archived    Boolean?    @default(false)
-  userId      String
-  name        String
-  youtubeId   String
-  description String      @db.VarChar(300)
-  type        Type
-  speed       Speed
-  environment Environment
-  character   Character
-  stage       Stage
-  difficulty  Int
-  user        User        @relation(fields: [userId], references: [id])
-  bookmarks   Bookmark[]
-  game        Game?        @relation(fields: [gameId], references: [id])
-  gameId      String?
+  id            String      @id @default(cuid())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  approved      Boolean     @default(false)
+  archived      Boolean?    @default(false)
+  userId        String
+  name          String
+  videoEmbedUrl String
+  description   String      @db.VarChar(300)
+  type          Type
+  speed         Speed
+  environment   Environment
+  character     Character
+  stage         Stage
+  difficulty    Int
+  user          User        @relation(fields: [userId], references: [id])
+  bookmarks     Bookmark[]
+  game          Game?       @relation(fields: [gameId], references: [id])
+  gameId        String?
 
   @@index([userId])
   @@index([gameId])

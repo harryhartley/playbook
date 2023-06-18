@@ -223,7 +223,7 @@ export const playRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        youtubeId: z.string(),
+        videoEmbedUrl: z.string(),
         description: z.string(),
         type: z.nativeEnum(Type),
         speed: z.nativeEnum(Speed),
@@ -242,7 +242,7 @@ export const playRouter = createTRPCRouter({
             create: {
               userId: ctx.session.user.id,
               name: input.name,
-              youtubeId: input.youtubeId,
+              videoEmbedUrl: input.videoEmbedUrl,
               description: input.description,
               type: input.type,
               speed: input.speed,
@@ -262,7 +262,7 @@ export const playRouter = createTRPCRouter({
         id: z.string().cuid(),
         data: z.object({
           name: z.string(),
-          youtubeId: z.string(),
+          videoEmbedUrl: z.string(),
           description: z.string(),
           type: z.nativeEnum(Type),
           speed: z.nativeEnum(Speed),
@@ -280,7 +280,7 @@ export const playRouter = createTRPCRouter({
         },
         data: {
           name: input.data.name,
-          youtubeId: input.data.youtubeId,
+          videoEmbedUrl: input.data.videoEmbedUrl,
           description: input.data.description,
           type: input.data.type,
           speed: input.data.speed,

@@ -21,8 +21,8 @@ export const YoutubeTextInput = ({ register, errors, label, placeholder }: Youtu
           id={label}
           type='text'
           aria-invalid={errors[label] ? 'true' : 'false'}
-          {...register(label, validationValues.youtubeId)}
-          placeholder={'https://www.youtube.com/embed/___________'}
+          {...register(label, validationValues.videoEmbedUrl)}
+          placeholder={''}
         />
         {errors[label] && errors[label]?.type === 'required' && (
           <span role='alert' className='text-xs italic text-red-600'>

@@ -67,7 +67,7 @@ export const PlayListContainer = ({
           : !playsCount || playsCount === 0
           ? 'No plays found'
           : plays.map((play, idx) => (
-              <PlayContainer key={idx} play={play} youtubeEmbed={'inline'} postButton={false} />
+              <PlayContainer key={idx} play={play} videoEmbed={'inline'} postButton={false} />
             ))}
       </ul>
     </div>

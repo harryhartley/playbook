@@ -49,13 +49,13 @@ const Home: NextPage = () => {
             <meta property='og:description' content={play.description} />
             <meta property='og:url' content={`https://hyhy.gg/play/${play.id}`} />
             <meta property='og:type' content='video.other' />
-            <meta property='og:video' content={getEmbedUrl(play.youtubeId)} />
-            <meta property='og:video:url' content={getEmbedUrl(play.youtubeId)} />
-            <meta property='og:video:secure_url' content={getEmbedUrl(play.youtubeId)} />
+            <meta property='og:video' content={getEmbedUrl(play.videoEmbedUrl)} />
+            <meta property='og:video:url' content={getEmbedUrl(play.videoEmbedUrl)} />
+            <meta property='og:video:secure_url' content={getEmbedUrl(play.videoEmbedUrl)} />
             <meta property='og:video:width' content='1280' />
             <meta property='og:video:height' content='720' />
             <meta property='og:video:type' content='text/html' />
-            <meta property='og:image' content={getThumbnailUrl(play.youtubeId)} />
+            <meta property='og:image' content={getThumbnailUrl(play.videoEmbedUrl)} />
             <meta property='og:image:width' content='480' />
             <meta property='og:image:height' content='360' />
             <meta content='#87CEEB' data-react-helmet='true' name='theme-color' />
@@ -69,7 +69,7 @@ const Home: NextPage = () => {
             <BeatLoader />
           </div>
         ) : play ? (
-          <PlayContainer play={play} youtubeEmbed='above' postButton={true} />
+          <PlayContainer play={play} videoEmbed='above' postButton={true} />
         ) : (
           <p>Play not found</p>
         )}

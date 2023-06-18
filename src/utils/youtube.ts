@@ -1,4 +1,4 @@
-export const getThumbnailUrl = (youtubeId: string): string =>
-  `https://img.youtube.com/vi/${youtubeId.slice(30, 41)}/hqdefault.jpg`
+export const getThumbnailUrl = (videoEmbedUrl: string): string =>
+  `https://img.youtube.com/vi/${videoEmbedUrl.slice(30, 41)}/hqdefault.jpg`
 
-export const getEmbedUrl = (youtubeId: string): string => `https://www.youtube.com/embed/${youtubeId.slice(30, 41)}`
+export const getEmbedUrl = (videoEmbedUrl: string): string => `https://www.youtube.com/embed/${videoEmbedUrl.slice(30, 41)}`

@@ -4,15 +4,15 @@ import { useState } from 'react'
 import { isUserModeratorOrAbove } from '../../utils/auth'
 import { PlayAdminButtons } from './PlayAdminButtons'
 import { PlayData } from './PlayData'
-import { YoutubeEmbed } from './YoutubeEmbed'
+import { VideoEmbed } from './VideoEmbed'
 
 interface PlayContainerProps {
   play: PlayType & { user: { name: string | null }; bookmarks: Bookmark[] }
-  youtubeEmbed: 'inline' | 'above' | 'none'
+  videoEmbed: 'inline' | 'above' | 'none'
   postButton: boolean
 }
 
-export const PlayContainer = ({ play, youtubeEmbed, postButton }: PlayContainerProps) => {
+export const PlayContainer = ({ play, videoEmbed, postButton }: PlayContainerProps) => {
   const [hidden, setHidden] = useState('block')
 
   const { data: session } = useSession()
@@ -20,9 +20,9 @@ export const PlayContainer = ({ play, youtubeEmbed, postButton }: PlayContainerP
   return (
     <li className={`py-6 ${hidden}`}>
       <article>
-        {youtubeEmbed === 'above' && (
+        {videoEmbed === 'above' && (
           <div className='xl:col-span-1'>
-            <YoutubeEmbed youtubeId={play.youtubeId} controls={true} />
+            <VideoEmbed videoEmbedUrl={play.videoEmbedUrl} controls={true} />
           </div>
         )}
         <div className='space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0'>
@@ -32,9 +32,9 @@ export const PlayContainer = ({ play, youtubeEmbed, postButton }: PlayContainerP
               <PlayAdminButtons play={play} postButton={postButton} setHidden={setHidden} />
             )}
           </div>
-          {youtubeEmbed === 'inline' && (
+          {videoEmbed === 'inline' && (
             <div className='xl:col-span-1'>
-              <YoutubeEmbed youtubeId={play.youtubeId} controls={false} />
+              <VideoEmbed videoEmbedUrl={play.videoEmbedUrl} controls={false} />
             </div>
           )}
         </div>

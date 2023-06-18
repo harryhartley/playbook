@@ -6,9 +6,9 @@ export const validationValues = {
     required: true,
     maxLength: 50,
   },
-  youtubeId: {
+  videoEmbedUrl: {
     required: true,
-    pattern: /^https:\/\/www.youtube.com\/embed\/[a-z0-9_-]{11}(\?clip=[a-z0-9_-]{36}&amp;clipt=[a-z0-9_-]+)?$/gi,
+    pattern: /^https:\/\/drive.google.com\/file\/d\/[a-z0-9_-]+\/preview|https:\/\/www.youtube.com\/embed\/[a-z0-9_-]{11}(\?clip=[a-z0-9_-]{36}&amp;clipt=[a-z0-9_-]+)?$/gi,
   },
   description: {
     required: true,
@@ -22,9 +22,9 @@ const validateName = (name: string | undefined) => {
   return true
 }
 
-const validateYoutubeId = (youtubeId: string | undefined) => {
-  if (!youtubeId) return false
-  if (!youtubeId.match(validationValues.youtubeId.pattern)) return false
+const validateVideoEmbedUrl = (videoEmbedUrl: string | undefined) => {
+  if (!videoEmbedUrl) return false
+  if (!videoEmbedUrl.match(validationValues.videoEmbedUrl.pattern)) return false
   return true
 }
 
@@ -66,7 +66,7 @@ const validateDifficulty = (difficulty: number) => {
 
 export const validatePlay = (play: Play) => {
   if (!validateName(play.name)) return false
-  if (!validateYoutubeId(play.youtubeId)) return false
+  if (!validateVideoEmbedUrl(play.videoEmbedUrl)) return false
   if (!validateDescription(play.description)) return false
   if (!validateType(play.type)) return false
   if (!validateSpeed(play.speed)) return false
