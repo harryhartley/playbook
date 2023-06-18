@@ -10,7 +10,7 @@ import { appRouter } from '../../server/api/root'
 import { createInnerTRPCContext } from '../../server/api/trpc'
 import { getServerAuthSession } from '../../server/auth'
 import { api } from '../../utils/api'
-import { getEmbedUrl, getThumbnailUrl } from '../../utils/youtube'
+import { formatVideoEmbedUrl, getThumbnailUrl } from '../../utils/video'
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx)
@@ -49,9 +49,9 @@ const Home: NextPage = () => {
             <meta property='og:description' content={play.description} />
             <meta property='og:url' content={`https://hyhy.gg/play/${play.id}`} />
             <meta property='og:type' content='video.other' />
-            <meta property='og:video' content={getEmbedUrl(play.videoEmbedUrl)} />
-            <meta property='og:video:url' content={getEmbedUrl(play.videoEmbedUrl)} />
-            <meta property='og:video:secure_url' content={getEmbedUrl(play.videoEmbedUrl)} />
+            <meta property='og:video' content={formatVideoEmbedUrl(play.videoEmbedUrl)} />
+            <meta property='og:video:url' content={formatVideoEmbedUrl(play.videoEmbedUrl)} />
+            <meta property='og:video:secure_url' content={formatVideoEmbedUrl(play.videoEmbedUrl)} />
             <meta property='og:video:width' content='1280' />
             <meta property='og:video:height' content='720' />
             <meta property='og:video:type' content='text/html' />

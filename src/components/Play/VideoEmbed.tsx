@@ -1,19 +1,8 @@
+import { formatVideoEmbedUrl } from '../../utils/video'
+
 interface VideoEmbedProps {
   videoEmbedUrl: string
   controls: boolean
-}
-
-const formatVideoEmbedUrl = ( videoEmbedUrl: string, controls: boolean ): string => {
-  if (videoEmbedUrl.includes('drive.google.com')) {
-    return videoEmbedUrl
-  }
-  if (videoEmbedUrl.includes('?')) {
-    return videoEmbedUrl
-  }
-  if (controls) {
-    return `${videoEmbedUrl.split('?clip')[0] ?? ''}`
-  }
-  return `${videoEmbedUrl.split('?clip')[0] ?? ''}?modestbranding=1&autohide=1&showinfo=0&controls=0&playlist=${videoEmbedUrl.slice(-11)}&loop=1`
 }
 
 export const VideoEmbed = ({ videoEmbedUrl, controls }: VideoEmbedProps) => (

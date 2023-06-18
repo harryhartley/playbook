@@ -4,7 +4,7 @@ import { siteMetadata } from '../../data/siteMetadata'
 import { env } from '../../env.mjs'
 import { getServerAuthSession } from '../../server/auth'
 import { isUserModeratorOrAbove } from '../../utils/auth'
-import { getThumbnailUrl } from '../../utils/youtube'
+import { getThumbnailUrl } from '../../utils/video'
 
 const postToWebhook = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerAuthSession({ req, res })
