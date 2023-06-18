@@ -1,5 +1,9 @@
-export const getThumbnailUrl = (videoEmbedUrl: string): string =>
-  `https://img.youtube.com/vi/${videoEmbedUrl.slice(30, 41)}/hqdefault.jpg`
+export const getThumbnailUrl = (videoEmbedUrl: string): string => {
+  if (videoEmbedUrl.includes('drive.google.com')) {
+    return `https://lh3.googleusercontent.com/d/${videoEmbedUrl.split('/')[6] ?? ''}=s220?authuser=1`
+  }
+  return `https://img.youtube.com/vi/${videoEmbedUrl.slice(30, 41)}/hqdefault.jpg`
+}
 
 export const formatVideoEmbedUrl = ( videoEmbedUrl: string, controls?: boolean ): string => {
   if (videoEmbedUrl.includes('drive.google.com')) {
