@@ -4,10 +4,10 @@ export const SEO = () => {
   return (
     <Head>
       <title>Playbook</title>
-      {/* <meta name='title' content='Playbook' />
+      <meta name='title' content='Playbook' />
       <meta name='description' content='The playbook is a repository for FGC tech, contributed to by the community' />
 
-      <meta property='og:site_name' content='Playbook' />
+      {/* <meta property='og:site_name' content='Playbook' />
 
       <meta property='og:type' content='website' />
       <meta property='og:url' content='https://www.hyhy.gg/' />
