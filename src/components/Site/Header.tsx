@@ -6,6 +6,7 @@ import { headerNavLinks } from '../../data/headerNavLinks'
 import { siteMetadata } from '../../data/siteMetadata'
 import { isUserContributorOrAbove, isUserModeratorOrAbove } from '../../utils/auth'
 import { toTitleCase } from '../../utils/string'
+import { Logo } from './Logo'
 import { MobileNav } from './MobileNav'
 import { ThemeSwitch } from './ThemeSwitch'
 
@@ -18,9 +19,9 @@ export const Header = () => {
       <div>
         <Link href='/' aria-label={siteMetadata.title}>
           <div className='flex items-center justify-between'>
-            {/* <div className="mr-3">
+            <div className='mr-3'>
               <Logo />
-            </div> */}
+            </div>
             <div className='hidden h-6 text-2xl font-semibold sm:block'>{siteMetadata.title}</div>
           </div>
         </Link>
