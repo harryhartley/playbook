@@ -10,7 +10,7 @@ const postToWebhook = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerAuthSession({ req, res })
   const play = JSON.parse(req.body as string) as Play & { user: { name: string | null } }
 
-  if (!session || !isUserModeratorOrAbove(session?.user.role ?? '')) {
+  if (!session || (session && !isUserModeratorOrAbove(session.user.role ?? ''))) {
     res.status(401).json('Not authorised')
   } else {
     switch (req.method) {

@@ -20,7 +20,7 @@ const Home: NextPage = () => {
     { refetchOnWindowFocus: false }
   )
 
-  if (session && !isUserModeratorOrAbove(session.user.role)) {
+  if (!session || (session && !isUserModeratorOrAbove(session.user.role))) {
     return <p>Not authorised</p>
   }
 

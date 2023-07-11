@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   const { query } = useRouter()
   if (typeof query.playId !== 'string') return <p>Bad ID</p>
 
-  if (session && !isUserModeratorOrAbove(session.user.role)) {
+  if (!session || (session && !isUserModeratorOrAbove(session.user.role))) {
     return <p>Not authorised</p>
   }
 

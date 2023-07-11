@@ -28,9 +28,10 @@ export const PlayContainer = ({ play, videoEmbed, postButton }: PlayContainerPro
         <div className='space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0'>
           <div className='space-y-2 xl:col-span-2'>
             <PlayData play={play} />
-            {session && isUserModeratorOrAbove(session?.user.role) && (
-              <PlayAdminButtons play={play} postButton={postButton} setHidden={setHidden} />
-            )}
+            {!session ||
+              (session && isUserModeratorOrAbove(session?.user.role) && (
+                <PlayAdminButtons play={play} postButton={postButton} setHidden={setHidden} />
+              ))}
           </div>
           {videoEmbed === 'inline' && (
             <div className='xl:col-span-1'>

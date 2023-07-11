@@ -7,7 +7,7 @@ import { isUserContributorOrAbove } from '../../utils/auth'
 const Home: NextPage = () => {
   const { data: session } = useSession()
 
-  if (session && !isUserContributorOrAbove(session.user.role)) {
+  if (!session || (session && !isUserContributorOrAbove(session.user.role))) {
     return <p>Not authorised</p>
   }
 
