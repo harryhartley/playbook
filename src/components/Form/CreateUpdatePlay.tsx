@@ -10,7 +10,7 @@ import { PlayData } from '../Play/PlayData'
 import { TagDropdown } from './TagDropdown'
 import { TextArea } from './TextArea'
 import { TextInput } from './TextInput'
-import { YoutubeTextInput } from './YoutubeTextInput'
+import { VideoTextInput } from './VideoTextInput'
 
 export type PlayForm = Omit<Play, 'id' | 'createdAt' | 'updatedAt'>
 
@@ -79,7 +79,7 @@ export const PlayForm = ({ playId }: PlayFormProps) => {
       </h1>
       <form className='mb-10' onSubmit={handleSubmit(playId ? onSubmitUpdate : onSubmitCreate)}>
         <TextInput register={r} errors={errors} label='name' placeholder='Play Title' />
-        <YoutubeTextInput register={r} errors={errors} label='videoEmbedUrl' placeholder='Video Embed URL' />
+        <VideoTextInput register={r} errors={errors} label='videoEmbedUrl' placeholder='Video Embed URL' />
         <TextArea register={r} errors={errors} label='description' placeholder='Play Description' />
         <div className='-mx-3 mb-2 grid grid-cols-2'>
           <TagDropdown register={r} label='character' placeholder='Character' o={Character} />

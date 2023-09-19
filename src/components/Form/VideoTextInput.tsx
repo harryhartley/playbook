@@ -2,14 +2,14 @@ import type { FieldErrors, UseFormRegister } from 'react-hook-form'
 import { validationValues } from '../../validation/play'
 import type { PlayForm } from './CreateUpdatePlay'
 
-interface YoutubeTextInputProps {
+interface VideoTextInputProps {
   register: UseFormRegister<PlayForm>
   errors: FieldErrors
   label: keyof PlayForm
   placeholder: string
 }
 
-export const YoutubeTextInput = ({ register, errors, label, placeholder }: YoutubeTextInputProps) => {
+export const VideoTextInput = ({ register, errors, label, placeholder }: VideoTextInputProps) => {
   return (
     <div className='-mx-3 mb-2 flex flex-wrap'>
       <div className='w-full px-3'>
