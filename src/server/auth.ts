@@ -43,6 +43,15 @@ export const authOptions: NextAuthOptions = {
       }
       return session
     },
+    async signIn({ user, profile }) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+      const { username, image_url } = profile as any
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { name: username as string, image: image_url as string },
+      })
+      return true
+    },
   },
   adapter: PrismaAdapter(prisma),
   pages: {
