@@ -10,7 +10,8 @@ export const validationValues = {
     required: true,
     pattern:
       // match discord video uploads, google drive embeds, youtube embeds, youtube clip embeds
-      /^https:\/\/cdn\.discordapp\.com\/attachments\/[0-9]+\/[0-9]+\/.+\.mp4|https:\/\/drive\.google\.com\/file\/d\/[a-z0-9_-]+\/preview|https:\/\/www\.youtube\.com\/embed\/[a-z0-9_-]{11}(\?clip=[a-z0-9_-]{36}&amp;clipt=[a-z0-9_-]+)?$/gi,
+      /^https:\/\/cdn\.discordapp\.com\/attachments\/[0-9]+\/[0-9]+\/.+\.mp4|https:\/\/drive\.google\.com\/file\/d\/[a-z0-9_-]+\/preview|https:\/\/www\.youtube\.com\/embed\/.+?$/gi,
+    // /^https:\/\/cdn\.discordapp\.com\/attachments\/[0-9]+\/[0-9]+\/.+\.mp4|https:\/\/drive\.google\.com\/file\/d\/[a-z0-9_-]+\/preview|https:\/\/www\.youtube\.com\/embed\/[a-z0-9_-]{11}(\?clip=[a-z0-9_-]{36}&amp;clipt=[a-z0-9_-]+)?$/gi,
   },
   description: {
     required: true,
