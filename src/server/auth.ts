@@ -1,6 +1,7 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import type { GetServerSidePropsContext } from 'next'
 import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
+import type { DiscordProfile } from 'next-auth/providers/discord'
 import DiscordProvider from 'next-auth/providers/discord'
 import { env } from '../env.mjs'
 import { prisma } from './db'
@@ -13,6 +14,9 @@ import { prisma } from './db'
  * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
  **/
 declare module 'next-auth' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface Profile extends DiscordProfile {}
+
   interface Session extends DefaultSession {
     user: {
       id: string
@@ -44,11 +48,10 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async signIn({ user, profile }) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
-      const { username, image_url } = profile as any
+      console.log(profile)
       await prisma.user.update({
         where: { id: user.id },
-        data: { name: username as string, image: image_url as string },
+        data: { name: profile?.username, image: profile?.image_url },
       })
       return true
     },
