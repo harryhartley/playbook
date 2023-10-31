@@ -14,12 +14,11 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 20;
 
-  const { data: plays } = api.play.getAll.useQuery(
+  const { data: plays } = api.play.getAllApproved.useQuery(
     {
       currentPage,
       pageSize,
       filter: { c: (query.c === "All" ? undefined : query.c) as Character },
-      approved: true,
     },
     { refetchOnWindowFocus: false },
   );
