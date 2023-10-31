@@ -1,35 +1,39 @@
-import { type Session } from 'next-auth'
-import { SessionProvider } from 'next-auth/react'
-import { type AppType } from 'next/app'
+import { type Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import { type AppType } from "next/app";
 
-import { api } from '../utils/api'
+import { api } from "~/utils/api";
 
-import { Analytics } from '@vercel/analytics/react'
-import { ThemeProvider } from 'next-themes'
-import Head from 'next/head'
-import { LayoutWrapper } from '../components/Site/LayoutWrapper'
-import { SEO } from '../components/Site/SEO'
-import { siteMetadata } from '../data/siteMetadata'
+import { Header } from "~/components/header/header";
+import { Sidebar } from "~/components/sidebar/sidebar";
+import { SidebarProvider } from "~/contexts/SidebarContext";
+import "~/styles/globals.css";
+import { ThemeProvider } from "~/providers/theme-provider";
+import { Footer } from "~/components/footer/footer";
 
-import '../styles/globals.css'
-
-const MyApp: AppType<{ session: Session | null }> = ({ Component, pageProps: { session, ...pageProps } }) => {
+const MyApp: AppType<{ session: Session | null }> = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}) => {
   return (
     <SessionProvider session={session}>
-      <ThemeProvider attribute='class' defaultTheme={siteMetadata.theme}>
-        <Head>
-          <meta content='width=device-width, initial-scale=1' name='viewport' />
-        </Head>
-        <SEO />
-        <LayoutWrapper>
-          <>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <SidebarProvider>
+          <Header />
+          <div className="flex-grow-1 grid grid-cols-[auto,1fr] overflow-auto">
+            <Sidebar />
             <Component {...pageProps} />
-            <Analytics />
-          </>
-        </LayoutWrapper>
+          </div>
+          <Footer />
+        </SidebarProvider>
       </ThemeProvider>
     </SessionProvider>
-  )
-}
+  );
+};
 
-export default api.withTRPC(MyApp)
+export default api.withTRPC(MyApp);

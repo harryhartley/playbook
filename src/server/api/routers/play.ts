@@ -1,230 +1,32 @@
-import { z } from 'zod'
-import { adminProtectedProcedure, protectedProcedure } from './../trpc'
+import { z } from "zod";
 
-import { Character, Environment, Speed, Stage, Type } from '@prisma/client'
-import { isUserModeratorOrAbove } from '../../../utils/auth'
+import { Character, Environment, Speed, Stage, Type } from "@prisma/client";
+import { isUserModeratorOrAbove } from "~/utils/auth";
 import {
   contributorOrAboveProtectedProcedure,
   createTRPCRouter,
   moderatorOrAboveProtectedProcedure,
   publicProcedure,
-} from '../trpc'
+} from "../trpc";
 
 export const playRouter = createTRPCRouter({
   getById: publicProcedure.input(z.string().cuid()).query(({ ctx, input }) => {
-    return ctx.prisma.play.findUnique({
+    return ctx.db.play.findUnique({
       where: { id: input },
-      include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
-    })
-  }),
-  getAllByUserId: publicProcedure
-    .input(
-      z.object({
-        userId: z.string().cuid(),
-        currentPage: z.number().int().min(1),
-        pageSize: z.number().int().min(1),
-      })
-    )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.play.findMany({
-        orderBy: [{ createdAt: 'desc' }],
-        where: { userId: input.userId, archived: false },
-        skip: (input.currentPage - 1) * input.pageSize,
-        take: input.pageSize,
-        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
-      })
-    }),
-  getCountByUserId: publicProcedure.input(z.string().cuid()).query(({ ctx, input }) => {
-    return ctx.prisma.play.count({
-      where: { userId: input, archived: false },
-    })
-  }),
-  getAllApproved: publicProcedure
-    .input(
-      z.object({
-        currentPage: z.number().int().min(1),
-        pageSize: z.number().int().min(1),
-        filter: z
-          .object({
-            c: z.nativeEnum(Character).optional(),
-            e: z.nativeEnum(Environment).optional(),
-            t: z.nativeEnum(Type).optional(),
-            st: z.nativeEnum(Stage).optional(),
-            sp: z.nativeEnum(Speed).optional(),
-            d: z.number().int().min(1).max(5).optional(),
-          })
-          .optional(),
-      })
-    )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.play.findMany({
-        orderBy: [{ createdAt: 'desc' }],
-        where: {
-          approved: true,
-          archived: false,
-          character: input.filter?.c,
-          environment: input.filter?.e,
-          type: input.filter?.t,
-          stage: input.filter?.st,
-          speed: input.filter?.sp,
-          difficulty: input.filter?.d,
-        },
-        skip: (input.currentPage - 1) * input.pageSize,
-        take: input.pageSize,
-        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
-      })
-    }),
-  getCountApproved: publicProcedure
-    .input(
-      z.object({
-        filter: z
-          .object({
-            c: z.nativeEnum(Character).optional(),
-            e: z.nativeEnum(Environment).optional(),
-            t: z.nativeEnum(Type).optional(),
-            st: z.nativeEnum(Stage).optional(),
-            sp: z.nativeEnum(Speed).optional(),
-            d: z.number().int().min(1).max(5).optional(),
-          })
-          .optional(),
-      })
-    )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.play.count({
-        where: {
-          approved: true,
-          archived: false,
-          character: input.filter?.c,
-          environment: input.filter?.e,
-          type: input.filter?.t,
-          stage: input.filter?.st,
-          speed: input.filter?.sp,
-          difficulty: input.filter?.d,
-        },
-      })
-    }),
-  getAllApprovedByGameAbbr: publicProcedure
-    .input(
-      z.object({
-        gameAbbr: z.string(),
-        currentPage: z.number().int().min(1),
-        pageSize: z.number().int().min(1),
-        filter: z
-          .object({
-            c: z.nativeEnum(Character).optional(),
-            e: z.nativeEnum(Environment).optional(),
-            t: z.nativeEnum(Type).optional(),
-            st: z.nativeEnum(Stage).optional(),
-            sp: z.nativeEnum(Speed).optional(),
-            d: z.number().int().min(1).max(5).optional(),
-          })
-          .optional(),
-      })
-    )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.play.findMany({
-        orderBy: [{ createdAt: 'desc' }],
-        where: {
-          game: { abbreviation: input.gameAbbr },
-          approved: true,
-          archived: false,
-          character: input.filter?.c,
-          environment: input.filter?.e,
-          type: input.filter?.t,
-          stage: input.filter?.st,
-          speed: input.filter?.sp,
-          difficulty: input.filter?.d,
-        },
-        skip: (input.currentPage - 1) * input.pageSize,
-        take: input.pageSize,
-        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
-      })
-    }),
-  getCountApprovedByGameAbbr: publicProcedure
-    .input(
-      z.object({
-        gameAbbr: z.string(),
-        filter: z
-          .object({
-            c: z.nativeEnum(Character).optional(),
-            e: z.nativeEnum(Environment).optional(),
-            t: z.nativeEnum(Type).optional(),
-            st: z.nativeEnum(Stage).optional(),
-            sp: z.nativeEnum(Speed).optional(),
-            d: z.number().int().min(1).max(5).optional(),
-          })
-          .optional(),
-      })
-    )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.play.count({
-        where: {
-          game: { abbreviation: input.gameAbbr },
-          approved: true,
-          archived: false,
-          character: input.filter?.c,
-          environment: input.filter?.e,
-          type: input.filter?.t,
-          stage: input.filter?.st,
-          speed: input.filter?.sp,
-          difficulty: input.filter?.d,
-        },
-      })
-    }),
-  getAllUnapproved: moderatorOrAboveProtectedProcedure
-    .input(
-      z.object({
-        currentPage: z.number().int().min(1),
-        pageSize: z.number().int().min(1),
-      })
-    )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.play.findMany({
-        orderBy: [{ createdAt: 'desc' }],
-        where: { approved: false, archived: false },
-        skip: (input.currentPage - 1) * input.pageSize,
-        take: input.pageSize,
-        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
-      })
-    }),
-  getCountUnapproved: moderatorOrAboveProtectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.play.count({
-      where: { approved: false, archived: false },
-    })
-  }),
-  getAllBookmarked: protectedProcedure
-    .input(
-      z.object({
-        currentPage: z.number().int().min(1),
-        pageSize: z.number().int().min(1),
-      })
-    )
-    .query(({ ctx, input }) => {
-      return ctx.prisma.play.findMany({
-        orderBy: [{ createdAt: 'desc' }],
-        where: { bookmarks: { some: { userId: ctx.session.user.id } }, archived: false },
-        skip: (input.currentPage - 1) * input.pageSize,
-        take: input.pageSize,
-        include: { user: { select: { name: true } }, bookmarks: { where: { userId: ctx.session?.user.id } } },
-      })
-    }),
-  getCountBookmarked: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.play.count({
-      where: { bookmarks: { some: { userId: ctx.session.user.id } }, archived: false },
-    })
-  }),
-  approveById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
-    return ctx.prisma.play.update({ where: { id: input }, data: { approved: true } })
-  }),
-  unapproveById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
-    return ctx.prisma.play.update({ where: { id: input }, data: { approved: false } })
+      include: {
+        user: { select: { id: true, name: true, image: true } },
+        bookmarks: { where: { userId: ctx.session?.user.id } },
+        stars: true,
+      },
+    });
   }),
   create: contributorOrAboveProtectedProcedure
     .input(
       z.object({
         name: z.string(),
-        videoEmbedUrl: z.string(),
-        description: z.string(),
+        videoUrl: z.string(),
+        thumbnailUrl: z.string().optional(),
+        description: z.string().optional(),
         type: z.nativeEnum(Type),
         speed: z.nativeEnum(Speed),
         environment: z.nativeEnum(Environment),
@@ -232,17 +34,18 @@ export const playRouter = createTRPCRouter({
         stage: z.nativeEnum(Stage),
         difficulty: z.number().int().min(1).max(5),
         gameAbbr: z.string(),
-      })
+      }),
     )
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.game.update({
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.game.update({
         where: { abbreviation: input.gameAbbr },
         data: {
           plays: {
             create: {
               userId: ctx.session.user.id,
               name: input.name,
-              videoEmbedUrl: input.videoEmbedUrl,
+              videoUrl: input.videoUrl,
+              thumbnailUrl: input.thumbnailUrl,
               description: input.description,
               type: input.type,
               speed: input.speed,
@@ -254,47 +57,124 @@ export const playRouter = createTRPCRouter({
             },
           },
         },
-      })
+      });
     }),
-  updateById: moderatorOrAboveProtectedProcedure
+  update: contributorOrAboveProtectedProcedure
     .input(
       z.object({
         id: z.string().cuid(),
-        data: z.object({
-          name: z.string(),
-          videoEmbedUrl: z.string(),
-          description: z.string(),
-          type: z.nativeEnum(Type),
-          speed: z.nativeEnum(Speed),
-          environment: z.nativeEnum(Environment),
-          character: z.nativeEnum(Character),
-          stage: z.nativeEnum(Stage),
-          difficulty: z.number().int().min(1).max(5),
-        }),
-      })
+        name: z.string(),
+        videoUrl: z.string(),
+        thumbnailUrl: z.string().optional(),
+        description: z.string().optional(),
+        type: z.nativeEnum(Type),
+        speed: z.nativeEnum(Speed),
+        environment: z.nativeEnum(Environment),
+        character: z.nativeEnum(Character),
+        stage: z.nativeEnum(Stage),
+        difficulty: z.number().int().min(1).max(5),
+      }),
     )
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.play.update({
-        where: {
-          id: input.id,
-        },
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.play.update({
+        where: { id: input.id },
         data: {
-          name: input.data.name,
-          videoEmbedUrl: input.data.videoEmbedUrl,
-          description: input.data.description,
-          type: input.data.type,
-          speed: input.data.speed,
-          environment: input.data.environment,
-          character: input.data.character,
-          stage: input.data.stage,
-          difficulty: input.data.difficulty,
+          name: input.name,
+          videoUrl: input.videoUrl,
+          thumbnailUrl: input.thumbnailUrl,
+          description: input.description,
+          type: input.type,
+          speed: input.speed,
+          environment: input.environment,
+          character: input.character,
+          stage: input.stage,
+          difficulty: input.difficulty,
         },
-      })
+      });
     }),
-  deleteById: adminProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
-    return ctx.prisma.play.delete({ where: { id: input } })
-  }),
-  archiveById: moderatorOrAboveProtectedProcedure.input(z.string().cuid()).mutation(({ ctx, input }) => {
-    return ctx.prisma.play.update({ where: { id: input }, data: { archived: true } })
-  }),
-})
+  getAll: publicProcedure
+    .input(
+      z.object({
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+        filter: z
+          .object({
+            c: z.nativeEnum(Character).optional(),
+            e: z.nativeEnum(Environment).optional(),
+            t: z.nativeEnum(Type).optional(),
+            st: z.nativeEnum(Stage).optional(),
+            sp: z.nativeEnum(Speed).optional(),
+            d: z.number().int().min(1).max(5).optional(),
+          })
+          .optional(),
+        approved: z.boolean(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const count = await ctx.db.play.count({
+        where: {
+          approved: input.approved,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+        },
+      });
+      const plays = await ctx.db.play.findMany({
+        orderBy: [{ createdAt: "desc" }],
+        where: {
+          approved: input.approved,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+        },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+        include: {
+          user: { select: { id: true, name: true, image: true } },
+          bookmarks: { where: { userId: ctx.session?.user.id } },
+          stars: true,
+        },
+      });
+      return { plays, count };
+    }),
+  approveById: moderatorOrAboveProtectedProcedure
+    .input(z.string().cuid())
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.play.update({
+        where: { id: input },
+        data: { approved: true },
+      });
+    }),
+  unapproveById: moderatorOrAboveProtectedProcedure
+    .input(z.string().cuid())
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.play.update({
+        where: { id: input },
+        data: { approved: false },
+      });
+    }),
+  archiveById: moderatorOrAboveProtectedProcedure
+    .input(z.string().cuid())
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.play.update({
+        where: { id: input },
+        data: { archived: true },
+      });
+    }),
+  unarchiveById: moderatorOrAboveProtectedProcedure
+    .input(z.string().cuid())
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.play.update({
+        where: { id: input },
+        data: { archived: false },
+      });
+    }),
+});
