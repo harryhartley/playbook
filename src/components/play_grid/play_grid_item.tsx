@@ -6,6 +6,8 @@ import { Button } from "../ui/button";
 import { Bookmark, Check, Star, Trash } from "lucide-react";
 import { api } from "~/utils/api";
 import { PlayForm } from "../play_form/play_form";
+import { useSession } from "next-auth/react";
+import { isUserModeratorOrAbove } from "~/utils/auth";
 
 const playWithUserAndBookmarks = Prisma.validator<Prisma.PlayDefaultArgs>()({
   include: {
@@ -42,6 +44,7 @@ export function PlayGridItem({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const queries = api.useContext();
+  const { data: session } = useSession();
 
   // const createBookmark = api.bookmark.create.useMutation();
   // const deleteBookmark = api.bookmark.delete.useMutation();
@@ -131,19 +134,21 @@ export function PlayGridItem({
         <Button variant="ghost" size="icon">
           <Star size={iconSize} />
         </Button>
-        <PlayForm
-          id={id}
-          name={name}
-          description={description ?? ""}
-          videoUrl={videoUrl}
-          thumbnailUrl={thumbnailUrl ?? ""}
-          type={type}
-          speed={speed}
-          character={character}
-          environment={environment}
-          stage={stage}
-          difficulty={difficulty.toString()}
-        />
+        {session && isUserModeratorOrAbove(session?.user.role) && 
+          (<PlayForm
+            id={id}
+            name={name}
+            description={description ?? ""}
+            videoUrl={videoUrl}
+            thumbnailUrl={thumbnailUrl ?? ""}
+            type={type}
+            speed={speed}
+            character={character}
+            environment={environment}
+            stage={stage}
+            difficulty={difficulty.toString()}
+          />)
+        }
         {!approved && (
           <Button
             variant="ghost"

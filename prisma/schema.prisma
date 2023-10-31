@@ -19,6 +19,7 @@ enum Type {
   Offense
   Okizeme
   Serve
+  Tech
 }
 
 // model Type {
