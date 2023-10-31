@@ -2,7 +2,12 @@ const formatter = new Intl.RelativeTimeFormat(undefined, {
   numeric: "always",
 });
 
-const DIVISIONS: { amount: number; name: Intl.RelativeTimeFormatUnit }[] = [
+type division = {
+  amount: number;
+  name: Intl.RelativeTimeFormatUnit;
+}
+
+const DIVISIONS: division[] = [
   { amount: 60, name: "seconds" },
   { amount: 60, name: "minutes" },
   { amount: 24, name: "hours" },
@@ -17,9 +22,9 @@ export function formatTimeAgo(date: Date) {
 
   for (let i = 0; i < DIVISIONS.length; i++) {
     const division = DIVISIONS[i];
-    if (Math.abs(duration) < division.amount) {
-      return formatter.format(Math.round(duration), division.name);
+    if (Math.abs(duration) < (division as division).amount) {
+      return formatter.format(Math.round(duration), (division as division).name);
     }
-    duration /= division.amount;
+    duration /= (division as division).amount;
   }
 }
