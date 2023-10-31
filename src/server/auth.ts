@@ -49,13 +49,13 @@ export const authOptions: NextAuthOptions = {
         role: user.role,
       },
     }),
-    async signIn({ user, profile }) {
-      await db.user.update({
-        where: { id: user.id },
-        data: { name: profile?.username, image: profile?.image_url },
-      });
-      return true;
-    },
+    // async signIn({ user, profile }) {
+    //   await db.user.update({
+    //     where: { id: user.id },
+    //     data: { name: profile?.username, image: profile?.image_url },
+    //   });
+    //   return true;
+    // },
   },
   adapter: PrismaAdapter(db),
   providers: [
