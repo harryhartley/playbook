@@ -59,7 +59,7 @@ export const playRouter = createTRPCRouter({
         },
       });
     }),
-  update: contributorOrAboveProtectedProcedure
+  update: moderatorOrAboveProtectedProcedure
     .input(
       z.object({
         id: z.string().cuid(),
@@ -92,7 +92,7 @@ export const playRouter = createTRPCRouter({
         },
       });
     }),
-  getAll: publicProcedure
+  getAllUnapproved: moderatorOrAboveProtectedProcedure
     .input(
       z.object({
         currentPage: z.number().int().min(1),
@@ -107,13 +107,12 @@ export const playRouter = createTRPCRouter({
             d: z.number().int().min(1).max(5).optional(),
           })
           .optional(),
-        approved: z.boolean(),
       }),
     )
     .query(async ({ ctx, input }) => {
       const count = await ctx.db.play.count({
         where: {
-          approved: input.approved,
+          approved: false,
           archived: false,
           character: input.filter?.c,
           environment: input.filter?.e,
@@ -126,7 +125,59 @@ export const playRouter = createTRPCRouter({
       const plays = await ctx.db.play.findMany({
         orderBy: [{ createdAt: "desc" }],
         where: {
-          approved: input.approved,
+          approved: false,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+        },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+        include: {
+          user: { select: { id: true, name: true, image: true } },
+          bookmarks: { where: { userId: ctx.session?.user.id } },
+          stars: true,
+        },
+      });
+      return { plays, count };
+    }),
+  getAllApproved: publicProcedure
+    .input(
+      z.object({
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+        filter: z
+          .object({
+            c: z.nativeEnum(Character).optional(),
+            e: z.nativeEnum(Environment).optional(),
+            t: z.nativeEnum(Type).optional(),
+            st: z.nativeEnum(Stage).optional(),
+            sp: z.nativeEnum(Speed).optional(),
+            d: z.number().int().min(1).max(5).optional(),
+          })
+          .optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const count = await ctx.db.play.count({
+        where: {
+          approved: true,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+        },
+      });
+      const plays = await ctx.db.play.findMany({
+        orderBy: [{ createdAt: "desc" }],
+        where: {
+          approved: true,
           archived: false,
           character: input.filter?.c,
           environment: input.filter?.e,
