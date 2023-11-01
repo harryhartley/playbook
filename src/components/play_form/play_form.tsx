@@ -7,12 +7,10 @@ import { UploadButton } from "~/utils/uploadthing";
 import { Button } from "../ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "../ui/dialog";
 import {
   Form,
@@ -62,6 +60,8 @@ export function PlayForm({
   stage,
   difficulty,
 }: PlayFormProps) {
+  const [open, setOpen] = useState(false);
+
   const queries = api.useContext();
   const createPlay = api.play.create.useMutation({
     onSuccess: () => queries.play.invalidate(),
@@ -69,7 +69,7 @@ export function PlayForm({
   const updatePlay = api.play.update.useMutation({
     onSuccess: () => queries.play.invalidate(),
   });
-  const deleteFile = api.uploadthing.deleteFile.useMutation();
+  const deleteFiles = api.uploadthing.deleteFiles.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -106,15 +106,16 @@ export function PlayForm({
         gameAbbr: "llb",
       });
     }
+    form.reset();
   }
 
   function onClose() {
-    if (videoUploadUrl) {
-      deleteFile.mutate({ fileUrl: videoUploadUrl });
+    if (!id && videoUploadUrl) {
+      deleteFiles.mutate({ fileUrls: [videoUploadUrl] });
       setVideoUploadUrl("");
     }
-    if (thumbnailUploadUrl) {
-      deleteFile.mutate({ fileUrl: thumbnailUploadUrl });
+    if (!id && thumbnailUploadUrl) {
+      deleteFiles.mutate({ fileUrls: [thumbnailUploadUrl] });
       setThumbnailUploadUrl("");
     }
     form.reset();
@@ -126,21 +127,22 @@ export function PlayForm({
   );
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button size="icon" variant="ghost">
-          {id ? <Edit size={14} /> : <Plus />}
-        </Button>
-      </DialogTrigger>
+    <Dialog
+      open={open}
+      onOpenChange={() => {
+        onClose();
+        setOpen(false);
+      }}
+    >
+      <Button size="icon" variant="ghost" onClick={() => setOpen(true)}>
+        {id ? <Edit size={14} /> : <Plus />}
+      </Button>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{id ? `Update Play ${id}` : "Create Play"}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-2 gap-4"
-          >
+          <form className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="name"
@@ -353,12 +355,13 @@ export function PlayForm({
                     <UploadButton
                       className="py-4"
                       endpoint="mp4Uploader"
-                      onClientUploadComplete={(res) => {
+                      onClientUploadComplete={async (res) => {
                         console.log("Files: ", res);
                         if (res && res.length > 0) {
                           setVideoUploadUrl(res[0]?.url ?? "");
                           form.setValue("videoUrl", res[0]?.url ?? "");
                         }
+                        await form.trigger("videoUrl");
                       }}
                       onUploadError={(err) => {
                         console.log("Error: ", err);
@@ -392,12 +395,13 @@ export function PlayForm({
                     <UploadButton
                       className="py-4"
                       endpoint="pngUploader"
-                      onClientUploadComplete={(res) => {
+                      onClientUploadComplete={async (res) => {
                         console.log("Files: ", res);
                         if (res && res.length > 0) {
                           setThumbnailUploadUrl(res[0]?.url ?? "");
                           form.setValue("thumbnailUrl", res[0]?.url ?? "");
                         }
+                        await form.trigger("thumbnailUrl");
                       }}
                       onUploadError={(err) => {
                         console.log("Error: ", err);
@@ -409,13 +413,15 @@ export function PlayForm({
             )}
           </form>
         </Form>
-        <DialogFooter className="flex sm:justify-between">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary" onClick={onClose}>
-              Close
-            </Button>
-          </DialogClose>
-          <Button type="submit" onClick={onSubmit}>
+        <DialogFooter className="flex sm:justify-end">
+          <Button
+            disabled={!form.formState.isValid}
+            type="button"
+            onClick={async () => {
+              await onSubmit();
+              setOpen(false);
+            }}
+          >
             Save Play
           </Button>
         </DialogFooter>
