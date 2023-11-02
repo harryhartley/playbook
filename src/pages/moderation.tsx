@@ -27,12 +27,12 @@ export default function Home() {
   );
 
   if (!isUserModeratorOrAbove(session?.user.role ?? "")) {
-    <div>Not a moderator</div>
+    <div>Not a moderator</div>;
   }
 
   return (
     <div className="overflow-x-hidden px-8 pb-4">
-      <div className="sticky top-0 z-10 bg-white pb-4">
+      <div className="sticky top-0 z-10 pb-4">
         <CategoryPills
           categories={categories}
           selectedCategory={selectedCategory}
