@@ -11,8 +11,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-// import { ThemeSwitch } from "../theme_switch/theme_switch";
 import { isUserContributorOrAbove } from "~/utils/auth";
+import { ThemeSwitch } from "../theme_switch/theme_switch";
 
 export function HeaderSecondSection() {
   const { data: session, status: sessionStatus } = useSession();
@@ -41,7 +41,7 @@ export function HeaderSecondSection() {
         <Bell />
       </Button>
 
-      {/* <ThemeSwitch /> */}
+      <ThemeSwitch />
 
       {sessionStatus === "loading" ? (
         <div>Loading...</div>
