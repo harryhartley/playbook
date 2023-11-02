@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { useSidebarContext } from "~/contexts/SidebarContext";
 import { useUIStore } from "~/stores/uiStore";
+import { useTheme } from "next-themes";
 
 export function HeaderFirstSection() {
+  const { resolvedTheme } = useTheme();
   const { fullWidthSearch } = useUIStore();
   const { toggle } = useSidebarContext();
 
@@ -20,7 +22,7 @@ export function HeaderFirstSection() {
       </Button>
       <Link className="flex items-center gap-4" href="/">
         <Image
-          src="/images/logo/light.png"
+          src={`/images/logo/${resolvedTheme ?? "light"}.png`}
           alt="Playbook Logo"
           width="64"
           height="64"

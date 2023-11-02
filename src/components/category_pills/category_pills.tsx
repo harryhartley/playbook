@@ -63,7 +63,7 @@ export function CategoryPills({
         ))}
       </div>
       {isLeftVisible && (
-        <div className="absolute left-0 top-1/2 h-full w-24 -translate-y-1/2 bg-gradient-to-r from-white from-50% to-transparent">
+        <div className="absolute left-0 top-1/2 h-full w-24 -translate-y-1/2 bg-gradient-to-r from-background from-50% to-transparent">
           <Button
             variant="ghost"
             size="icon"
@@ -81,7 +81,7 @@ export function CategoryPills({
         </div>
       )}
       {isRightVisible && (
-        <div className="absolute right-0 top-1/2 flex h-full w-24 -translate-y-1/2 justify-end bg-gradient-to-l from-white from-50% to-transparent">
+        <div className="absolute right-0 top-1/2 flex h-full w-24 -translate-y-1/2 justify-end bg-gradient-to-l from-background from-50% to-transparent">
           <Button
             variant="ghost"
             size="icon"

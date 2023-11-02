@@ -279,7 +279,9 @@ function LargeSidebarItem({
       href={url}
       className={twMerge(
         `flex w-full items-center gap-4 rounded-lg p-3 ${
-          isActive ? "bg-neutral-100 font-bold hover:bg-secondary" : undefined
+          isActive
+            ? "bg-neutral-100 font-bold hover:bg-secondary dark:bg-neutral-800"
+            : undefined
         }`,
       )}
     >

@@ -25,7 +25,7 @@ export default function Home() {
 
   return (
     <div className="overflow-x-hidden px-8 pb-4">
-      <div className="sticky top-0 z-10 bg-white pb-4">
+      <div className="sticky top-0 z-10 pb-4">
         <CategoryPills
           categories={categories}
           selectedCategory={selectedCategory}
