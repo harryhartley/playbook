@@ -135,7 +135,7 @@ export function PlayForm({
       }}
     >
       <Button size="icon" variant="ghost" onClick={() => setOpen(true)}>
-        {id ? <Edit size={14} /> : <Plus />}
+        {id ? <Edit size={16} /> : <Plus />}
       </Button>
       <DialogContent>
         <DialogHeader>

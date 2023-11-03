@@ -3,17 +3,18 @@ import { Prisma } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
 import { formatTimeAgo } from "~/utils/formatTimeAgo";
 import { Button } from "../ui/button";
-import { Bookmark, Check, Star, Trash } from "lucide-react";
+import { Check, Trash } from "lucide-react";
 import { api } from "~/utils/api";
 import { PlayForm } from "../play_form/play_form";
 import { useSession } from "next-auth/react";
 import { isUserModeratorOrAbove } from "~/utils/auth";
+import { BookmarkButton } from "../bookmark/bookmark_button";
+import { StarButton } from "../star/star_button";
 
 const playWithUserAndBookmarks = Prisma.validator<Prisma.PlayDefaultArgs>()({
   include: {
     user: { select: { id: true, name: true, image: true } },
-    bookmarks: true,
-    stars: true,
+    _count: { select: { bookmarks: true, stars: true } },
   },
 });
 
@@ -28,7 +29,6 @@ export function PlayGridItem({
   name,
   description,
   user,
-  bookmarks,
   createdAt,
   thumbnailUrl,
   videoUrl,
@@ -39,6 +39,7 @@ export function PlayGridItem({
   stage,
   difficulty,
   approved,
+  _count,
 }: PlayGridItemProps) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -71,8 +72,6 @@ export function PlayGridItem({
       videoRef.current.pause();
     }
   }, [isVideoPlaying]);
-
-  const iconSize = 14;
 
   return (
     <div
@@ -122,20 +121,16 @@ export function PlayGridItem({
             {character} • {type}
           </a>
           <a href={`/play/${user.id}`} className="text-sm">
-            {VIEW_FORMATTER.format(bookmarks.length)} Stars •{" "}
+            {VIEW_FORMATTER.format(_count.stars)} Stars •{" "}
             {formatTimeAgo(createdAt)}
           </a>
         </div>
       </div>
       <div className="flex justify-center">
-        <Button variant="ghost" size="icon">
-          <Bookmark size={iconSize} />
-        </Button>
-        <Button variant="ghost" size="icon">
-          <Star size={iconSize} />
-        </Button>
-        {session && isUserModeratorOrAbove(session?.user.role) && 
-          (<PlayForm
+        <BookmarkButton playId={id} bookmarkCount={_count.bookmarks} />
+        <StarButton playId={id} starCount={_count.stars} />
+        {session && isUserModeratorOrAbove(session?.user.role) && (
+          <PlayForm
             id={id}
             name={name}
             description={description ?? ""}
@@ -147,15 +142,15 @@ export function PlayGridItem({
             environment={environment}
             stage={stage}
             difficulty={difficulty.toString()}
-          />)
-        }
+          />
+        )}
         {!approved && (
           <Button
             variant="ghost"
             size="icon"
             onClick={() => approvePlay.mutate(id)}
           >
-            <Check color="green" size={iconSize} />
+            <Check color="green" size={16} />
           </Button>
         )}
         <Button
@@ -165,7 +160,7 @@ export function PlayGridItem({
             approved ? unapprovePlay.mutate(id) : archivePlay.mutate(id)
           }
         >
-          <Trash color="red" size={iconSize} />
+          <Trash color="red" size={16} />
         </Button>
       </div>
     </div>

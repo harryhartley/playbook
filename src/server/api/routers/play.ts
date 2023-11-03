@@ -6,6 +6,7 @@ import {
   contributorOrAboveProtectedProcedure,
   createTRPCRouter,
   moderatorOrAboveProtectedProcedure,
+  protectedProcedure,
   publicProcedure,
 } from "../trpc";
 
@@ -14,9 +15,13 @@ export const playRouter = createTRPCRouter({
     return ctx.db.play.findUnique({
       where: { id: input },
       include: {
+        _count: {
+          select: {
+            bookmarks: { where: { userId: ctx.session?.user.id } },
+            stars: true,
+          },
+        },
         user: { select: { id: true, name: true, image: true } },
-        bookmarks: { where: { userId: ctx.session?.user.id } },
-        stars: true,
       },
     });
   }),
@@ -137,9 +142,13 @@ export const playRouter = createTRPCRouter({
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
         include: {
+          _count: {
+            select: {
+              bookmarks: { where: { userId: ctx.session?.user.id } },
+              stars: true,
+            },
+          },
           user: { select: { id: true, name: true, image: true } },
-          bookmarks: { where: { userId: ctx.session?.user.id } },
-          stars: true,
         },
       });
       return { plays, count };
@@ -189,9 +198,129 @@ export const playRouter = createTRPCRouter({
         skip: (input.currentPage - 1) * input.pageSize,
         take: input.pageSize,
         include: {
+          _count: {
+            select: {
+              bookmarks: { where: { userId: ctx.session?.user.id } },
+              stars: true,
+            },
+          },
           user: { select: { id: true, name: true, image: true } },
-          bookmarks: { where: { userId: ctx.session?.user.id } },
-          stars: true,
+        },
+      });
+      return { plays, count };
+    }),
+  getAllBookmarked: protectedProcedure
+    .input(
+      z.object({
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+        filter: z
+          .object({
+            c: z.nativeEnum(Character).optional(),
+            e: z.nativeEnum(Environment).optional(),
+            t: z.nativeEnum(Type).optional(),
+            st: z.nativeEnum(Stage).optional(),
+            sp: z.nativeEnum(Speed).optional(),
+            d: z.number().int().min(1).max(5).optional(),
+          })
+          .optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const count = await ctx.db.play.count({
+        where: {
+          approved: true,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+          bookmarks: { some: { userId: ctx.session.user.id } },
+        },
+      });
+      const plays = await ctx.db.play.findMany({
+        orderBy: [{ createdAt: "desc" }],
+        where: {
+          approved: true,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+          bookmarks: { some: { userId: ctx.session.user.id } },
+        },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+        include: {
+          _count: {
+            select: {
+              bookmarks: { where: { userId: ctx.session?.user.id } },
+              stars: true,
+            },
+          },
+          user: { select: { id: true, name: true, image: true } },
+        },
+      });
+      return { plays, count };
+    }),
+  getAllStarred: protectedProcedure
+    .input(
+      z.object({
+        currentPage: z.number().int().min(1),
+        pageSize: z.number().int().min(1),
+        filter: z
+          .object({
+            c: z.nativeEnum(Character).optional(),
+            e: z.nativeEnum(Environment).optional(),
+            t: z.nativeEnum(Type).optional(),
+            st: z.nativeEnum(Stage).optional(),
+            sp: z.nativeEnum(Speed).optional(),
+            d: z.number().int().min(1).max(5).optional(),
+          })
+          .optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const count = await ctx.db.play.count({
+        where: {
+          approved: true,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+          stars: { some: { userId: ctx.session.user.id } },
+        },
+      });
+      const plays = await ctx.db.play.findMany({
+        orderBy: [{ createdAt: "desc" }],
+        where: {
+          approved: true,
+          archived: false,
+          character: input.filter?.c,
+          environment: input.filter?.e,
+          type: input.filter?.t,
+          stage: input.filter?.st,
+          speed: input.filter?.sp,
+          difficulty: input.filter?.d,
+          stars: { some: { userId: ctx.session.user.id } },
+        },
+        skip: (input.currentPage - 1) * input.pageSize,
+        take: input.pageSize,
+        include: {
+          _count: {
+            select: {
+              bookmarks: { where: { userId: ctx.session?.user.id } },
+              stars: true,
+            },
+          },
+          user: { select: { id: true, name: true, image: true } },
         },
       });
       return { plays, count };
