@@ -126,43 +126,45 @@ export function PlayGridItem({
           </a>
         </div>
       </div>
-      <div className="flex justify-center">
-        <BookmarkButton playId={id} bookmarkCount={_count.bookmarks} />
-        <StarButton playId={id} starCount={_count.stars} />
-        {session && isUserModeratorOrAbove(session?.user.role) && (
-          <PlayForm
-            id={id}
-            name={name}
-            description={description ?? ""}
-            videoUrl={videoUrl}
-            thumbnailUrl={thumbnailUrl ?? ""}
-            type={type}
-            speed={speed}
-            character={character}
-            environment={environment}
-            stage={stage}
-            difficulty={difficulty.toString()}
-          />
-        )}
-        {!approved && (
+      {session && (
+        <div className="flex justify-center">
+          <BookmarkButton playId={id} bookmarkCount={_count.bookmarks} />
+          <StarButton playId={id} starCount={_count.stars} />
+          {isUserModeratorOrAbove(session?.user.role) && (
+            <PlayForm
+              id={id}
+              name={name}
+              description={description ?? ""}
+              videoUrl={videoUrl}
+              thumbnailUrl={thumbnailUrl ?? ""}
+              type={type}
+              speed={speed}
+              character={character}
+              environment={environment}
+              stage={stage}
+              difficulty={difficulty.toString()}
+            />
+          )}
+          {!approved && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => approvePlay.mutate(id)}
+            >
+              <Check color="green" size={16} />
+            </Button>
+          )}
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => approvePlay.mutate(id)}
+            onClick={() =>
+              approved ? unapprovePlay.mutate(id) : archivePlay.mutate(id)
+            }
           >
-            <Check color="green" size={16} />
+            <Trash color="red" size={16} />
           </Button>
-        )}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() =>
-            approved ? unapprovePlay.mutate(id) : archivePlay.mutate(id)
-          }
-        >
-          <Trash color="red" size={16} />
-        </Button>
-      </div>
+        </div>
+      )}
     </div>
   );
 }
