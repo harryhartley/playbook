@@ -12,7 +12,9 @@ export const uploadthingRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const utapi = new UTApi({ apiKey: env.UPLOADTHING_SECRET });
-      const res = await utapi.deleteFiles(input.fileUrls);
+      const res = await utapi.deleteFiles(
+        input.fileUrls.map((f) => f.replace("https://utfs.io/f/", "")),
+      );
       return res;
     }),
 });
