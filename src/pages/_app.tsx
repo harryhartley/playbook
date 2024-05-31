@@ -11,6 +11,8 @@ import "~/styles/globals.css";
 import { ThemeProvider } from "~/providers/theme-provider";
 import { Footer } from "~/components/footer/footer";
 
+import { Analytics } from "@vercel/analytics/react";
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -24,6 +26,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         disableTransitionOnChange
       >
         <SidebarProvider>
+          <Analytics />
           <Header />
           <div className="flex-grow-1 grid grid-cols-[auto,1fr] overflow-auto">
             <Sidebar />
